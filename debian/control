@@ -13,5 +13,4 @@ Architecture: all
 Depends: ${misc:Depends}
 Recommends: pulseaudio-utils,
             x11-utils
-Description: Ubuntu WSL Integration. 
-Allows automatic setup for GUI and Audio for WSL.
+Description: Ubuntu WSL Integration. Allows automatic setup for GUI and Audio for WSL.

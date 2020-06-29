@@ -1,0 +1,5 @@
+ubuntu-wsl-integration (0.1) groovy; urgency=medium
+
+  * Initial release
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Mon, 29 Jun 2020 14:53:21 +0800

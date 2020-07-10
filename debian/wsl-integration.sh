@@ -7,7 +7,7 @@ else
 fi
 WSL_INTEGRATION_CACHE="${CACHE_BASE}/ubuntu-wsl/integration"
 
-if [ "$UBUNTU_WSL_GUI_INTEGRATION" = "true" ] || [ "UBUNTU_WSL_AUDIO_INTEGRATION" = "true" ] ; then
+if [ "$UBUNTU_WSL_GUI_INTEGRATION" = "true" ] || [ "$UBUNTU_WSL_AUDIO_INTEGRATION" = "true" ] ; then
     if find -L "$WSL_INTEGRATION_CACHE" -newer /etc/resolv.conf 2> /dev/null | grep -q -m 1 '.'; then
         . $WSL_INTEGRATION_CACHE
         elif type pactl > /dev/null 2>&1 || type xvinfo > /dev/null 2>&1; then
@@ -34,7 +34,7 @@ if [ "$UBUNTU_WSL_GUI_INTEGRATION" = "true" ] || [ "UBUNTU_WSL_AUDIO_INTEGRATION
         fi
         
         # set up audio if pulse server is reachable only via tcp
-        if [ "UBUNTU_WSL_AUDIO_INTEGRATION" = "true" ] && type pactl > /dev/null 2>&1 \
+        if [ "$UBUNTU_WSL_AUDIO_INTEGRATION" = "true" ] && type pactl > /dev/null 2>&1 \
         && (! timeout "$WSL_HOST_PA_TIMEOUT" pactl info > /dev/null 2>&1 || timeout "$WSL_HOST_PA_TIMEOUT" pactl info 2> /dev/null | grep -q 'Default Sink: auto_null' ) \
         && env PULSE_SERVER="tcp:${WSL_HOST}" timeout "$WSL_HOST_PA_TIMEOUT" pactl stat > /dev/null 2>&1; then
             export PULSE_SERVER="tcp:${WSL_HOST}"

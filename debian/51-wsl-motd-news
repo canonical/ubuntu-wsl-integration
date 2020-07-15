@@ -25,7 +25,7 @@
 [ -f "/etc/ubuntu-wsl.conf" ] && . /etc/ubuntu-wsl.conf
 
 # Exit immediately unless we're enabled
-[ "$UBUNTU_WSL_MOTD_NEWS_ENABLED" = "1" ] || exit 0
+[ "$UBUNTU_WSL_MOTD_NEWS_ENABLED" = "true" ] || exit 0
 
 # placeholder after confirm how should this part be implemented
 CONTENT="This is a test news print for Ubuntu WSL."

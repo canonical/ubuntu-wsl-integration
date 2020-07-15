@@ -1,2 +1,3 @@
 debian/ubuntu-wsl.conf etc
-debian/wsl-integration.sh usr/share/ubuntu-wsl
+debian/wsl-integration.sh usr/share/ubuntu-wsl/
+debian/51-wsl-motd-news etc/update-motd.d/

@@ -1,0 +1,18 @@
+#!/bin/sh
+#    51-wsl-motd-news - print the live news from the Ubuntu WSL.
+#    Copyright (C) 2020 Canonical Ltd.
+#    Copyright (C) 2020 Patrick Wu
+#
+#    Authors: Patrick Wu <patrick.wu@canonical.com>
+
+# Source the local configuration
+[ -f "/etc/ubuntu-wsl.conf" ] && . /etc/ubuntu-wsl.conf
+
+# Exit immediately unless we're enabled
+[ "$UBUNTU_WSL_MOTD_NEWS_ENABLED" = "1" ] || exit 0
+
+# placeholder after confirm how should this part be implemented
+CONTENT="This is a test news print for Ubuntu WSL."
+printf  "%s\n" "$CONTENT" 
+
+exit 0

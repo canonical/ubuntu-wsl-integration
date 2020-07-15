@@ -10,7 +10,7 @@ Homepage: https://www.ubuntu.com/wsl
 
 Package: ubuntu-wsl-integration
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, wslu (>= 3.2)
 Recommends: pulseaudio-utils,
             x11-utils
 Description: Ubuntu WSL Integration. Allows managing Ubuntu WSL integrations.

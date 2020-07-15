@@ -4,8 +4,8 @@ Priority: optional
 Maintainer: Patrick Wu <patrick.wu@canonical.com>
 Build-Depends: debhelper (>= 10)
 Standards-Version: 4.3.0.3
-Vcs-Git: https://github.com/patrick330602/ubuntu-wsl-integration.git -b master
-Vcs-Browser:  https://github.com/patrick330602/ubuntu-wsl-integration
+Vcs-Git: https://github.com/canonical/ubuntu-wsl-integration.git -b master
+Vcs-Browser:  https://github.com/canonical/ubuntu-wsl-integration
 Homepage: https://www.ubuntu.com/wsl
 
 Package: ubuntu-wsl-integration
@@ -13,4 +13,4 @@ Architecture: all
 Depends: ${misc:Depends}
 Recommends: pulseaudio-utils,
             x11-utils
-Description: Ubuntu WSL Integration. Allows automatic setup for GUI and Audio for WSL.
+Description: Ubuntu WSL Integration. Allows managing Ubuntu WSL integrations.

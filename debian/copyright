@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: ubuntu-wsl-integration
-Source: https://github.com/patrick330602/ubuntu-wsl-integration
+Source: https://github.com/canonical/ubuntu-wsl-integration
 
 Files: *
 Copyright: 2020, Patrick Wu <patrick.wu@canonical.com>

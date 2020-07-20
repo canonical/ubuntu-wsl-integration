@@ -3,15 +3,15 @@
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
-#  
+#
 #  This package is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-#  
+#
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <https://www.gnu.org/licenses/>.
-#  
+#
 #  On Debian systems, the complete text of the GNU General
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
@@ -40,8 +40,8 @@ if [ "$UBUNTU_WSL_GUI_INTEGRATION" = "true" ] || [ "$UBUNTU_WSL_AUDIO_INTEGRATIO
         fi
         
         # create empty cache
-        [ -d "${CACHE_BASE}/wslu" ] || mkdir -p "${CACHE_BASE}/wslu" 2> /dev/null
-        echo -n "" > "$WSL_INTEGRATION_CACHE" 2> /dev/null
+        [ -d "${CACHE_BASE}/ubuntu-wsl" ] || mkdir -p "${CACHE_BASE}/ubuntu-wsl" 2> /dev/null
+        touch "$WSL_INTEGRATION_CACHE" 2> /dev/null
         
         # set DISPLAY if there is an X11 server running and integration is enabled
         if [ "$UBUNTU_WSL_GUI_INTEGRATION" = "true" ] && type xvinfo > /dev/null 2>&1 && env DISPLAY="${WSL_HOST}:0" timeout "$WSL_HOST_X_TIMEOUT" xvinfo > /dev/null 2>&1; then
@@ -57,6 +57,9 @@ if [ "$UBUNTU_WSL_GUI_INTEGRATION" = "true" ] || [ "$UBUNTU_WSL_AUDIO_INTEGRATIO
             export PULSE_SERVER="tcp:${WSL_HOST}"
             echo -e "export PULSE_SERVER=$PULSE_SERVER" >> "$WSL_INTEGRATION_CACHE" 2> /dev/null
         fi
+
+        # if integration file is still empty, remove it to prevent failure of generation later.
+        [ -s "$WSL_INTEGRATION_CACHE" ] || rm -rf "$WSL_INTEGRATION_CACHE"
         
         unset WSL_HOST
         unset WSL_HOST_X_TIMEOUT

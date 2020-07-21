@@ -48,6 +48,9 @@ if [ "$UBUNTU_WSL_GUI_INTEGRATION" = "true" ] || [ "$UBUNTU_WSL_AUDIO_INTEGRATIO
             export DISPLAY="${WSL_HOST}:0"
             export LIBGL_ALWAYS_INDIRECT=1
             echo -e "export DISPLAY=$DISPLAY\nexport LIBGL_ALWAYS_INDIRECT=1" >> "$WSL_INTEGRATION_CACHE" 2> /dev/null
+            win_sys_scaling=$(wslsys -S -s)
+            export GDK_SCALE=$win_sys_scaling
+            export QT_SCALE_FACTOR=$win_sys_scaling
         fi
         
         # set up audio if pulse server is reachable only via tcp

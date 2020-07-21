@@ -20,10 +20,20 @@
 if [ "$UBUNTU_WSL_GUI_INTEGRATION" = "true" ] || [ "$UBUNTU_WSL_AUDIO_INTEGRATION" = "true" ] ; then
     if type pactl > /dev/null 2>&1 || type xvinfo > /dev/null 2>&1; then
         # detect WSL host
-        if type systemd-detect-virt > /dev/null 2>&1 && test "$(systemd-detect-virt -c)" != wsl -a -e /etc/resolv.conf; then
-            WSL_HOST="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)"
-            WSL_HOST_X_TIMEOUT=0.2
-            WSL_HOST_PA_TIMEOUT=0.3
+        # WSL2
+        if [ "$(wslsys -V -s)" = "2" ]; then
+            if [ "$UBUNTU_WSL_GUI_ADVANCED_DETECTION" = "true" ] && grep enabled /proc/sys/fs/binfmt_misc/WSLInterop >/dev/null; then
+                WSL_HOST_LINE="$(powershell.exe -noprofile -noninteractive -Command Get-WmiObject -class win32_NetworkAdapterConfiguration | grep -n -m 1 "DefaultIPGateway.*: {[0-9a-z]" | cut -d : -f 1)"
+                WSL_HOST="$(powershell.exe -noprofile -noninteractive -Command Get-WmiObject -class win32_NetworkAdapterConfiguration | sed $(( WSL_HOST_LINE - 2 ))','$(( WSL_HOST_LINE + 4 ))'!d' | grep IPAddress | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | head -1)"
+                unset WSL_HOST_LINE
+                WSL_HOST_X_TIMEOUT=0.2
+                WSL_HOST_PA_TIMEOUT=0.3
+            else
+                WSL_HOST="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)"
+                WSL_HOST_X_TIMEOUT=0.2
+                WSL_HOST_PA_TIMEOUT=0.3
+            fi
+        # WSL1
         else
             WSL_HOST="${WSL_HOST:-localhost}"
             WSL_HOST_X_TIMEOUT=0.6

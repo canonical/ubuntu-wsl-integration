@@ -22,10 +22,32 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
 # Source the local configuration
-[ -f "/etc/ubuntu-wsl.conf" ] && . /etc/ubuntu-wsl.conf
+CUR_CONF_LOC=/etc/default/ubuntu-wsl/ubuntu-wsl.conf
+[ -f "/etc/ubuntu-wsl.conf" ] && CUR_CONF_LOC=/etc/ubuntu-wsl.conf
+
+__ubuntu_wsl_conf_handling() {
+    section=""
+    while IFS='=' read var val
+    do
+        if [[ $var =~ ^\;.*$ ]] || [[ $var =~ ^\#.*$ ]]
+        then
+            continue
+        elif [[ $var =~ ^\[.*\]$ ]]
+        then
+            section="$(echo $var | tr -d '\[\]' | tr '[:lower:]' '[:upper:]')"
+        elif [[ -n "$val" ]]
+        then
+            var="$(echo $var | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')"
+            val="$(echo $val | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"
+            declare -r -g UBUNTU_WSL_${section}_${var}=${val}
+        fi
+    done < $CUR_CONF_LOC
+}
+
+[ -f "$CUR_CONF_LOC" ] && __ubuntu_wsl_conf_handling
 
 # Exit immediately unless we're enabled
-[ "$UBUNTU_WSL_MOTD_NEWS_ENABLED" = "true" ] || exit 0
+[ "$UBUNTU_WSL_MOTD_WSLNEWSENABLED" = "true" ] || exit 0
 
 # placeholder after confirm how should this part be implemented
 CONTENT="This is a test news print for Ubuntu WSL."

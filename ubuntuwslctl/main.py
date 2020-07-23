@@ -2,7 +2,8 @@ import sys
 import ubuntuwslctl.loader as loader
 import ubuntuwslctl.helper as helper
 
-def main(args):
+def main():
+    args = sys.argv[1:]
     if len(args) >= 1:
         if args[0] in ("help", "h"):
             print("ubuntuwslctl help placeholder")
@@ -38,4 +39,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()

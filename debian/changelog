@@ -1,3 +1,11 @@
+ubuntu-wsl-integration (0.2) groovy; urgency=medium
+
+  * include motd integrations;
+  * Use the ini format for ubuntu-wsl.conf and move it to /etc/default;
+  * Rewriute wsl-integration.sh.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Thu, 23 Jul 2020 10:36:09 +0800
+
 ubuntu-wsl-integration (0.1) groovy; urgency=medium
 
   * Initial release

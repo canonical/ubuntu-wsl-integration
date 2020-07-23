@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.3) groovy; urgency=medium
+
+  * include ubuntuwslctl.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Thu, 23 Jul 2020 11:09:58 +0800
+
 ubuntu-wsl-integration (0.2) groovy; urgency=medium
 
   * include motd integrations;

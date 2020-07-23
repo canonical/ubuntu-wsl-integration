@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.4.1) groovy; urgency=medium
+
+  * fix dh-python build issue.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Thu, 23 Jul 2020 17:52:39 +0800
+
 ubuntu-wsl-integration (0.4) groovy; urgency=medium
 
   * adding "update" option to the ubuntuwslctl.

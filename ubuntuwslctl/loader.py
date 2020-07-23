@@ -23,7 +23,7 @@ class ConfigEditor:
         print(self.type+"."+config_section+"."+config_setting+": " +
                       self.config[config_section][config_setting])
 
-    def add(self, config_section, config_setting, config_value):
+    def update(self, config_section, config_setting, config_value):
         self.config[config_section][config_setting] = config_value
         with open(self.location, 'w') as configfile:
             self.config.write(configfile)

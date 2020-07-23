@@ -6,7 +6,7 @@ def main():
     args = sys.argv[1:]
     if len(args) >= 1:
         if args[0] in ("help", "h"):
-            print("ubuntuwslctl help placeholder")
+            print("ubuntuwslctl - Ubuntu WSL Commandline Tool.\n list, ls\nshow, s")
             sys.exit()
         UbuntuWSLConfig = loader.UbuntuWSLConfigEditor()
         WSLConfig = loader.WSLConfigEditor()
@@ -26,7 +26,20 @@ def main():
             except KeyError:
                 print("ERROR: Unknown keyname `" + args[1] + "` passed.")
                 sys.exit(1)
-            
+        elif args[0] in ("update", "u"):
+            try:
+                config_type, config_section, config_setting = helper.config_name_extractor(args[1])
+                if config_type == "":
+                    print("Invalid config name. please check again.")
+                    sys.exit(1)
+                elif config_type == "Ubuntu":
+                    UbuntuWSLConfig.update(config_section, config_setting, args[2])
+                elif config_type == "WSL":
+                    WSLConfig.update(config_section, config_setting, args[2])
+            except KeyError:
+                print("ERROR: Unknown keyname `" + args[1] + "` passed.")
+                sys.exit(1)
+
         else:
             print("")
             # grewritingpool.helper._print_random_article(args[0])

@@ -41,7 +41,7 @@ __ubuntu_wsl_conf_handling() {
 unset CUR_CONF_LOC
 
 # the... like, the real detection part
-if [ "$UBUNTU_WSL_INTEROP_GUIINTEGRATION" = "true" ] || []; then
+if [ "$UBUNTU_WSL_INTEROP_GUIINTEGRATION" = "true" ] || [ "$UBUNTU_WSL_INTEROP_AUDIOINTEGRATION" = "true" ]; then
     if type pactl > /dev/null 2>&1 || type xvinfo > /dev/null 2>&1; then
         # detect WSL host
         # WSL2

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #    51-wsl-motd-news - print the live news from the Ubuntu WSL.
 #    Copyright (C) 2020 Canonical Ltd.
 #    Copyright (C) 2020 Patrick Wu

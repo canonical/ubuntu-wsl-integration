@@ -1,15 +1,21 @@
-import configparser
+from configparser import ConfigParser
+from ubuntuwslctl.default import default_ubuntu_wsl_conf_file, default_wsl_conf_file
 import os
 import sys
 
+
 class ConfigEditor:
-    def __load_settings__(self):
+    def __load_defaults__(self):
         pass
 
-    def __init__(self, type):
-        self.config = configparser.ConfigParser()
+    def __init__(self, type, default_conf, user_conf):
+        self.config = ConfigParser()
         self.config.BasicInterpolcation = None
-        self.__load_settings__()
+        self.default_conf = default_conf
+        self.user_conf = user_conf
+        self.config.read_dict(default_conf)
+        if os.path.exists(self.user_conf):
+            self.config.read(self.user_conf)
         self.type = type
         self.location = ""
 
@@ -18,49 +24,31 @@ class ConfigEditor:
             for configitem in self.config[section]:
                 print(self.type+"."+section+"."+configitem+": " +
                       self.config[section][configitem])
-    
+
     def show(self, config_section, config_setting):
         print(self.type+"."+config_section+"."+config_setting+": " +
-                      self.config[config_section][config_setting])
+              self.config[config_section][config_setting])
 
     def update(self, config_section, config_setting, config_value):
         self.config[config_section][config_setting] = config_value
-        with open(self.location, 'w') as configfile:
+        with open(self.user_conf, 'w') as configfile:
+            self.config.write(configfile)
+            print("OK.")
+
+    def reset(self, config_section, config_setting):
+        self.config[config_section][config_setting] = self.default_conf[config_section][config_setting]
+        with open(self.user_conf, 'w') as configfile:
             self.config.write(configfile)
             print("OK.")
 
 
 class UbuntuWSLConfigEditor(ConfigEditor):
-    def __load_settings__(self):
-        self.location = "/etc/ubuntu-wsl.conf" if os.path.exists(
-            "/etc/ubuntu-wsl.conf") else "/etc/default/ubuntu-wsl/ubuntu-wsl.conf"
-        self.config.read(self.location)
-
     def __init__(self):
-        ConfigEditor.__init__(self, "Ubuntu")
+        ConfigEditor.__init__(
+            self, "Ubuntu", default_ubuntu_wsl_conf_file, "/etc/ubuntu-wsl.conf")
 
 
 class WSLConfigEditor(ConfigEditor):
-    def __load_settings__(self):
-        """
-        This is for wsl.conf only.
-        This won't help set all global settings in .wslconfig on the Windows side.
-        """
-        # these are the public default configuration for wsl.conf.
-        # this won't cover all hidden configurations.
-        default_wsl_conf_file = {'automount': {'enabled': 'true',
-                                               'mountFsTab': 'true',
-                                               'root': '/mnt/',
-                                               'options': ''},
-                                 'network': {'generateHosts': 'true',
-                                             'generateResolvConf': 'true'},
-                                 'interop': {'enabled': 'true',
-                                             'appendWindowsPath': 'true'}}
-        self.config.read_dict(default_wsl_conf_file)
-        self.location = "/etc/wsl.conf"
-        if os.path.exists(self.location):
-            self.config.read(self.location)
-
-
     def __init__(self):
-        ConfigEditor.__init__(self, "WSL")
+        ConfigEditor.__init__(
+            self, "WSL", default_wsl_conf_file, "/etc/wsl.conf")

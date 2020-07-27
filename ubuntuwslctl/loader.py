@@ -5,29 +5,31 @@ import sys
 
 
 class ConfigEditor:
-    def __load_defaults__(self):
-        pass
-
-    def __init__(self, type, default_conf, user_conf):
-        self.config = ConfigParser()
-        self.config.BasicInterpolcation = None
+    def __init__(self, inst_type, default_conf, user_conf):
+        self.inst_type = inst_type
         self.default_conf = default_conf
         self.user_conf = user_conf
+        self.config = ConfigParser()
+        self.config.BasicInterpolcation = None
         self.config.read_dict(default_conf)
         if os.path.exists(self.user_conf):
             self.config.read(self.user_conf)
-        self.type = type
-        self.location = ""
 
-    def list(self):
+    def list(self, isDeault=False):
+        if isDeault:
+            self.config.read_dict(self.default_conf)
         for section in self.config.sections():
             for configitem in self.config[section]:
-                print(self.type+"."+section+"."+configitem+": " +
+                print(self.inst_type+"."+section+"."+configitem+": " +
                       self.config[section][configitem])
 
-    def show(self, config_section, config_setting):
-        print(self.type+"."+config_section+"."+config_setting+": " +
-              self.config[config_section][config_setting])
+    def show(self, config_section, config_setting, isShort=False, isDefault=False):
+        if isDefault:
+            self.config.read_dict(self.default_conf)
+        show_str = ""
+        if not(isShort):
+            show_str = self.inst_type+"."+config_section+"."+config_setting+": "
+        print(show_str + self.config[config_section][config_setting])
 
     def update(self, config_section, config_setting, config_value):
         self.config[config_section][config_setting] = config_value

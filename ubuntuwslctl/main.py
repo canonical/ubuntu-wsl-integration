@@ -1,6 +1,7 @@
 import sys
-import ubuntuwslctl.loader as loader
-import ubuntuwslctl.helper as helper
+from argparse import ArgumentParser
+from loader import UbuntuWSLConfigEditor, WSLConfigEditor
+from helper import config_name_extractor
 
 
         else:

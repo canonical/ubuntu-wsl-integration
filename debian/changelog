@@ -1,3 +1,11 @@
+ubuntu-wsl-integration (0.8) groovy; urgency=medium
+
+  * completely rewrite loader class;
+  * completely re-implement main arg parsing system with argparser.
+  * adding "reset" feature.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Mon, 27 Jul 2020 13:07:23 +0800
+
 ubuntu-wsl-integration (0.4.1) groovy; urgency=medium
 
   * fix dh-python build issue.

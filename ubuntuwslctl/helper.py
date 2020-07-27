@@ -17,7 +17,7 @@ def config_name_extractor(config_name):
 def get_ubuntu_wsl_conf_defaults():
     config = ConfigParser()
     config.BasicInterpolcation = None
-    config.read_file('/etc/default/ubuntu-wsl/ubuntu-wsl.conf')
+    config.read("/etc/default/ubuntu-wsl/ubuntu-wsl.conf")
     the_conf_dict = {}
     for section in config.sections():
         the_conf_dict[section] = {}

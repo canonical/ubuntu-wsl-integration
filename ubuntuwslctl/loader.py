@@ -15,9 +15,14 @@ class ConfigEditor:
         if os.path.exists(self.user_conf):
             self.config.read(self.user_conf)
 
+    def _get_default(self):
+        for section in self.config.sections():
+            self.config.remove_section(section)
+        self.config.read_dict(self.default_conf)
+
     def list(self, isDeault=False):
         if isDeault:
-            self.config.read_dict(self.default_conf)
+            self._get_default()
         for section in self.config.sections():
             for configitem in self.config[section]:
                 print(self.inst_type+"."+section+"."+configitem+": " +
@@ -25,7 +30,7 @@ class ConfigEditor:
 
     def show(self, config_section, config_setting, isShort=False, isDefault=False):
         if isDefault:
-            self.config.read_dict(self.default_conf)
+            self._get_default()
         show_str = ""
         if not(isShort):
             show_str = self.inst_type+"."+config_section+"."+config_setting+": "

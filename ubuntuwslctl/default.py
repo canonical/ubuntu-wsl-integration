@@ -1,5 +1,5 @@
 # This is the file that contains the default settings if reset
-from helper import get_ubuntu_wsl_conf_defaults
+from .helper import get_ubuntu_wsl_conf_defaults
 
 
 # these are the default settings in ubuntu-wsl.conf.

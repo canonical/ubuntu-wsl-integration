@@ -1,7 +1,7 @@
 import sys
 from argparse import ArgumentParser
-from loader import UbuntuWSLConfigEditor, WSLConfigEditor
-from helper import config_name_extractor
+from .loader import UbuntuWSLConfigEditor, WSLConfigEditor
+from .helper import config_name_extractor, query_yes_no
 
 class Application:
 

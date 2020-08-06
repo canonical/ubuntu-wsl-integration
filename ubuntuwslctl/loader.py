@@ -48,6 +48,12 @@ class ConfigEditor:
             self.config.write(configfile)
             print("OK.")
 
+    def resetall(self):
+        self._get_default()
+        with open(self.user_conf, 'w') as configfile:
+            self.config.write(configfile)
+            print("OK.")
+
 
 class UbuntuWSLConfigEditor(ConfigEditor):
     def __init__(self):

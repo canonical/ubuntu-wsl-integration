@@ -33,3 +33,7 @@ coverage.xml
 
 # Translations
 *.mo
+
+# local IDE configurations
+.idea
+.vscode

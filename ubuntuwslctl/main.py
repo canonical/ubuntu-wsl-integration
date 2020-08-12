@@ -110,19 +110,28 @@ class Application:
         self.wsl_conf.list(self._args.default)
 
     def do_reset(self):
-        try:
-            config_type, config_section, config_setting = config_name_extractor(self._args.name)
-            self._select_config(config_type).reset(config_section, config_setting)
-        except KeyError:
-            print("ERROR: Unknown keyname `" + self._args.name + "` passed.")
-            sys.exit(1)
+        if 'name' in self._args and self._args.name is not None:
+            if query_yes_no(("You are trying to reset all settings, "
+                             "including ubuntu-wsl.conf and wsl.conf. "
+                             "Do you still want to proceed?"), default="no"):
+                self._select_config("Ubuntu").resetall()
+                self._select_config("WSL").resetall()
+        else:
+            try:
+                config_type, config_section, config_setting = config_name_extractor(self._args.name)
+                if query_yes_no(("You are trying to reset "+self._args.name+". "
+                                 "Do you still want to proceed?"), default="no"):
+                    self._select_config(config_type).reset(config_section, config_setting)
+            except KeyError:
+                print(("ERROR: Unknown keyname `{name}` passed.").format(name=self._args.name))
+                sys.exit(1)
 
     def do_show(self):
         try:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
             self._select_config(config_type).show(config_section, config_setting, self._args.short, self._args.default)
         except KeyError:
-            print("ERROR: Unknown keyname `" + self._args.name + "` passed.")
+            print(("ERROR: Unknown keyname `{name}` passed.").format(name=self._args.name))
             sys.exit(1)
 
     def do_update(self):

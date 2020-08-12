@@ -16,7 +16,7 @@ class Application:
 
     def _init_parser(self):
         self.parser.add_argument(
-            '--version', action='version', version="%(prog)s 0.5")
+            '--version', action='version', version="%(prog)s 0.10")
         self.parser.set_defaults(func=self.do_help)
         commands = self.parser.add_subparsers(title=("commands"))
 
@@ -43,10 +43,12 @@ class Application:
             help=("Change the state of one or more boot settings"))
         update_cmd.add_argument(
             "name",
+            required=True,
             help=("The name of the configuration to be updated")
         )
         update_cmd.add_argument(
             "value",
+            required=True,
             help=("The value you want to set for this configuration")
         )
         update_cmd.set_defaults(func=self.do_update)
@@ -70,6 +72,7 @@ class Application:
             help=("Show the specified stored configuration"))
         show_cmd.add_argument(
             "name",
+            required=True,
             help=("The name of the boot configuration to display")
         )
         show_cmd.add_argument(
@@ -97,7 +100,7 @@ class Application:
         elif type_input == "WSL":
             return self.wsl_conf
         else:
-            raise ValueError("Invalid config name. Please check again.")
+            raise ValueError(("Invalid config name. Please check again."))
 
     def do_help(self):
         if 'cmd' in self._args and self._args.cmd is not None:
@@ -139,7 +142,7 @@ class Application:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
             self._select_config(config_type).update(config_section, config_setting, self._args.value)
         except KeyError:
-            print("ERROR: Unknown keyname `" + self._args.value + "` passed.")
+            print(("ERROR: Unknown keyname `{name}` passed.").format(name=self._args.name))
             sys.exit(1)
 
 

@@ -49,8 +49,11 @@ __ubuntu_wsl_conf_handling() {
 # Exit immediately unless we're enabled
 [ "$UBUNTU_WSL_MOTD_WSLNEWSENABLED" = "true" ] || exit 0
 
-# placeholder after confirm how should this part be implemented
-CONTENT="This is a test news print for Ubuntu WSL."
-printf  "%s\n" "$CONTENT" 
+cat <<EOF
+* Get support for Ubuntu on Windows Subsystem for Linux 2.
+  Find out how Canonical can help you with x, y, z support for Ubuntu on WSL.
+
+  http://www.ubuntu.com/wsl
+EOF
 
 exit 0

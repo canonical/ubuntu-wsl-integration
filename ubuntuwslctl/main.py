@@ -1,7 +1,9 @@
 import sys
 from argparse import ArgumentParser
-from .loader import UbuntuWSLConfigEditor, WSLConfigEditor
+
 from .helper import config_name_extractor, query_yes_no
+from .loader import UbuntuWSLConfigEditor, WSLConfigEditor
+
 
 class Application:
 
@@ -122,8 +124,9 @@ class Application:
         else:
             try:
                 config_type, config_section, config_setting = config_name_extractor(self._args.name)
-                if query_yes_no(("You are trying to reset "+self._args.name+". "
-                                 "Do you still want to proceed?"), default="no"):
+                if query_yes_no(("You are trying to reset " + self._args.name + ". "
+                                                                                "Do you still want to proceed?"),
+                                default="no"):
                     self._select_config(config_type).reset(config_section, config_setting)
             except KeyError:
                 print(("ERROR: Unknown keyname `{name}` passed.").format(name=self._args.name))

@@ -1,7 +1,7 @@
-from configparser import ConfigParser
-from .default import default_ubuntu_wsl_conf_file, default_wsl_conf_file
 import os
-import sys
+from configparser import ConfigParser
+
+from .default import default_ubuntu_wsl_conf_file, default_wsl_conf_file
 
 
 class ConfigEditor:

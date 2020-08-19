@@ -29,9 +29,9 @@ class ConfigEditor:
         if is_default:
             self._get_default()
         for section in self.config.sections():
-            for configitem in self.config[section]:
-                print(self.inst_type + "." + section + "." + configitem + ": " +
-                      self.config[section][configitem])
+            for config_item in self.config[section]:
+                print(self.inst_type + "." + section + "." + config_item + ": " +
+                      self.config[section][config_item])
 
     def show(self, config_section, config_setting, is_short=False, is_default=False):
         if is_default:
@@ -42,18 +42,24 @@ class ConfigEditor:
         print(show_str + self.config[config_section][config_setting])
 
     def update(self, config_section, config_setting, config_value):
+        if os.geteuid() != 0:
+            exit(_("You need to have root privileges to use this function. Exiting."))
         self.config[config_section][config_setting] = config_value
         with open(self.user_conf, 'w') as configfile:
             self.config.write(configfile)
             print(_("OK."))
 
     def reset(self, config_section, config_setting):
+        if os.geteuid() != 0:
+            exit(_("You need to have root privileges to use this function. Exiting."))
         self.config[config_section][config_setting] = self.default_conf[config_section][config_setting]
         with open(self.user_conf, 'w') as configfile:
             self.config.write(configfile)
             print(_("OK."))
 
     def reset_all(self):
+        if os.geteuid() != 0:
+            exit(_("You need to have root privileges to use this function. Exiting."))
         self._get_default()
         with open(self.user_conf, 'w') as configfile:
             self.config.write(configfile)

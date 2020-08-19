@@ -120,12 +120,6 @@ class Application:
     def do_reset(self):
         assume_yes = 'yes' in self._args and self._args.yes
         if 'name' in self._args and self._args.name is not None:
-            if query_yes_no(_("You are trying to reset all settings, "
-                              "including ubuntu-wsl.conf and wsl.conf. "
-                              "Do you still want to proceed?"), default="no", assume_yes=assume_yes):
-                self._select_config("Ubuntu").reset_all()
-                self._select_config("WSL").reset_all()
-        else:
             try:
                 config_type, config_section, config_setting = config_name_extractor(self._args.name)
                 if query_yes_no(_("You are trying to reset `{name}`."
@@ -136,6 +130,13 @@ class Application:
             except KeyError:
                 print(_("ERROR: Unknown key name `{name}` passed.").format(name=self._args.name))
                 sys.exit(1)
+        else:
+            if query_yes_no(_("You are trying to reset all settings, "
+                              "including ubuntu-wsl.conf and wsl.conf. "
+                              "Do you still want to proceed?"), default="no", assume_yes=assume_yes):
+                self._select_config("Ubuntu").reset_all()
+                self._select_config("WSL").reset_all()
+
 
     def do_show(self):
         try:

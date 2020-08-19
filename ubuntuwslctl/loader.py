@@ -1,4 +1,5 @@
 import os
+import errno
 from configparser import ConfigParser
 
 from .default import default_ubuntu_wsl_conf_file, default_wsl_conf_file
@@ -42,28 +43,34 @@ class ConfigEditor:
         print(show_str + self.config[config_section][config_setting])
 
     def update(self, config_section, config_setting, config_value):
-        if os.geteuid() != 0:
-            exit(_("You need to have root privileges to use this function. Exiting."))
-        self.config[config_section][config_setting] = config_value
-        with open(self.user_conf, 'w') as configfile:
-            self.config.write(configfile)
-            print(_("OK."))
+        try:
+            self.config[config_section][config_setting] = config_value
+            with open(self.user_conf, 'w') as configfile:
+                self.config.write(configfile)
+                print(_("OK."))
+        except IOError as e:
+            if e[0] == errno.EPERM:
+                exit(_("You need to have root privileges to use this function. Exiting."))
 
     def reset(self, config_section, config_setting):
-        if os.geteuid() != 0:
-            exit(_("You need to have root privileges to use this function. Exiting."))
-        self.config[config_section][config_setting] = self.default_conf[config_section][config_setting]
-        with open(self.user_conf, 'w') as configfile:
-            self.config.write(configfile)
-            print(_("OK."))
+        try:
+            self.config[config_section][config_setting] = self.default_conf[config_section][config_setting]
+            with open(self.user_conf, 'w') as configfile:
+                self.config.write(configfile)
+                print(_("OK."))
+        except IOError as e:
+            if e[0] == errno.EPERM:
+                exit(_("You need to have root privileges to use this function. Exiting."))
 
     def reset_all(self):
-        if os.geteuid() != 0:
-            exit(_("You need to have root privileges to use this function. Exiting."))
-        self._get_default()
-        with open(self.user_conf, 'w') as configfile:
-            self.config.write(configfile)
-            print(_("OK."))
+        try:
+            self._get_default()
+            with open(self.user_conf, 'w') as configfile:
+                self.config.write(configfile)
+                print(_("OK."))
+        except IOError as e:
+            if e[0] == errno.EPERM:
+                exit(_("You need to have root privileges to use this function. Exiting."))
 
 
 class UbuntuWSLConfigEditor(ConfigEditor):

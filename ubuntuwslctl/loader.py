@@ -30,11 +30,11 @@ class ConfigEditor:
                 print(self.inst_type + "." + section + "." + configitem + ": " +
                       self.config[section][configitem])
 
-    def show(self, config_section, config_setting, isShort=False, isDefault=False):
-        if isDefault:
+    def show(self, config_section, config_setting, is_short=False, is_default=False):
+        if is_default:
             self._get_default()
         show_str = ""
-        if not (isShort):
+        if not (is_short):
             show_str = self.inst_type + "." + config_section + "." + config_setting + ": "
         print(show_str + self.config[config_section][config_setting])
 
@@ -50,7 +50,7 @@ class ConfigEditor:
             self.config.write(configfile)
             print("OK.")
 
-    def resetall(self):
+    def reset_all(self):
         self._get_default()
         with open(self.user_conf, 'w') as configfile:
             self.config.write(configfile)

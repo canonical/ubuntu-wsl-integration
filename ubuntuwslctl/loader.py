@@ -2,6 +2,9 @@ import os
 from configparser import ConfigParser
 
 from .default import default_ubuntu_wsl_conf_file, default_wsl_conf_file
+from .i18n import translation
+
+_ = translation.gettext
 
 
 class ConfigEditor:
@@ -34,7 +37,7 @@ class ConfigEditor:
         if is_default:
             self._get_default()
         show_str = ""
-        if not (is_short):
+        if not is_short:
             show_str = self.inst_type + "." + config_section + "." + config_setting + ": "
         print(show_str + self.config[config_section][config_setting])
 
@@ -42,19 +45,19 @@ class ConfigEditor:
         self.config[config_section][config_setting] = config_value
         with open(self.user_conf, 'w') as configfile:
             self.config.write(configfile)
-            print("OK.")
+            print(_("OK."))
 
     def reset(self, config_section, config_setting):
         self.config[config_section][config_setting] = self.default_conf[config_section][config_setting]
         with open(self.user_conf, 'w') as configfile:
             self.config.write(configfile)
-            print("OK.")
+            print(_("OK."))
 
     def reset_all(self):
         self._get_default()
         with open(self.user_conf, 'w') as configfile:
             self.config.write(configfile)
-            print("OK.")
+            print(_("OK."))
 
 
 class UbuntuWSLConfigEditor(ConfigEditor):

@@ -1,6 +1,10 @@
 import sys
 from configparser import ConfigParser
 
+from .i18n import translation
+
+_ = translation.gettext
+
 
 def config_name_extractor(config_name):
     config_name_set = config_name.split(".")
@@ -47,7 +51,7 @@ def query_yes_no(question, default="yes", assume_yes=False):
     elif default == "no":
         prompt = " [y/N] "
     else:
-        raise ValueError("invalid default answer: '%s'" % default)
+        raise ValueError(_("invalid default answer: '{name}'").format(name=default))
 
     while True:
         sys.stdout.write(question + prompt)
@@ -60,5 +64,5 @@ def query_yes_no(question, default="yes", assume_yes=False):
         elif choice in valid:
             return valid[choice]
         else:
-            sys.stdout.write("Please respond with 'yes' or 'no' "
-                             "(or 'y' or 'n').\n")
+            sys.stdout.write(_("Please respond with 'yes' or 'no' "
+                               "(or 'y' or 'n').\n"))

@@ -22,7 +22,7 @@ class Application:
         self.parser.set_defaults(func=self.do_help)
         self.parser.add_argument(
             "-y", "--yes", action="store_true",
-            help=("When passed, always assume yes."))
+            help=("When passed, always assume yes."), required=False)
         commands = self.parser.add_subparsers(title=("commands"))
 
         help_cmd = commands.add_parser(
@@ -48,12 +48,10 @@ class Application:
             help=("Change the state of one or more boot settings"))
         update_cmd.add_argument(
             "name",
-            required=True,
             help=("The name of the configuration to be updated")
         )
         update_cmd.add_argument(
             "value",
-            required=True,
             help=("The value you want to set for this configuration")
         )
         update_cmd.set_defaults(func=self.do_update)
@@ -66,6 +64,7 @@ class Application:
             help=("Change the state of one or more boot settings"))
         reset_cmd.add_argument(
             "name",
+            nargs="?",
             help=("The name of the configuration to be reset")
         )
         reset_cmd.set_defaults(func=self.do_reset)
@@ -77,7 +76,6 @@ class Application:
             help=("Show the specified stored configuration"))
         show_cmd.add_argument(
             "name",
-            required=True,
             help=("The name of the boot configuration to display")
         )
         show_cmd.add_argument(

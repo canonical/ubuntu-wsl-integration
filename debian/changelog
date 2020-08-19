@@ -1,3 +1,10 @@
+ubuntu-wsl-integration (0.13.0) groovy; urgency=medium
+
+  * First i18n implementation (no PO/MO included)
+  * Some more logic updates
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Wed, 19 Aug 2020 10:56:41 +0800
+
 ubuntu-wsl-integration (0.12.0) groovy; urgency=medium
 
   * update logic to make the ctl works.

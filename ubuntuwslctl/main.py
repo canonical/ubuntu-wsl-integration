@@ -124,8 +124,8 @@ class Application:
             if query_yes_no(_("You are trying to reset all settings, "
                               "including ubuntu-wsl.conf and wsl.conf. "
                               "Do you still want to proceed?"), default="no", assume_yes=assume_yes):
-                self._select_config("Ubuntu").resetall()
-                self._select_config("WSL").resetall()
+                self._select_config("Ubuntu").reset_all()
+                self._select_config("WSL").reset_all()
         else:
             try:
                 config_type, config_section, config_setting = config_name_extractor(self._args.name)

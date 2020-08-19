@@ -20,6 +20,9 @@ class Application:
         self.parser.add_argument(
             '--version', action='version', version="%(prog)s 0.10")
         self.parser.set_defaults(func=self.do_help)
+        self.parser.add_argument(
+            "-y", "--yes", action="store_true",
+            help=("When passed, always assume yes."))
         commands = self.parser.add_subparsers(title=("commands"))
 
         help_cmd = commands.add_parser(
@@ -115,19 +118,22 @@ class Application:
         self.wsl_conf.list(self._args.default)
 
     def do_reset(self):
+        assume_yes = 'yes' in self._args and self._args.yes
         if 'name' in self._args and self._args.name is not None:
             if query_yes_no(("You are trying to reset all settings, "
                              "including ubuntu-wsl.conf and wsl.conf. "
-                             "Do you still want to proceed?"), default="no"):
+                             "Do you still want to proceed?"), default="no", assume_yes=assume_yes):
                 self._select_config("Ubuntu").resetall()
                 self._select_config("WSL").resetall()
         else:
             try:
                 config_type, config_section, config_setting = config_name_extractor(self._args.name)
-                if query_yes_no(("You are trying to reset " + self._args.name + ". "
-                                                                                "Do you still want to proceed?"),
-                                default="no"):
-                    self._select_config(config_type).reset(config_section, config_setting)
+                if query_yes_no(("You are trying to reset "
+                                 + self._args.name + ". "
+                                 "Do you still want to proceed?"),
+                                default="no", assume_yes=assume_yes):
+                    self._select_config(config_type)\
+                        .reset(config_section, config_setting)
             except KeyError:
                 print(("ERROR: Unknown keyname `{name}` passed.").format(name=self._args.name))
                 sys.exit(1)
@@ -135,7 +141,8 @@ class Application:
     def do_show(self):
         try:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
-            self._select_config(config_type).show(config_section, config_setting, self._args.short, self._args.default)
+            self._select_config(config_type)\
+                .show(config_section, config_setting, self._args.short, self._args.default)
         except KeyError:
             print(("ERROR: Unknown keyname `{name}` passed.").format(name=self._args.name))
             sys.exit(1)
@@ -143,7 +150,8 @@ class Application:
     def do_update(self):
         try:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
-            self._select_config(config_type).update(config_section, config_setting, self._args.value)
+            self._select_config(config_type)\
+                .update(config_section, config_setting, self._args.value)
         except KeyError:
             print(("ERROR: Unknown keyname `{name}` passed.").format(name=self._args.name))
             sys.exit(1)

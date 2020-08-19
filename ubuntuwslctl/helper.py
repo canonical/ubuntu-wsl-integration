@@ -27,7 +27,7 @@ def get_ubuntu_wsl_conf_defaults():
     return the_conf_dict
 
 
-def query_yes_no(question, default="yes"):
+def query_yes_no(question, default="yes", assume_yes=False):
     """Ask a yes/no question via raw_input() and return their answer.
 
     "question" is a string that is presented to the user.
@@ -51,7 +51,10 @@ def query_yes_no(question, default="yes"):
 
     while True:
         sys.stdout.write(question + prompt)
-        choice = input().lower()
+        if assume_yes:
+            choice = "y"
+        else:
+            choice = input().lower()
         if default is not None and choice == '':
             return valid[default]
         elif choice in valid:

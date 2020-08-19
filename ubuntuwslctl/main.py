@@ -1,11 +1,10 @@
 import sys
-import gettext
 from argparse import ArgumentParser
 
 from .helper import config_name_extractor, query_yes_no
+from .i18n import translation
 from .loader import UbuntuWSLConfigEditor, WSLConfigEditor
 
-translation = gettext.translation('ubuntuwslctl', localedir=localedir, fallback=True)
 _ = translation.gettext
 
 
@@ -132,7 +131,7 @@ class Application:
                 if query_yes_no(_("You are trying to reset `{name}`."
                                   "Do you still want to proceed?").format(name=self._args.name),
                                 default="no", assume_yes=assume_yes):
-                    self._select_config(config_type)\
+                    self._select_config(config_type) \
                         .reset(config_section, config_setting)
             except KeyError:
                 print(_("ERROR: Unknown key name `{name}` passed.").format(name=self._args.name))
@@ -141,7 +140,7 @@ class Application:
     def do_show(self):
         try:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
-            self._select_config(config_type)\
+            self._select_config(config_type) \
                 .show(config_section, config_setting, self._args.short, self._args.default)
         except KeyError:
             print(_("ERROR: Unknown key name `{name}` passed.").format(name=self._args.name))
@@ -150,7 +149,7 @@ class Application:
     def do_update(self):
         try:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
-            self._select_config(config_type)\
+            self._select_config(config_type) \
                 .update(config_section, config_setting, self._args.value)
         except KeyError:
             print(_("ERROR: Unknown key name `{name}` passed.").format(name=self._args.name))

@@ -22,8 +22,8 @@ class ConfigEditor:
             self.config.remove_section(section)
         self.config.read_dict(self.default_conf)
 
-    def list(self, isDeault=False):
-        if isDeault:
+    def list(self, is_default=False):
+        if is_default:
             self._get_default()
         for section in self.config.sections():
             for configitem in self.config[section]:

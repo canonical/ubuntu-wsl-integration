@@ -1,17 +1,22 @@
 import os
-import errno
+import re
 from configparser import ConfigParser
 
-from .default import default_ubuntu_wsl_conf_file, default_wsl_conf_file
+from .default import (
+     default_ubuntu_wsl_conf_file,
+     default_ubuntu_wsl_conf_type,
+     default_wsl_conf_file,
+     default_wsl_conf_type)
 from .i18n import translation
 
 _ = translation.gettext
 
 
 class ConfigEditor:
-    def __init__(self, inst_type, default_conf, user_conf):
+    def __init__(self, inst_type, default_conf, default_type, user_conf):
         self.inst_type = inst_type
         self.default_conf = default_conf
+        self.default_type = default_type
         self.user_conf = user_conf
 
         self.config = ConfigParser()
@@ -25,6 +30,29 @@ class ConfigEditor:
         for section in self.config.sections():
             self.config.remove_section(section)
         self.config.read_dict(self.default_conf)
+
+    def _type_validation(self, config_section, config_setting, input_con):
+
+        to_validate = ""
+        assert type(self.default_type) in (str, dict), _("Bad 'default_type' passed. "
+                                                         "It should be either 'str' or 'dict'.")
+        if type(self.default_type) == str:
+            to_validate = self.default_type
+        else:
+            to_validate = self.default_type[config_section][config_setting]
+
+        assert to_validate in ("bool", "pass", "mount"), _("Unknown type to be validated.")
+        if to_validate == "bool":
+            return input_con in ("true", "false"), _("Input should be either 'true' or 'false'")
+        elif to_validate == "path":
+            return re.fullmatch(r"(/[^/ ]*)+/?", input_con) is not None, _("Input should be a valid UNIX path")
+        elif to_validate == "mount":
+            # Not validating this one for now;
+            # This is mostly because it is very poorly documented by Microsoft
+            # and it is really hard to check which can be passed and which can't.
+            return True, ""
+
+
 
     def list(self, is_default=False):
         if is_default:
@@ -76,10 +104,10 @@ class ConfigEditor:
 class UbuntuWSLConfigEditor(ConfigEditor):
     def __init__(self):
         ConfigEditor.__init__(
-            self, "Ubuntu", default_ubuntu_wsl_conf_file, "/etc/ubuntu-wsl.conf")
+            self, "Ubuntu", default_ubuntu_wsl_conf_file, default_ubuntu_wsl_conf_type, "/etc/ubuntu-wsl.conf")
 
 
 class WSLConfigEditor(ConfigEditor):
     def __init__(self):
         ConfigEditor.__init__(
-            self, "WSL", default_wsl_conf_file, "/etc/wsl.conf")
+            self, "WSL", default_wsl_conf_file, default_wsl_conf_type, "/etc/wsl.conf")

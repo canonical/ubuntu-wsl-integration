@@ -48,9 +48,9 @@ class ConfigEditor:
             with open(self.user_conf, 'w') as configfile:
                 self.config.write(configfile)
                 print(_("OK."))
-        except IOError as e:
-            if e[0] == errno.EPERM:
-                exit(_("You need to have root privileges to use this function. Exiting."))
+        except IOError:
+            exit(_("IOError: There is a Error whe trying to Read/Write the file."
+                   "You need to have root privileges to use this function. Exiting."))
 
     def reset(self, config_section, config_setting):
         try:
@@ -58,9 +58,9 @@ class ConfigEditor:
             with open(self.user_conf, 'w') as configfile:
                 self.config.write(configfile)
                 print(_("OK."))
-        except IOError as e:
-            if e[0] == errno.EPERM:
-                exit(_("You need to have root privileges to use this function. Exiting."))
+        except IOError:
+            exit(_("IOError: There is a Error whe trying to Read/Write the file."
+                   "You need to have root privileges to use this function. Exiting."))
 
     def reset_all(self):
         try:
@@ -68,9 +68,9 @@ class ConfigEditor:
             with open(self.user_conf, 'w') as configfile:
                 self.config.write(configfile)
                 print(_("OK."))
-        except IOError as e:
-            if e[0] == errno.EPERM:
-                exit(_("You need to have root privileges to use this function. Exiting."))
+        except IOError:
+            exit(_("IOError: There is a Error whe trying to Read/Write the file."
+                   "You need to have root privileges to use this function. Exiting."))
 
 
 class UbuntuWSLConfigEditor(ConfigEditor):

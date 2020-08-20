@@ -1,4 +1,5 @@
 import sys
+import warnings
 from argparse import ArgumentParser
 
 from .helper import config_name_extractor, query_yes_no
@@ -25,6 +26,9 @@ class Application:
         self.parser.add_argument(
             "-y", "--yes", action="store_true",
             help=_("When passed, always assume yes."), required=False)
+        # self.parser.add_argument(
+        #     "-c", "--config", type=str, choices=["ubuntu", "wsl", "both"], default="both",
+        #     help=_("When passed, handling ubuntu-wsl.conf only."), required=False)
         commands = self.parser.add_subparsers(title=_("commands"))
 
         help_cmd = commands.add_parser(
@@ -136,7 +140,6 @@ class Application:
                               "Do you still want to proceed?"), default="no", assume_yes=assume_yes):
                 self._select_config("Ubuntu").reset_all()
                 self._select_config("WSL").reset_all()
-
 
     def do_show(self):
         try:

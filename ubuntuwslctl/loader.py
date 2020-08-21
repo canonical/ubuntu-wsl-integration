@@ -53,14 +53,6 @@ class ConfigEditor:
 
         return False, "Something went wrong, but how do you even get here?"
 
-    def list(self, is_default=False):
-        if is_default:
-            self._get_default()
-        for section in self.config.sections():
-            for config_item in self.config[section]:
-                print(self.inst_type + "." + section + "." + config_item + ": " +
-                      self.config[section][config_item])
-
     def show(self, config_section, config_setting, is_short=False, is_default=False):
         if is_default:
             self._get_default()
@@ -68,6 +60,14 @@ class ConfigEditor:
         if not is_short:
             show_str = self.inst_type + "." + config_section + "." + config_setting + ": "
         print(show_str + self.config[config_section][config_setting])
+
+    def show_list(self, config_section, is_short=False, is_default=False):
+        for config_item in self.config[config_section]:
+            self.show(config_section, config_item, is_short, is_default)
+
+    def list(self, is_default=False, is_short=False):
+        for section in self.config.sections():
+            self.show_list(section, is_short, is_default)
 
     def update(self, config_section, config_setting, config_value):
         assert_check, assert_warn = self._type_validation(config_section, config_setting, config_value)

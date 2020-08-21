@@ -72,6 +72,8 @@ class ConfigEditor:
 
     def update(self, config_section, config_setting, config_value):
         try:
+            assert_check, assert_warn = self._type_validation(config_section, config_setting, config_value)
+            assert assert_check, assert_warn
             self.config[config_section][config_setting] = config_value
             with open(self.user_conf, 'w') as configfile:
                 self.config.write(configfile)

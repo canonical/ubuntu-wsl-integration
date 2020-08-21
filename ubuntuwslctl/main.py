@@ -25,7 +25,7 @@ class Application:
             sys.exit(1)
         except AssertionError as e:
             print(bcolors.FAIL + _("ValidationError: ") + bcolors.ENDC +
-                  _("{e}. Aborting.").format(error=e))
+                  _("{error}. Aborting.").format(error=e))
             sys.exit(1)
         except IOError:
             print(bcolors.FAIL + _("IOError: ") + bcolors.ENDC +

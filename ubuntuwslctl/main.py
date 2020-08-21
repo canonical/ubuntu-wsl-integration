@@ -162,7 +162,7 @@ class Application:
         config_type, config_section, config_setting = config_name_extractor(self._args.name)
         if config_section == "*":  #top level wild card display
             self._select_config(config_type).list(self._args.default, is_short=self._args.short)
-        elif config_setting == "*":
+        elif config_setting == "*": # second level wild card display
             self._select_config(config_type).show_list(config_section, self._args.short, self._args.default)
         else:
             self._select_config(config_type) \

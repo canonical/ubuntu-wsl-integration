@@ -6,6 +6,16 @@ from .i18n import translation
 _ = translation.gettext
 
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 def config_name_extractor(config_name):
     config_name_set = config_name.split(".")
     # it should always be three level: the type, the section, and the config.

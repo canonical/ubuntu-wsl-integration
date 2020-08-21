@@ -132,11 +132,11 @@ class Application:
                     self._select_config(config_type) \
                         .reset(config_section, config_setting)
             except KeyError:
-                print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n")
+                print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:")
                           .format(name=self._args.name))
                 raise
             except Exception:
-                print(_("ERROR: Something happened.  \n\nDetails:\n")
+                print(_("ERROR: Something happened.  \n\nDetails:")
                       .format(name=self._args.name))
                 raise
         else:
@@ -152,11 +152,11 @@ class Application:
             self._select_config(config_type) \
                 .show(config_section, config_setting, self._args.short, self._args.default)
         except KeyError:
-            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n")
+            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:")
                   .format(name=self._args.name))
             raise
         except Exception:
-            print(_("ERROR: Something happened.  \n\nDetails:\n")
+            print(_("ERROR: Something happened.  \n\nDetails:")
                   .format(name=self._args.name))
             raise
 
@@ -166,11 +166,11 @@ class Application:
             self._select_config(config_type) \
                 .update(config_section, config_setting, self._args.value)
         except KeyError:
-            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n")
+            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:")
                   .format(name=self._args.name))
             raise
         except Exception:
-            print(_("ERROR: Something happened.  \n\nDetails:\n")
+            print(_("ERROR: Something happened.  \n\nDetails:")
                   .format(name=self._args.name))
             raise
 

@@ -133,11 +133,11 @@ class Application:
                         .reset(config_section, config_setting)
             except KeyError as e:
                 print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n {details}")
-                          .format(name=self._args.name, details=e.with_traceback()))
+                          .format(name=self._args.name, details=e))
                 sys.exit(1)
             except Exception as e:
                 print(_("ERROR: Something happened.  \n\nDetails:\n {details}")
-                      .format(name=self._args.name, details=e.with_traceback()))
+                      .format(name=self._args.name, details=e))
                 sys.exit(1)
         else:
             if query_yes_no(_("You are trying to reset all settings, "
@@ -153,11 +153,11 @@ class Application:
                 .show(config_section, config_setting, self._args.short, self._args.default)
         except KeyError as e:
             print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n {details}")
-                  .format(name=self._args.name, details=e.with_traceback()))
+                  .format(name=self._args.name, details=e))
             sys.exit(1)
         except Exception as e:
             print(_("ERROR: Something happened.  \n\nDetails:\n {details}")
-                  .format(name=self._args.name, details=e.with_traceback()))
+                  .format(name=self._args.name, details=e))
             sys.exit(1)
 
     def do_update(self):
@@ -167,11 +167,11 @@ class Application:
                 .update(config_section, config_setting, self._args.value)
         except KeyError as e:
             print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n {details}")
-                  .format(name=self._args.name, details=e.with_traceback()))
+                  .format(name=self._args.name, details=e))
             sys.exit(1)
         except Exception as e:
             print(_("ERROR: Something happened.  \n\nDetails:\n {details}")
-                  .format(name=self._args.name, details=e.with_traceback()))
+                  .format(name=self._args.name, details=e))
             sys.exit(1)
 
 

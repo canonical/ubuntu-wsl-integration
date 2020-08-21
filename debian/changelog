@@ -1,9 +1,13 @@
-ubuntu-wsl-integration (0.13.0) groovy; urgency=medium
+ubuntu-wsl-integration (0.18.0) groovy; urgency=medium
 
-  * First i18n implementation (no PO/MO included)
-  * Some more logic updates
+  * First i18n implementation (no PO/MO included);
+  * inputs will be validated in "update" command,;
+  * allowing wild card in "show" command;
+  * always yes mode (--yes) to bypass reset all confirmation;
+  * colorized STDOUT.
+  * 51-wsl-motd-news: Small re-formatting.
 
- -- Patrick Wu <patrick.wu@canonical.com>  Wed, 19 Aug 2020 10:56:41 +0800
+ -- Patrick Wu <patrick.wu@canonical.com>  Fri, 21 Aug 2020 15:53:03 +0800
 
 ubuntu-wsl-integration (0.12.0) groovy; urgency=medium
 

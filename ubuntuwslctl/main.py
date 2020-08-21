@@ -131,14 +131,14 @@ class Application:
                                 default="no", assume_yes=assume_yes):
                     self._select_config(config_type) \
                         .reset(config_section, config_setting)
-            except KeyError as e:
-                print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n {details}")
-                          .format(name=self._args.name, details=e))
-                sys.exit(1)
-            except Exception as e:
-                print(_("ERROR: Something happened.  \n\nDetails:\n {details}")
-                      .format(name=self._args.name, details=e))
-                sys.exit(1)
+            except KeyError:
+                print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n")
+                          .format(name=self._args.name))
+                raise
+            except Exception:
+                print(_("ERROR: Something happened.  \n\nDetails:\n")
+                      .format(name=self._args.name))
+                raise
         else:
             if query_yes_no(_("You are trying to reset all settings, "
                               "including ubuntu-wsl.conf and wsl.conf. "
@@ -151,28 +151,28 @@ class Application:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
             self._select_config(config_type) \
                 .show(config_section, config_setting, self._args.short, self._args.default)
-        except KeyError as e:
-            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n {details}")
-                  .format(name=self._args.name, details=e))
-            sys.exit(1)
-        except Exception as e:
-            print(_("ERROR: Something happened.  \n\nDetails:\n {details}")
-                  .format(name=self._args.name, details=e))
-            sys.exit(1)
+        except KeyError:
+            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n")
+                  .format(name=self._args.name))
+            raise
+        except Exception:
+            print(_("ERROR: Something happened.  \n\nDetails:\n")
+                  .format(name=self._args.name))
+            raise
 
     def do_update(self):
         try:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
             self._select_config(config_type) \
                 .update(config_section, config_setting, self._args.value)
-        except KeyError as e:
-            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n {details}")
-                  .format(name=self._args.name, details=e))
-            sys.exit(1)
-        except Exception as e:
-            print(_("ERROR: Something happened.  \n\nDetails:\n {details}")
-                  .format(name=self._args.name, details=e))
-            sys.exit(1)
+        except KeyError:
+            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:\n")
+                  .format(name=self._args.name))
+            raise
+        except Exception:
+            print(_("ERROR: Something happened.  \n\nDetails:\n")
+                  .format(name=self._args.name))
+            raise
 
 
 main = Application()

@@ -53,8 +53,6 @@ class ConfigEditor:
 
         return False, "How do you even get here?"
 
-
-
     def list(self, is_default=False):
         if is_default:
             self._get_default()
@@ -72,36 +70,24 @@ class ConfigEditor:
         print(show_str + self.config[config_section][config_setting])
 
     def update(self, config_section, config_setting, config_value):
-        try:
-            assert_check, assert_warn = self._type_validation(config_section, config_setting, config_value)
-            assert assert_check, assert_warn
-            self.config[config_section][config_setting] = config_value
-            with open(self.user_conf, 'w') as configfile:
-                self.config.write(configfile)
-                print(_("OK."))
-        except IOError:
-            exit(_("IOError: There is a Error whe trying to Read/Write the file."
-                   "You need to have root privileges to use this function. Exiting."))
+        assert_check, assert_warn = self._type_validation(config_section, config_setting, config_value)
+        assert assert_check, assert_warn
+        self.config[config_section][config_setting] = config_value
+        with open(self.user_conf, 'w') as configfile:
+            self.config.write(configfile)
+            print(_("OK."))
 
     def reset(self, config_section, config_setting):
-        try:
-            self.config[config_section][config_setting] = self.default_conf[config_section][config_setting]
-            with open(self.user_conf, 'w') as configfile:
-                self.config.write(configfile)
-                print(_("OK."))
-        except IOError:
-            exit(_("IOError: There is a Error whe trying to Read/Write the file."
-                   "You need to have root privileges to use this function. Exiting."))
+        self.config[config_section][config_setting] = self.default_conf[config_section][config_setting]
+        with open(self.user_conf, 'w') as configfile:
+            self.config.write(configfile)
+            print(_("OK."))
 
     def reset_all(self):
-        try:
-            self._get_default()
-            with open(self.user_conf, 'w') as configfile:
-                self.config.write(configfile)
-                print(_("OK."))
-        except IOError:
-            exit(_("IOError: There is a Error whe trying to Read/Write the file."
-                   "You need to have root privileges to use this function. Exiting."))
+        self._get_default()
+        with open(self.user_conf, 'w') as configfile:
+            self.config.write(configfile)
+            print(_("OK."))
 
 
 class UbuntuWSLConfigEditor(ConfigEditor):

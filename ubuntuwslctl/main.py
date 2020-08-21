@@ -2,7 +2,7 @@ import sys
 import warnings
 from argparse import ArgumentParser
 
-from .helper import config_name_extractor, query_yes_no
+from .helper import config_name_extractor, query_yes_no, bcolors
 from .i18n import translation
 from .loader import UbuntuWSLConfigEditor, WSLConfigEditor
 
@@ -17,7 +17,29 @@ class Application:
             description=_("ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."))
         self._init_parser()
         self._args = self.parser.parse_args()
-        self._args.func()
+        try:
+            self._args.func()
+        except KeyError:
+            print(bcolors.FAIL + _("KeyError: ") + bcolors.ENDC +
+                  _("Unknown key name `{name}` passed. Aborting.").format(name=self._args.name))
+            sys.exit(1)
+        except AssertionError as e:
+            print(bcolors.FAIL + _("ValidationError: ") + bcolors.ENDC +
+                  _("{e}. Aborting.").format(error=e))
+            sys.exit(1)
+        except IOError:
+            print(bcolors.FAIL + _("IOError: ") + bcolors.ENDC +
+                  _("There is a Error whe trying to Read/Write the conf file."
+                    "You need to have root privileges to perform such action. Aborting."))
+            sys.exit(1)
+        except Exception:
+            print(bcolors.FAIL + _("ERROR:") + bcolors.ENDC +
+                  _("Something happened during the execution. Following are the details:").format(name=self._args.name))
+            raise
+            sys.exit(1)
+        else:
+            print(bcolors.WARNING + _("WARNING: ") + bcolors.ENDC +
+                  _("you need to restart Ubuntu distribution to take effect."))
 
     def _init_parser(self):
         self.parser.add_argument(
@@ -124,21 +146,12 @@ class Application:
     def do_reset(self):
         assume_yes = 'yes' in self._args and self._args.yes
         if 'name' in self._args and self._args.name is not None:
-            try:
-                config_type, config_section, config_setting = config_name_extractor(self._args.name)
-                if query_yes_no(_("You are trying to reset `{name}`."
-                                  "Do you still want to proceed?").format(name=self._args.name),
-                                default="no", assume_yes=assume_yes):
-                    self._select_config(config_type) \
-                        .reset(config_section, config_setting)
-            except KeyError:
-                print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:")
-                          .format(name=self._args.name))
-                raise
-            except Exception:
-                print(_("ERROR: Something happened.  \n\nDetails:")
-                      .format(name=self._args.name))
-                raise
+            config_type, config_section, config_setting = config_name_extractor(self._args.name)
+            if query_yes_no(_("You are trying to reset `{name}`."
+                              "Do you still want to proceed?").format(name=self._args.name),
+                            default="no", assume_yes=assume_yes):
+                self._select_config(config_type) \
+                    .reset(config_section, config_setting)
         else:
             if query_yes_no(_("You are trying to reset all settings, "
                               "including ubuntu-wsl.conf and wsl.conf. "
@@ -147,32 +160,14 @@ class Application:
                 self._select_config("WSL").reset_all()
 
     def do_show(self):
-        try:
-            config_type, config_section, config_setting = config_name_extractor(self._args.name)
-            self._select_config(config_type) \
-                .show(config_section, config_setting, self._args.short, self._args.default)
-        except KeyError:
-            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:")
-                  .format(name=self._args.name))
-            raise
-        except Exception:
-            print(_("ERROR: Something happened.  \n\nDetails:")
-                  .format(name=self._args.name))
-            raise
+        config_type, config_section, config_setting = config_name_extractor(self._args.name)
+        self._select_config(config_type) \
+            .show(config_section, config_setting, self._args.short, self._args.default)
 
     def do_update(self):
-        try:
-            config_type, config_section, config_setting = config_name_extractor(self._args.name)
-            self._select_config(config_type) \
-                .update(config_section, config_setting, self._args.value)
-        except KeyError:
-            print(_("ERROR: Unknown key name `{name}` passed. \n\nDetails:")
-                  .format(name=self._args.name))
-            raise
-        except Exception:
-            print(_("ERROR: Something happened.  \n\nDetails:")
-                  .format(name=self._args.name))
-            raise
+        config_type, config_section, config_setting = config_name_extractor(self._args.name)
+        self._select_config(config_type) \
+            .update(config_section, config_setting, self._args.value)
 
 
 main = Application()

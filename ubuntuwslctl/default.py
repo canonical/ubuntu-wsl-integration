@@ -16,12 +16,12 @@ default_wsl_conf_file = {'automount': {'enabled': 'true',
                                      'generateResolvConf': 'true'},
                          'interop': {'enabled': 'true',
                                      'appendWindowsPath': 'true'}}
-
+# type is flatten as case is not important for config items
 default_wsl_conf_type = {'automount': {'enabled': 'bool',
-                                       'mountFsTab': 'bool',
+                                       'mountfstab': 'bool',
                                        'root': 'path',
                                        'options': 'mount'},
-                         'network': {'generateHosts': 'bool',
-                                     'generateResolvConf': 'bool'},
+                         'network': {'generatehosts': 'bool',
+                                     'generateresolvconf': 'bool'},
                          'interop': {'enabled': 'bool',
-                                     'appendWindowsPath': 'bool'}}
+                                     'appendwindowspath': 'bool'}}

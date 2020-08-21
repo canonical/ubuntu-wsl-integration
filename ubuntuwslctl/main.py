@@ -29,7 +29,7 @@ class Application:
             sys.exit(1)
         except IOError:
             print(bcolors.FAIL + _("IOError: ") + bcolors.ENDC +
-                  _("There is a Error whe trying to Read/Write the conf file."
+                  _("There is an error whe trying to read/write the conf file. "
                     "You need to have root privileges to perform such action. Aborting."))
             sys.exit(1)
         except Exception:
@@ -37,9 +37,6 @@ class Application:
                   _("Something happened during the execution. Following are the details:").format(name=self._args.name))
             raise
             sys.exit(1)
-        else:
-            print(bcolors.WARNING + _("WARNING: ") + bcolors.ENDC +
-                  _("you need to restart Ubuntu distribution to take effect."))
 
     def _init_parser(self):
         self.parser.add_argument(
@@ -144,6 +141,8 @@ class Application:
         self.wsl_conf.list(self._args.default)
 
     def do_reset(self):
+        print(bcolors.WARNING + _("WARNING: ") + bcolors.ENDC +
+              _("you need to restart Ubuntu distribution to take effect."))
         assume_yes = 'yes' in self._args and self._args.yes
         if 'name' in self._args and self._args.name is not None:
             config_type, config_section, config_setting = config_name_extractor(self._args.name)
@@ -165,6 +164,8 @@ class Application:
             .show(config_section, config_setting, self._args.short, self._args.default)
 
     def do_update(self):
+        print(bcolors.WARNING + _("WARNING: ") + bcolors.ENDC +
+              _("you need to restart Ubuntu distribution to take effect."))
         config_type, config_section, config_setting = config_name_extractor(self._args.name)
         self._select_config(config_type) \
             .update(config_section, config_setting, self._args.value)

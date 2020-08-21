@@ -47,11 +47,11 @@ class ConfigEditor:
             return re.fullmatch(r"(/[^/ ]*)+/?", input_con) is not None, _("Input should be a valid UNIX path")
         elif to_validate == "mount":
             # Not validating this one for now;
-            # This is mostly because it is very poorly documented by Microsoft
+            # This is mostly because documentations about DrvFS is very limited
             # and it is really hard to check which can be passed and which can't.
             return True, ""
 
-        return False, "How do you even get here?"
+        return False, "Something went wrong, but how do you even get here?"
 
     def list(self, is_default=False):
         if is_default:

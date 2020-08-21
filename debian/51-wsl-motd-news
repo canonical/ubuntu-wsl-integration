@@ -50,10 +50,12 @@ __ubuntu_wsl_conf_handling() {
 [ "$UBUNTU_WSL_MOTD_WSLNEWSENABLED" = "true" ] || exit 0
 
 cat <<EOF
+
 * Get support for Ubuntu on Windows Subsystem for Linux 2.
   Find out how Canonical can help you with x, y, z support for Ubuntu on WSL.
 
   http://www.ubuntu.com/wsl
+
 EOF
 
 exit 0

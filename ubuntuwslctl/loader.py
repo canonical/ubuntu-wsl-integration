@@ -32,14 +32,13 @@ class ConfigEditor:
         self.config.read_dict(self.default_conf)
 
     def _type_validation(self, config_section, config_setting, input_con):
-
-        to_validate = ""
         assert type(self.default_type) in (str, dict), _("Bad 'default_type' passed. "
                                                          "It should be either 'str' or 'dict'.")
         if type(self.default_type) == str:
             to_validate = self.default_type
         else:
-            to_validate = self.default_type[config_section][config_setting]
+            default_type_tmp = self.default_type
+            to_validate = default_type_tmp[config_section][config_setting]
 
         assert to_validate in ("bool", "pass", "mount"), _("Unknown type to be validated.")
         if to_validate == "bool":
@@ -51,6 +50,8 @@ class ConfigEditor:
             # This is mostly because it is very poorly documented by Microsoft
             # and it is really hard to check which can be passed and which can't.
             return True, ""
+
+        return False, "How do you even get here?"
 
 
 

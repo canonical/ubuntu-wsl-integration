@@ -198,4 +198,5 @@ class Application:
             .update(config_section, config_setting, self._args.value)
 
 
-main = Application()
+if __name__ == '__main__':
+    Application()

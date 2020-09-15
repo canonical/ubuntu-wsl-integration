@@ -1,0 +1,7 @@
+[encoding: UTF-8]
+ubuntuwslctl/__init__.py
+ubuntuwslctl/default.py
+ubuntuwslctl/helper.py
+ubuntuwslctl/i18n.py
+ubuntuwslctl/loader.py
+ubuntuwslctl/main.py

@@ -51,15 +51,17 @@ class build_i18n(distutils.cmd.Command):
             targetpath = os.path.join("share/locale", lang, "LC_MESSAGES")
             data_files.append((targetpath, (mo_file,)))
 
+
 # nothing to clean, quit
 if sys.argv[-1] == 'clean':
+    os.system('rm -rf build')
     sys.exit()
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='ubuntuwslctl',
-      version='0.18.1',
+      version='0.18.2',
       description="Ubuntu WSL Utility to manage Ubuntu WSL settings",
       long_description=long_description,
       long_description_content_type="text/markdown",

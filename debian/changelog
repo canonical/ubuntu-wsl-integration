@@ -1,3 +1,10 @@
+ubuntu-wsl-integration (0.18.1) groovy; urgency=medium
+
+  * Fix a TypeError when calling commands.
+  * Small update on setup system.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Tue, 15 Sep 2020 15:35:56 +0800
+
 ubuntu-wsl-integration (0.18.0) groovy; urgency=medium
 
   * First i18n implementation (no PO/MO included);

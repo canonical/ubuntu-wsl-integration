@@ -39,6 +39,8 @@ class Application:
             description=_("ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."))
         self._init_parser()
         self._args = self.parser.parse_args()
+
+    def run(self):
         try:
             self._args.func()
         except KeyError:
@@ -198,5 +200,10 @@ class Application:
             .update(config_section, config_setting, self._args.value)
 
 
+def main():
+    main_app = Application()
+    main_app.run()
+
+
 if __name__ == '__main__':
-    Application()
+    sys.exit(main())

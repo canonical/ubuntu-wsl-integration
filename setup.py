@@ -1,9 +1,9 @@
 import distutils
 import glob
 import os
+import sys
 
 from setuptools import setup, find_packages
-
 
 class build_i18n(distutils.cmd.Command):
 
@@ -13,6 +13,9 @@ class build_i18n(distutils.cmd.Command):
         pass
 
     def finalize_options(self):
+        pass
+
+    def build_lib(self):
         pass
 
     def run(self):
@@ -48,6 +51,9 @@ class build_i18n(distutils.cmd.Command):
             targetpath = os.path.join("share/locale", lang, "LC_MESSAGES")
             data_files.append((targetpath, (mo_file,)))
 
+# nothing to clean, quit
+if sys.argv[-1] == 'clean':
+    sys.exit()
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -57,7 +63,7 @@ setup(name='ubuntuwslctl',
       description="Ubuntu WSL Utility to manage Ubuntu WSL settings",
       long_description=long_description,
       long_description_content_type="text/markdown",
-      keyboards=[
+      keywords=[
           'ubuntu',
           'wsl',
       ],

@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.18.2) groovy; urgency=medium
+
+  * Fix a i18n generation issue.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Tue, 15 Sep 2020 23:39:09 +0800
+
 ubuntu-wsl-integration (0.18.1) groovy; urgency=medium
 
   * Fix a TypeError when calling commands.

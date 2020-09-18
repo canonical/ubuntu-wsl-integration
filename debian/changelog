@@ -1,3 +1,10 @@
+ubuntu-wsl-integration (0.18.3) groovy; urgency=medium
+
+  * Fix a build_base AttributionError.
+  * update wsl-motd-news to a more current one.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Fri, 18 Sep 2020 15:11:25 +0800
+
 ubuntu-wsl-integration (0.18.2) groovy; urgency=medium
 
   * Fix a i18n generation issue.

@@ -51,10 +51,12 @@ __ubuntu_wsl_conf_handling() {
 
 cat <<EOF
 
-* Get support for Ubuntu on Windows Subsystem for Linux 2.
-  Find out how Canonical can help you with x, y, z support for Ubuntu on WSL.
+* Using WSL unofficially? Get credit for being a forward thinker and
+continue to use WSL with your IT team’s approval.
 
+Find out more here and share with your IT manager:
   http://www.ubuntu.com/wsl
+
 
 EOF
 

@@ -1,12 +1,14 @@
-import distutils
+import distutils.cmd
+import distutils.command.build
+import distutils.spawn
 import glob
 import os
 import sys
 
 from setuptools import setup, find_packages
 
-class build_i18n(distutils.cmd.Command):
 
+class build_i18n(distutils.cmd.Command):
     user_options = []
 
     def initialize_options(self):
@@ -37,7 +39,7 @@ class build_i18n(distutils.cmd.Command):
             '--keyword=pgettext:1c,2',
             '--output=ubuntuwslctl.pot',
             '--files-from=POTFILES.in.tmp',
-            ])
+        ])
         os.chdir('..')
         os.unlink('po/POTFILES.in.tmp')
 
@@ -52,6 +54,12 @@ class build_i18n(distutils.cmd.Command):
             data_files.append((targetpath, (mo_file,)))
 
 
+class build(distutils.command.build.build):
+
+    sub_commands = distutils.command.build.build.sub_commands + [
+        ("build_i18n", None)]
+
+
 # nothing to clean, quit
 if sys.argv[-1] == 'clean':
     os.system('rm -rf build')
@@ -61,7 +69,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='ubuntuwslctl',
-      version='0.18.2',
+      version='0.18.3',
       description="Ubuntu WSL Utility to manage Ubuntu WSL settings",
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -76,7 +84,7 @@ setup(name='ubuntuwslctl',
       packages=find_packages(exclude=["tests"]),
       entry_points={
           'console_scripts': [
-               'ubuntuwsl = ubuntuwslctl.main:main'
+              'ubuntuwsl = ubuntuwslctl.main:main'
           ],
       },
       install_requires=[
@@ -84,9 +92,9 @@ setup(name='ubuntuwslctl',
       ],
       data_files=[],
       cmdclass={
-          'build': build_i18n,
+          'build': build,
           'build_i18n': build_i18n,
-          },
+      },
       classifiers=[
           'Development Status :: 4 - Beta',
           'Environment :: Console',

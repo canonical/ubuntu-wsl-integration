@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.19.0) groovy; urgency=medium
+
+  * move motd to other packages.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Fri, 25 Sep 2020 16:23:58 +0800
+
 ubuntu-wsl-integration (0.18.3) groovy; urgency=medium
 
   * Fix a build_base AttributionError.

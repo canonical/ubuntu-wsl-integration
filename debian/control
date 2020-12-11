@@ -9,7 +9,7 @@ Vcs-Browser:  https://github.com/canonical/ubuntu-wsl-integration
 Homepage: https://www.ubuntu.com/wsl
 
 Package: ubuntu-wsl-integration
-Architecture: all
+Architecture: amd64 arm64
 Depends: ${misc:Depends}, ${python3:Depends}, wslu (>= 3.2.0)
 Recommends: pulseaudio-utils,
             x11-utils

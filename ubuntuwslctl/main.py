@@ -64,7 +64,7 @@ class Application:
 
     def _init_parser(self):
         self.parser.add_argument(
-            '--version', action='version', version="ubuntuwsl 0.13")
+            '--version', action='version', version="ubuntuwsl 0.20")
         self.parser.set_defaults(func=self.do_help)
         self.parser.add_argument(
             "-y", "--yes", action="store_true",
@@ -91,10 +91,9 @@ class Application:
         update_cmd = commands.add_parser(
             "update", aliases=["up"],
             description=_(
-                "Change the value of one or more boot configuration "
-                "settings. To reset the value of a setting to its "
-                "default, simply omit the new value."),
-            help=_("Change the state of one or more boot settings"))
+                "Change the value of a WSL or Ubuntu configuration "
+                "settings. "),
+            help=_("Change the state of a specific setting"))
         update_cmd.add_argument(
             "name",
             help=_("The name of the configuration to be updated")
@@ -110,7 +109,7 @@ class Application:
             description=_(
                 "Reset(remove) the value of one configuration "
                 "settings."),
-            help=_("Change the state of one or more boot settings"))
+            help=_("Reset(remove) the value of a specific setting")
         reset_cmd.add_argument(
             "name",
             nargs="?",

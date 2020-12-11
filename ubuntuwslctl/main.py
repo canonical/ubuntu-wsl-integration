@@ -64,7 +64,7 @@ class Application:
 
     def _init_parser(self):
         self.parser.add_argument(
-            '--version', action='version', version="ubuntuwsl 0.20")
+            '--version', action='version', version="ubuntuwsl 0.20.1")
         self.parser.set_defaults(func=self.do_help)
         self.parser.add_argument(
             "-y", "--yes", action="store_true",
@@ -110,6 +110,7 @@ class Application:
                 "Reset(remove) the value of one configuration "
                 "settings."),
             help=_("Reset(remove) the value of a specific setting")
+        )
         reset_cmd.add_argument(
             "name",
             nargs="?",

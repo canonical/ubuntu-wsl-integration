@@ -109,7 +109,7 @@ class Application:
             description=_(
                 "Reset(remove) the value of one configuration "
                 "settings."),
-            help=_("Reset(remove) the value of a specific setting")
+            help=_("Reset(remove) the value of a specific setting"))
         reset_cmd.add_argument(
             "name",
             nargs="?",

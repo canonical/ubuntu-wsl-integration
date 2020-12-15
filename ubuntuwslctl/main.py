@@ -147,9 +147,10 @@ class Application:
         ls_cmd.set_defaults(func=self.do_list)
 
     def _select_config(self, type_input):
-        if type_input == "Ubuntu":
+        type_input = type_input.lower()
+        if type_input == "ubuntu":
             return self.ubuntu_conf
-        elif type_input == "WSL":
+        elif type_input == "wsl":
             return self.wsl_conf
         else:
             raise ValueError(_("Invalid config name. Please check again."))

@@ -114,10 +114,10 @@ class ConfigEditor:
 class UbuntuWSLConfigEditor(ConfigEditor):
     def __init__(self):
         ConfigEditor.__init__(
-            self, "Ubuntu", default_ubuntu_wsl_conf_file, default_ubuntu_wsl_conf_type, "/etc/ubuntu-wsl.conf")
+            self, "ubuntu", default_ubuntu_wsl_conf_file, default_ubuntu_wsl_conf_type, "/etc/ubuntu-wsl.conf")
 
 
 class WSLConfigEditor(ConfigEditor):
     def __init__(self):
         ConfigEditor.__init__(
-            self, "WSL", default_wsl_conf_file, default_wsl_conf_type, "/etc/wsl.conf")
+            self, "wsl", default_wsl_conf_file, default_wsl_conf_type, "/etc/wsl.conf")

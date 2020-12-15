@@ -44,11 +44,11 @@ def config_name_extractor(config_name):
     if len(config_name_set) == 3:
         return config_name_set[0], config_name_set[1], config_name_set[2]
     elif len(config_name_set) == 2:  # if type is missing, guess
-        if config_name_set[0] in ("Ubuntu", "WSL") and config_name_set[1] == "*":  # top level wild card
+        if config_name_set[0] in ("ubuntu", "wsl") and config_name_set[1] == "*":  # top level wild card
             return config_name_set[0], config_name_set[1], ""
         else:  # other cases
-            type_name = "Ubuntu" if config_name_set[0] in (
-                "Motd", "Interop") else "WSL"
+            type_name = "ubuntu" if config_name_set[0] in (
+                "Motd", "Interop") else "wsl"
             return type_name, config_name_set[0], config_name_set[1]
     else:  # invaild name, return nothing
         return "", "", ""

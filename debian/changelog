@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.20.2) groovy; urgency=medium
+
+  * config header no longer case sensitive.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Fri, 11 Dec 2020 23:37:47 +0800
+
 ubuntu-wsl-integration (0.20.1) groovy; urgency=medium
 
   * critical bug fix that cause failure in update.

@@ -1,4 +1,4 @@
-#    ubuntuwslctl.loader - loaders for conf
+#    ubuntuwslctl.core.loader - loaders for conf
 #    Copyright (C) 2020 Canonical Ltd.
 #    Copyright (C) 2020 Patrick Wu
 #
@@ -23,12 +23,12 @@ import os
 import re
 from configparser import ConfigParser
 
-from .default import (
+from ubuntuwslctl.core.default import (
      default_ubuntu_wsl_conf_file,
      default_ubuntu_wsl_conf_type,
      default_wsl_conf_file,
      default_wsl_conf_type)
-from .i18n import translation
+from ubuntuwslctl.core.i18n import translation
 
 _ = translation.gettext
 

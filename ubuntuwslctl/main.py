@@ -21,12 +21,11 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
 import sys
-import warnings
 from argparse import ArgumentParser
 
-from .helper import config_name_extractor, query_yes_no, bcolors
-from .i18n import translation
-from .loader import UbuntuWSLConfigEditor, WSLConfigEditor
+from ubuntuwslctl.core.util import config_name_extractor, query_yes_no, bcolors
+from ubuntuwslctl.core.i18n import translation
+from ubuntuwslctl.core.editor import UbuntuWSLConfigEditor, WSLConfigEditor
 
 _ = translation.gettext
 
@@ -36,7 +35,9 @@ class Application:
         self.ubuntu_conf = UbuntuWSLConfigEditor()
         self.wsl_conf = WSLConfigEditor()
         self.parser = ArgumentParser(
-            description=_("ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."))
+            description=_("ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."),
+            epilog=_("Note: \"Super Experimental\" means it is WIP and not working. "
+                     "\"Experimental\" means it is WIP but most of the part is working."))
         self._init_parser()
         self._args = self.parser.parse_args()
 
@@ -146,6 +147,24 @@ class Application:
                    "user-defined ones."))
         ls_cmd.set_defaults(func=self.do_list)
 
+        ui_cmd = commands.add_parser(
+            "visual", aliases=["ui", "tui"],
+            description=_("Display a friendly text-based user interface. (Super Experimental)"),
+            help=_("Display a WIP friendly text-based user interface. (Super Experimental)"))
+        ui_cmd.set_defaults(func=self.do_ui)
+
+        export_cmd = commands.add_parser(
+            "export", aliases=["out"],
+            description=_("Export the settings (Super Experimental)"),
+            help=_("Export settings as a json string (Super Experimental)"))
+        export_cmd.set_defaults(func=self.do_export)
+
+        import_cmd = commands.add_parser(
+            "import", aliases=["in"],
+            description=_("Import settings (Super Experimental)"),
+            help=_("Import settings from a json file (Super Experimental)"))
+        export_cmd.set_defaults(func=self.do_import)
+
     def _select_config(self, type_input):
         type_input = type_input.lower()
         if type_input == "ubuntu":
@@ -199,6 +218,16 @@ class Application:
         config_type, config_section, config_setting = config_name_extractor(self._args.name)
         self._select_config(config_type) \
             .update(config_section, config_setting, self._args.value)
+
+    def do_ui(self):
+        from ubuntuwslctl.tui import tui_main
+        tui_main()
+
+    def do_export(self):
+        pass
+
+    def do_import(self):
+        pass
 
 
 def main():

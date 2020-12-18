@@ -22,7 +22,7 @@
 import sys
 from configparser import ConfigParser
 
-from ubuntuwslctl.core.i18n import translation
+from ubuntuwslctl.utils.i18n import translation
 
 _ = translation.gettext
 

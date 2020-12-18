@@ -20,7 +20,7 @@
 #  On Debian systems, the complete text of the GNU General
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
-from ubuntuwslctl.core.util import get_ubuntu_wsl_conf_defaults
+from ubuntuwslctl.utils.helper import get_ubuntu_wsl_conf_defaults
 
 # these are the default settings in ubuntu-wsl.conf.
 # default configuration of ubuntu_wsl.conf is stored in /etc/default/wslu/

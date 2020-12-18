@@ -1,4 +1,4 @@
-#     ubuntuwslctl.core
+#     ubuntuwslctl.utils
 #     Copyright (C) 2020 Canonical Ltd.
 #                   2020 Patrick Wu <patrick.wu@canonical.com>
 #

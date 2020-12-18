@@ -23,8 +23,8 @@
 import sys
 from argparse import ArgumentParser
 
-from ubuntuwslctl.core.util import config_name_extractor, query_yes_no, bcolors
-from ubuntuwslctl.core.i18n import translation
+from ubuntuwslctl.utils.helper import config_name_extractor, query_yes_no, bcolors
+from ubuntuwslctl.utils.i18n import translation
 from ubuntuwslctl.core.editor import UbuntuWSLConfigEditor, WSLConfigEditor
 
 _ = translation.gettext

@@ -28,7 +28,7 @@ from ubuntuwslctl.core.default import (
      default_ubuntu_wsl_conf_type,
      default_wsl_conf_file,
      default_wsl_conf_type)
-from ubuntuwslctl.core.i18n import translation
+from ubuntuwslctl.utils.i18n import translation
 
 _ = translation.gettext
 

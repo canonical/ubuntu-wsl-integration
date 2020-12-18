@@ -21,7 +21,7 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, RawTextHelpFormatter
 
 from ubuntuwslctl.utils.helper import config_name_extractor, query_yes_no, bcolors
 from ubuntuwslctl.utils.i18n import translation
@@ -35,9 +35,11 @@ class Application:
         self.ubuntu_conf = UbuntuWSLConfigEditor()
         self.wsl_conf = WSLConfigEditor()
         self.parser = ArgumentParser(
+            formatter_class=RawTextHelpFormatter,
             description=_("ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."),
             epilog=_("Note: \"Super Experimental\" means it is WIP and not working. "
-                     "\"Experimental\" means it is WIP but most of the part is working."))
+                     "\"Experimental\" means it is WIP but most of the part is working."
+                     "\n\nThis cli has the ability to make a joke."))
         self._init_parser()
         self._args = self.parser.parse_args()
 
@@ -163,7 +165,10 @@ class Application:
             "import", aliases=["in"],
             description=_("Import settings (Super Experimental)"),
             help=_("Import settings from a json file (Super Experimental)"))
-        export_cmd.set_defaults(func=self.do_import)
+        import_cmd.set_defaults(func=self.do_import)
+
+        joke_cmd = commands.add_parser("joke")
+        joke_cmd.set_defaults(func=self.do_joke)
 
     def _select_config(self, type_input):
         type_input = type_input.lower()
@@ -228,6 +233,12 @@ class Application:
 
     def do_import(self):
         pass
+
+    def do_joke(self):
+        import base64
+        joke = b'CuKghOKghOKghOKghOKghOKghOKghOKghOKghOKiuOKjhOKjr+Kiv+Khn+KggeKjgOKgtOKgiOKggeKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgiOKgsuKjhOKghOKiv+Kjv+KhpuKghOKjgOKghOKghOKghOKghArioITioITioITioITioITioITioITioITioITioITio7/io7/io6/io6TioJ7ioIHioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioIjioLvio67io7/io7/io7vioKXioKTioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qC44qO/4qGf4qCb4qCB4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCI4qC74qO/4qOe4qKm4qCE4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKihOKjgOKjgOKjtOKjv+Kjv+KghuKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgmOKjv+KhhOKggeKghOKghOKghArioITioITioITioITioITioITioITioLniopvio7/io7/ioIbioITioITioITioITiorDio6Tio6TiooDio4DioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioKDior/ioYfioITioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qG84qK74qO/4qO+4qCE4qCE4qCE4qKA4qO84qO/4qO/4qOn4qGf4qCB4qGA4qKA4qGi4qKk4qO24qOO4qOA4qGA4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qO84qCB4qCE4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKghOKghOKghOKguOKjn+Kjv+KghOKghOKigeKjpuKjgOKgiOKgu+KjvuKjtOKjv+Kjn+KjvOKjt+KjpuKjveKjv+Kjv+Kjv+Kjt+KghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKigOKggeKigOKhoOKghOKghOKghArioITioITioITioITioITioITioITioITioITiooDio7HioZnioITioITioITiooXioLbioojio7bio7/io7/io7/io7/io7/io7/io7/io7/io7/io7/io7/io7/ioITioITioITioITioITioITioITioITioITioITioITioITioYvioIHioITioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCI4qCJ4qCB4qCH4qCE4qCE4qCE4qK44qO/4qO/4qO/4qG/4qC/4qC/4qC/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCb4qKG4qCE4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKiv+Kjv+Kjt+KjpuKhgOKjoOKjv+Kjv+Kjv+Kjv+Kjv+Kgn+KjveKjv+Khn+KghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgoOKghOKghOKghOKghOKghOKghArioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioIjior/io7/io7/io7/io7/iob3ioLfioJvioJvioIvioqDio7/io7/ioYfioITioITioITioITioITioITioITioITioITioITioITioITiooHioYDio4DioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCI4qC74qO/4qO/4qOm4qKA4qOk4qO24qG24qO24qO84qO/4qO/4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCi4qGA4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgiOKiv+Kjv+KjluKjv+Kjn+Kjv+Kjv+Kjv+Kjv+Kgh+KghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgiOKgu+KjpuKghOKghArioITioITioITio6Dio6Tio7bio7bioYDioITioITioITioITioITioITioITioITioITioITioITioITioITioJnio7/io63io4nio4nio7Tio7/iob/ioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioJHioIQK4qCE4qCE4qOA4qO/4qO/4qG/4qCL4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCY4qC/4qC/4qC/4qCb4qCB4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCD4qCE4qCECuKigOKjvuKjv+Kjv+Kgi+KghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKhgOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKhhuKghOKghArio7/io7fioJ/ioIHioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioJjio6TioYDioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioIQK4qGu4qCB4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qOP4qG34qKA4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKjgOKjvOKjv+Kjt+Kjv+KjpeKhhOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghArioITioITioITioITioITioITioITioITioITioITio4Dio6Dio6Tio7bio7bio77io7/io7/io7/io7/io7/io7/io7/io7/io7fio6DioYDioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qOA4qOk4qO04qO24qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qG74qOc4qO34qO94qO34qO/4qOm4qGA4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCECuKghOKghOKghOKjoOKjvuKjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kin+Kjr+KjvuKjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+KjpuKhgOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghAouLllvdSBhcmUgZXhwZWN0aW5nIGEgam9rZSwgYnV0IGl0IHdhcyBtZSwgRGlvIS4uCg=='
+
+        print(base64.b64decode(joke).decode("utf-8"))
 
 
 def main():

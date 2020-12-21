@@ -74,6 +74,11 @@ class ConfigEditor:
 
         return False, "Something went wrong, but how do you even get here?"
 
+    def get_config(self, is_default=False):
+        if is_default:
+            self._get_default()
+        return self.config
+
     def show(self, config_section, config_setting, is_short=False, is_default=False):
         if is_default:
             self._get_default()

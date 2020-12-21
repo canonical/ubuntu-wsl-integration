@@ -19,6 +19,7 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 import json
 
+
 class SuperHandler:
     """
     This class tries to handle everything Editor cannot handle.

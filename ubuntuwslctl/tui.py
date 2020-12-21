@@ -26,46 +26,40 @@ Urwid tour.  Shows many of the standard widget types and features.
 
 import urwid
 import urwid.raw_display
+from ubuntuwslctl.core.generator import SuperHandler
 
 
-def tui_main():
+def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"
     text_footer = u"UP / DOWN / PAGE UP / PAGE DOWN: scroll F5: save F8: exit"
+    config = SuperHandler(ubuntu, wsl, '', 'json').get_config()
 
     # general_text = lambda x : urwid.Padding(urwid.Text(x), left=2, right=2)
+    general_title = lambda x: urwid.Padding(urwid.Text(('important', x)), left=2, right=2, min_width=20)
+    general_subtitle = lambda x: urwid.Padding(urwid.Text(('subimportant', x)), left=2, right=2, min_width=20)
     general_edit = lambda x,y : urwid.Padding(urwid.AttrWrap(urwid.Edit(x, y), 'editbx', 'editfc'), left=2, right=2)
-    general_checkbox = lambda x : urwid.Padding(urwid.CheckBox(x), left=2, right=2)
+    general_checkbox = lambda x, y : urwid.Padding(urwid.CheckBox(x, state=y), left=2, right=2)
 
     text_filler = u"This should be auto filled by config"
 
-    ubuntu_header = urwid.Padding(urwid.Text(('important', u"Ubuntu Settings")), left=2, right=2, min_width=20)
-
-    gui_integration = general_checkbox(u"GUI Integration")
-    audio_integration = general_checkbox(u"Audio Integration")
-    adv_ip_dection = general_checkbox(u"Advanced IP Detection")
-    motd_wsl = general_checkbox(u"MOTD WSL News")
-
-    wsl_header = urwid.Padding(urwid.Text(('important', u"WSL Settings")), left=2, right=2, min_width=20)
-
-    mount_loc = general_edit(u"Mount Location", text_filler)
-    mount_opt = general_edit(u"Mount Option", text_filler)
-    gen_host = general_checkbox(u"Generate host file")
-    gen_resolv = general_checkbox(u"Generate resolv.conf")
-
     blank = urwid.Divider()
-    listbox_content = [
-        blank,
-        ubuntu_header,
-        blank,
-        gui_integration,
-        audio_integration,
-        adv_ip_dection,
-        motd_wsl,
-        blank,
-        wsl_header,
-        blank,
 
-    ]
+    listbox_content = []
+
+    for i in config.keys():
+        listbox_content.append(general_title(i))
+        listbox_content.append(blank)
+        i_tmp = config[i]
+        for j in i_tmp.keys():
+            listbox_content.append(general_subtitle(j))
+            listbox_content.append(blank)
+            j_tmp = i_tmp[j]
+            for k in j_tmp.keys():
+                if isinstance(j_tmp[k], bool):
+                    listbox_content.append(general_checkbox(k, j_tmp[k]))
+                elif isinstance(j_tmp[k], str):
+                    listbox_content.append(general_edit(k, j_tmp[k]))
+            listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')
     footer = urwid.AttrWrap(urwid.Text(text_footer), 'header')
@@ -77,6 +71,7 @@ def tui_main():
         ('reverse', 'light gray', 'black'),
         ('header', 'black', 'white', 'bold'),
         ('important', 'dark blue', 'light gray', ('standout', 'underline')),
+        ('subimportant', 'dark blue', 'light gray', 'underline'),
         ('editfc', 'black', 'white', 'bold'),
         ('editbx', 'black', 'white'),
         ('editcp', '', '', 'standout'),

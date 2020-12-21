@@ -229,7 +229,7 @@ class Application:
 
     def do_ui(self):
         from ubuntuwslctl.tui import tui_main
-        tui_main()
+        tui_main(self.ubuntu_conf, self.wsl_conf)
 
     def do_export(self):
         from ubuntuwslctl.core.generator import SuperHandler

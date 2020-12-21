@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.23.0) groovy; urgency=medium
+
+  * (Super Experimental) Kind of working tui
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Mon, 21 Dec 2020 15:58:55 +0800
+
 ubuntu-wsl-integration (0.22.0) groovy; urgency=medium
 
   * (Super Experimental) Kind of working export function

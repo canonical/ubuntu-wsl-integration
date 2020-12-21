@@ -1,8 +1,14 @@
+ubuntu-wsl-integration (0.23.1) groovy; urgency=medium
+
+  * Fix build failure due to the bad POTFILES
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Mon, 21 Dec 2020 16:46:18 +0800
+
 ubuntu-wsl-integration (0.23.0) groovy; urgency=medium
 
   * (Super Experimental) Kind of working tui
 
- -- Patrick Wu <patrick.wu@canonical.com>  Mon, 21 Dec 2020 15:58:55 +0800
+ -- Patrick Wu <patrick.wu@canonical.com>  Mon, 21 Dec 2020 16:24:05 +0800
 
 ubuntu-wsl-integration (0.22.0) groovy; urgency=medium
 

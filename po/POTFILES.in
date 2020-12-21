@@ -1,7 +1,11 @@
 [encoding: UTF-8]
 ubuntuwslctl/__init__.py
-ubuntuwslctl/default.py
-ubuntuwslctl/helper.py
-ubuntuwslctl/i18n.py
-ubuntuwslctl/loader.py
+ubuntuwslctl/core/__init__.py
+ubuntuwslctl/core/default.py
+ubuntuwslctl/core/editor.py
+ubuntuwslctl/core/generator.py
+ubuntuwslctl/utils/__init__.py
+ubuntuwslctl/utils/helper.py
+ubuntuwslctl/utils/i18n.py
 ubuntuwslctl/main.py
+ubuntuwslctl/tui.py

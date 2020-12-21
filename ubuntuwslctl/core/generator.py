@@ -19,8 +19,10 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 import json
 
-class FileHandler:
-
+class SuperHandler:
+    """
+    This class tries to handle everything Editor cannot handle.
+    """
     def __init__(self, ubuntu, wsl, file_name, file_format):
         self.UbuntuConf = ubuntu
         self.WSLConf = wsl
@@ -38,12 +40,18 @@ class FileHandler:
     def get_config(self, is_default=False):
         return self.parsed_default_config if is_default else self.parsed_config
 
-    def export(self, is_default=False):
+    def export_file(self, is_default=False):
         with open(self.name, 'w+') as f:
             if is_default:
                 json.dump(self.parsed_default_config, f)
             else:
                 json.dump(self.parsed_config, f)
+
+    def import_file(self, is_default=False):
+        pass
+
+
+
 
 
 

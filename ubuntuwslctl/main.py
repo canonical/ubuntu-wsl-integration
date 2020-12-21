@@ -232,8 +232,8 @@ class Application:
         tui_main()
 
     def do_export(self):
-        from ubuntuwslctl.core.generator import FileHandler
-        FileHandler(self.ubuntu_conf, self.wsl_conf, self._args.file, 'json').export()
+        from ubuntuwslctl.core.generator import SuperHandler
+        SuperHandler(self.ubuntu_conf, self.wsl_conf, self._args.file, 'json').export_file()
 
     def do_import(self):
         pass

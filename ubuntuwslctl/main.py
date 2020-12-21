@@ -233,7 +233,7 @@ class Application:
 
     def do_export(self):
         from ubuntuwslctl.core.generator import FileHandler
-        a = FileHandler(self.ubuntu_conf, self.wsl_conf, "export", self._args.file)
+        FileHandler(self.ubuntu_conf, self.wsl_conf, self._args.file, 'json').export()
 
     def do_import(self):
         pass

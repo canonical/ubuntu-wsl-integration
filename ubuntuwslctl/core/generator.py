@@ -39,6 +39,8 @@ class FileHandler:
         ubuntu_tmp_1 = (self.UbuntuConf.get_config(is_default=True))._sections
         wsl_tmp_1 = (self.WSLConf.get_config(is_default=True))._sections
         self.parsed_default_config = {"ubuntu": ubuntu_tmp_1, "wsl": wsl_tmp_1}
+        print(self.parsed_config)
+        print(self.parsed_default_config)
 
 
 

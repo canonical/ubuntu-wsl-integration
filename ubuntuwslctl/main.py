@@ -128,7 +128,7 @@ class Application:
             help=_("Show the specified stored configuration"))
         show_cmd.add_argument(
             "name",
-            help=_("The name of the boot configuration to display")
+            help=_("The name of the configurations")
         )
         show_cmd.add_argument(
             "-s", "--short", action="store_true",
@@ -159,6 +159,9 @@ class Application:
             "export", aliases=["out"],
             description=_("Export the settings (Super Experimental)"),
             help=_("Export settings as a json string (Super Experimental)"))
+        export_cmd.add_argument(
+            "file",
+            help=_("the name of the file to export."))
         export_cmd.set_defaults(func=self.do_export)
 
         import_cmd = commands.add_parser(
@@ -209,7 +212,7 @@ class Application:
 
     def do_show(self):
         config_type, config_section, config_setting = config_name_extractor(self._args.name)
-        if config_section == "*":  #top level wild card display
+        if config_section == "*":  # top level wild card display
             self._select_config(config_type).list(self._args.default, is_short=self._args.short)
         elif config_setting == "*": # second level wild card display
             self._select_config(config_type).show_list(config_section, self._args.short, self._args.default)
@@ -229,7 +232,8 @@ class Application:
         tui_main()
 
     def do_export(self):
-        pass
+        from ubuntuwslctl.core.generator import FileHandler
+        a = FileHandler(self.ubuntu_conf, self.wsl_conf, "export", self._args.file)
 
     def do_import(self):
         pass

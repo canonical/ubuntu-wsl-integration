@@ -21,17 +21,12 @@ import json
 
 class FileHandler:
 
-    def __init__(self, ubuntu, wsl, file, fformat):
+    def __init__(self, ubuntu, wsl, file_name, file_format):
         self.UbuntuConf = ubuntu
         self.WSLConf = wsl
-        self.format = fformat
-        self.file_name = file
-        self.parsed_config = {}
-        self.parsed_default_config = {}
+        self.format = file_format
+        self.name = file_name
 
-        self._init_config()
-
-    def _init_config(self):
         ubuntu_tmp = (self.UbuntuConf.get_config())._sections
         wsl_tmp = (self.WSLConf.get_config())._sections
         self.parsed_config = {"ubuntu": ubuntu_tmp, "wsl": wsl_tmp}
@@ -44,7 +39,7 @@ class FileHandler:
         return self.parsed_default_config if is_default else self.parsed_config
 
     def export(self, is_default=False):
-        with open(self.file_name, 'w+') as f:
+        with open(self.name, 'w+') as f:
             if is_default:
                 json.dump(self.parsed_default_config, f)
             else:

@@ -32,10 +32,9 @@ from ubuntuwslctl.utils.helper import str2bool
 
 
 def tui_checkbox(content, default, tooltip):
-    text = content+u": "
     set = urwid.Pile([
-        urwid.AttrWrap(urwid.CheckBox(text, state=default), 'editbx', 'editfc'),
-        urwid.Padding(urwid.Text(tooltip), left=('relative', len(text)))
+        urwid.AttrWrap(urwid.CheckBox(content, state=default), 'editbx', 'editfc'),
+        urwid.Padding(urwid.Text(tooltip), left=('relative', 4))
     ])
     return urwid.Padding(set, left=2, right=2)
 

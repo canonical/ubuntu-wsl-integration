@@ -45,13 +45,14 @@ def tui_main(ubuntu, wsl):
 
     blank = urwid.Divider()
 
-    listbox_content = [blank]
+    listbox_content = []
 
     for i in config.keys():
+        listbox_content.append(blank)
         if general_title(i) == "wsl":
-            listbox_content.append(u"WSL Settings")
+            listbox_content.append(general_title(u"WSL Settings"))
         else:
-            listbox_content.append(u"Ubuntu Settings")
+            listbox_content.append(general_title(u"Ubuntu Settings"))
         listbox_content.append(blank)
         i_tmp = config[i]
         for j in i_tmp.keys():
@@ -66,7 +67,6 @@ def tui_main(ubuntu, wsl):
                         listbox_content.append(general_checkbox(k, str2bool(j_tmp[k])))
                     else:
                         listbox_content.append(general_edit(k, j_tmp[k]))
-            listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')
     footer = urwid.AttrWrap(urwid.Text(text_footer), 'header')

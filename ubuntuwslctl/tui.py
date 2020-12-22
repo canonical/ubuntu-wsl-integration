@@ -91,7 +91,7 @@ def tui_footer():
             urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], tui_fun_exp), 'buttn', 'buttn'),
             urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
         ),
-        6, 0, 0, 'left')
+        10, 0, 0, 'left')
 
 def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"
@@ -136,7 +136,7 @@ def tui_main(ubuntu, wsl):
             listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')
-    footer = urwid.AttrWrap(tui_footer(), 'header')
+    footer = urwid.AttrWrap(tui_footer(), 'buttn')
     listbox = urwid.ListBox(urwid.SimpleListWalker(listbox_content))
     frame = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
 

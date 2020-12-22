@@ -46,12 +46,12 @@ class ConfigEditor:
             self.config.read(self.user_conf)
 
     def _init_default_conf(self):
-        tmp = {}
-        for j in self.raw_conf.keys():
-            for k in self.raw_conf[j].keys():
-                tmp[j][k] = self.raw_conf[j][k]['default']
-
-        self.default_conf = tmp
+        tmp = self.raw_conf
+        for j in tmp.keys():
+            if j not in ('_friendly_name', '_file_location'):
+                for k in tmp[j].keys():
+                    if k != '_friendly_name':
+                        self.default_conf[j][k] = self.raw_conf[j][k]['default']
 
     def _get_default(self):
         for section in self.config.sections():

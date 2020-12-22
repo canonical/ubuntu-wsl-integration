@@ -66,6 +66,14 @@ def get_ubuntu_wsl_conf_defaults():
     return the_conf_dict
 
 
+def str2bool(s):
+    return s.lower in ("yes", "y", "1", "true", "t")
+
+
+def bool2str(b):
+    return "true" if b else "false"
+
+
 def query_yes_no(question, default="yes", assume_yes=False):
     """Ask a yes/no question via raw_input() and return their answer.
 

@@ -27,6 +27,7 @@ Urwid tour.  Shows many of the standard widget types and features.
 import urwid
 import urwid.raw_display
 from ubuntuwslctl.core.generator import SuperHandler
+from ubuntuwslctl.utils.helper import str2bool
 
 
 def tui_main(ubuntu, wsl):
@@ -44,10 +45,13 @@ def tui_main(ubuntu, wsl):
 
     blank = urwid.Divider()
 
-    listbox_content = []
+    listbox_content = [blank]
 
     for i in config.keys():
-        listbox_content.append(general_title(i))
+        if general_title(i) == "wsl":
+            listbox_content.append(u"WSL Settings")
+        else:
+            listbox_content.append(u"Ubuntu Settings")
         listbox_content.append(blank)
         i_tmp = config[i]
         for j in i_tmp.keys():
@@ -58,7 +62,10 @@ def tui_main(ubuntu, wsl):
                 if isinstance(j_tmp[k], bool):
                     listbox_content.append(general_checkbox(k, j_tmp[k]))
                 elif isinstance(j_tmp[k], str):
-                    listbox_content.append(general_edit(k, j_tmp[k]))
+                    if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
+                        listbox_content.append(general_checkbox(k, str2bool(j_tmp[k])))
+                    else:
+                        listbox_content.append(general_edit(k, j_tmp[k]))
             listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')
@@ -71,7 +78,7 @@ def tui_main(ubuntu, wsl):
         ('reverse', 'light gray', 'black'),
         ('header', 'black', 'white', 'bold'),
         ('important', 'dark blue', 'light gray', ('standout', 'underline')),
-        ('subimportant', 'dark blue', 'light gray', 'underline'),
+        ('subimportant', 'dark blue', 'light gray', 'bold'),
         ('editfc', 'black', 'white', 'bold'),
         ('editbx', 'black', 'white'),
         ('editcp', '', '', 'standout'),

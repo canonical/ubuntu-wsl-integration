@@ -29,6 +29,26 @@ from ubuntuwslctl.utils.helper import str2bool
 blank = urwid.Divider()
 
 
+def tui_fun_exit():
+    urwid.ExitMainLoop()
+
+
+def tui_fun_exp():
+    pass
+
+
+def tui_fun_imp():
+    pass
+
+
+def tui_fun_reset():
+    pass
+
+
+def tui_fun_save():
+    pass
+
+
 def tui_text(content):
     return urwid.Padding(urwid.Text(content), left=2, right=2)
 
@@ -44,8 +64,7 @@ def tui_subtitle(content):
 def tui_checkbox(content, default, tooltip, left_margin):
     set = urwid.Pile([
         urwid.CheckBox(content, state=default),
-        urwid.Padding(urwid.Text(tooltip), left=4),
-
+        urwid.Padding(urwid.Text(tooltip), left=4)
     ])
     return urwid.Padding(set, left=2+left_margin-4, right=2)
 
@@ -58,6 +77,16 @@ def tui_edit(content, default, tooltip, left_margin):
     ])
     return urwid.Padding(set, left=2+left_margin-len(text), right=2)
 
+def tui_footer():
+    return urwid.Columns(
+        (
+            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F1'), u'Save'], tui_fun_save), 'buttn', 'buttn'),
+            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F2'), u'Reset'], tui_fun_reset), 'buttn', 'buttn'),
+            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F3'), u'Import'], tui_fun_imp), 'buttn', 'buttn'),
+            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F4'), u'Export'], tui_fun_exp), 'buttn', 'buttn'),
+            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
+        ),
+        min_width=10)
 
 def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"
@@ -102,7 +131,7 @@ def tui_main(ubuntu, wsl):
             listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')
-    footer = urwid.AttrWrap(urwid.Text(text_footer), 'header')
+    footer = urwid.AttrWrap(tui_footer(), 'header')
     listbox = urwid.ListBox(urwid.SimpleListWalker(listbox_content))
     frame = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
 
@@ -117,14 +146,14 @@ def tui_main(ubuntu, wsl):
         ('editcp', '', '', 'standout'),
         ('bright', 'dark gray', 'light gray', ('bold', 'standout')),
         ('buttn', 'black', 'dark cyan'),
-        ('buttnf', 'white', 'dark blue', 'bold'),
+        ('sugbuttn', 'white', 'black')
     ]
 
     # use appropriate Screen class
     screen = urwid.raw_display.Screen()
 
     def unhandled(key):
-        if key == 'f8':
+        if key == 'f5':
             raise urwid.ExitMainLoop()
 
     urwid.MainLoop(frame, palette, screen,

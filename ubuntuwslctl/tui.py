@@ -32,7 +32,7 @@ class TuiButton(urwid.WidgetWrap):
     def __init__(self, label, on_press=None, user_data=None):
 
         self.widget = urwid.Text(label)
-        self.widget = urwid.AttrMap(self.widget, '', 'highlight')
+        self.widget = urwid.AttrMap(self.widget, 'buttn', 'buttn')
 
         self._hidden_btn = urwid.Button('hidden %s' % label, on_press, user_data)
 

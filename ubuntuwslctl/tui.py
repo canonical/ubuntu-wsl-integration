@@ -38,7 +38,7 @@ def tui_main(ubuntu, wsl):
     # general_text = lambda x : urwid.Padding(urwid.Text(x), left=2, right=2)
     general_title = lambda x: urwid.Padding(urwid.Text(('important', x)), left=2, right=2, min_width=20)
     general_subtitle = lambda x: urwid.Padding(urwid.Text(('subimportant', x)), left=2, right=2, min_width=20)
-    general_edit = lambda x,y : urwid.Padding(urwid.AttrWrap(urwid.Edit(x, y), 'editbx', 'editfc'), left=2, width=50)
+    general_edit = lambda x,y : urwid.Padding(urwid.AttrWrap(urwid.Edit(('editcp',x), y), 'editbx', 'editfc'), left=2, width=50)
     general_checkbox = lambda x, y : urwid.Padding(urwid.CheckBox(x, state=y), left=2, right=2)
 
     text_filler = u"This should be auto filled by config"

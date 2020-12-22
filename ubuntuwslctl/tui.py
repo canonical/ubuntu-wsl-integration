@@ -65,7 +65,7 @@ def tui_edit(content, default, tooltip, left_margin):
 
 def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"
-    text_footer = u"UP / DOWN / PAGE UP / PAGE DOWN: scroll F5: save F8: exit"
+    text_footer = u"UP / DOWN / PAGE UP / PAGE DOWN: scroll | F5: save | F8: exit"
     config = SuperHandler(ubuntu, wsl, '', 'json').get_config()
 
     listbox_content = [blank]
@@ -76,10 +76,10 @@ def tui_main(ubuntu, wsl):
         for j in i_tmp.keys():
             j_tmp = i_tmp[j]
             for k in j_tmp.keys():
-                if isinstance(j_tmp[k], bool) & (left_margin < 4):
+                if isinstance(j_tmp[k], bool) and (left_margin < 4):
                     left_margin = 4
                 elif isinstance(j_tmp[k], str):
-                    if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false") & (left_margin < 4):
+                    if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false") and (left_margin < 4):
                         left_margin = 4
                     elif left_margin < len(j_tmp[k])+2:
                         left_margin = len(j_tmp[k])+2

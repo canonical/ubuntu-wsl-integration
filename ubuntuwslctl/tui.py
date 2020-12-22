@@ -27,6 +27,7 @@ Urwid tour.  Shows many of the standard widget types and features.
 import urwid
 import urwid.raw_display
 from ubuntuwslctl.core.generator import SuperHandler
+from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
 
@@ -48,24 +49,21 @@ def tui_main(ubuntu, wsl):
 
     listbox_content.append(blank)
     for i in config.keys():
-        if general_title(i) == "wsl":
-            listbox_content.append(general_title(u"WSL Settings"))
-        else:
-            listbox_content.append(general_title(u"Ubuntu Settings"))
+        listbox_content.append(general_title(conf_def[i]['_friendly_name']))
         listbox_content.append(blank)
         i_tmp = config[i]
         for j in i_tmp.keys():
-            listbox_content.append(general_subtitle(j))
+            listbox_content.append(general_subtitle(conf_def[i][j]['_friendly_name']))
             listbox_content.append(blank)
             j_tmp = i_tmp[j]
             for k in j_tmp.keys():
                 if isinstance(j_tmp[k], bool):
-                    listbox_content.append(general_checkbox(k, j_tmp[k]))
+                    listbox_content.append(general_checkbox(conf_def[i][j][k]['_friendly_name'], j_tmp[k]))
                 elif isinstance(j_tmp[k], str):
                     if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
-                        listbox_content.append(general_checkbox(k, str2bool(j_tmp[k])))
+                        listbox_content.append(general_checkbox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k])))
                     else:
-                        listbox_content.append(general_edit(k, j_tmp[k]))
+                        listbox_content.append(general_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k]))
             listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')

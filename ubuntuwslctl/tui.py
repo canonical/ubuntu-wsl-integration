@@ -26,6 +26,11 @@ from ubuntuwslctl.core.generator import SuperHandler
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
+
+class TuiButton(urwid.Button):
+    button_left = urwid.Text('')
+    button_right = urwid.Text('')
+
 blank = urwid.Divider()
 
 
@@ -80,13 +85,13 @@ def tui_edit(content, default, tooltip, left_margin):
 def tui_footer():
     return urwid.Columns(
         (
-            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F1'), u'Save'], tui_fun_save), 'buttn', 'buttn'),
-            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F2'), u'Reset'], tui_fun_reset), 'buttn', 'buttn'),
-            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F3'), u'Import'], tui_fun_imp), 'buttn', 'buttn'),
-            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F4'), u'Export'], tui_fun_exp), 'buttn', 'buttn'),
-            urwid.AttrWrap(urwid.Button([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
+            urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], tui_fun_save), 'buttn', 'buttn'),
+            urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], tui_fun_reset), 'buttn', 'buttn'),
+            urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], tui_fun_imp), 'buttn', 'buttn'),
+            urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], tui_fun_exp), 'buttn', 'buttn'),
+            urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
         ),
-        min_width=10)
+        min_width=6)
 
 def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"

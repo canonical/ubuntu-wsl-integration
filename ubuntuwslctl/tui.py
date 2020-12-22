@@ -34,7 +34,7 @@ def tui_edit(content, default, tooltip):
     text = content+u": "
     set = urwid.Pile([
         urwid.AttrWrap(urwid.Edit(('editcp', text), default), 'editbx', 'editfc'),
-        urwid.Padding(urwid(urwid.Text(tooltip), ('relative', len(text))))
+        urwid.Padding(urwid.Text(tooltip), ('relative', len(text)))
     ])
     return urwid.Padding(set, left=2, right=2)
 

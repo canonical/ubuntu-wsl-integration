@@ -22,14 +22,59 @@
 
 import urwid
 import urwid.raw_display
+from urwid.split_repr import python3_repr
+
 from ubuntuwslctl.core.generator import SuperHandler
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
 
-class TuiButton(urwid.Button):
-    button_left = urwid.Text('')
-    button_right = urwid.Text('')
+class TuiButton(urwid.WidgetWrap):
+    def sizing(self):
+        return frozenset([urwid.FLOW])
+
+    signals = ["click"]
+
+    def __init__(self, label, on_press=None, user_data=None):
+        self._label = urwid.SelectableIcon("", 0)
+        cols = urwid.Columns(
+            self._label,
+            dividechars=0)
+        self.__super.__init__(cols)
+
+        # The old way of listening for a change was to pass the callback
+        # in to the constructor.  Just convert it to the new way:
+        if on_press:
+            urwid.connect_signal(self, 'click', on_press, user_data)
+
+        self.set_label(label)
+
+    def _repr_words(self):
+        # include button.label in repr(button)
+        return self.__super._repr_words() + [
+            python3_repr(self.label)]
+
+    def set_label(self, label):
+        self._label.set_text(label)
+
+    def get_label(self):
+        return self._label.text
+    label = property(get_label)
+
+    def keypress(self, size, key):
+        if self._command_map[key] != urwid.ACTIVATE:
+            return key
+
+        self._emit('click')
+
+    def mouse_event(self, size, event, button, x, y, focus):
+
+        if button != 1 or not urwid.is_mouse_press(event):
+            return False
+
+        self._emit('click')
+        return True
+
 
 blank = urwid.Divider()
 
@@ -91,7 +136,7 @@ def tui_footer():
             urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], tui_fun_exp), 'buttn', 'buttn'),
             urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
         ),
-        10, 0, 0, 'left')
+        12, 0, 0, 'left')
 
 def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"

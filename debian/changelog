@@ -1,3 +1,11 @@
+ubuntu-wsl-integration (0.24.0) groovy; urgency=medium
+
+  * (Experimental) Working export function
+  * (Super Experimental) Usable TUI Interface; no save feature yet
+  * default system/Editor huge update
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Mon, 21 Dec 2020 16:46:18 +0800
+
 ubuntu-wsl-integration (0.23.1) groovy; urgency=medium
 
   * Fix build failure due to the bad POTFILES

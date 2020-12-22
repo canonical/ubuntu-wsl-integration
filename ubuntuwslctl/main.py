@@ -157,8 +157,8 @@ class Application:
 
         export_cmd = commands.add_parser(
             "export", aliases=["out"],
-            description=_("Export the settings (Super Experimental)"),
-            help=_("Export settings as a json string (Super Experimental)"))
+            description=_("Export the settings (Experimental)"),
+            help=_("Export settings as a json string (Experimental)"))
         export_cmd.add_argument(
             "file",
             help=_("the name of the file to export."))

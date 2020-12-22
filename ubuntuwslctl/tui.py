@@ -28,11 +28,10 @@ from ubuntuwslctl.utils.helper import str2bool
 
 
 class TuiButton(urwid.Button):
-
     def __init__(self, label, on_press=None, user_data=None):
+        super().__init__(label, on_press, user_data)
         cols = urwid.Columns([self._label], dividechars=0)
         self.__super.__init__(cols)
-        super().__init__(self, label, on_press, user_data)
 
 
 blank = urwid.Divider()

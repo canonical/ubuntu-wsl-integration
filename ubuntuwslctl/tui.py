@@ -30,11 +30,21 @@ from ubuntuwslctl.core.generator import SuperHandler
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
+
+def tui_checkbox(content, default, tooltip):
+    text = content+u": "
+    set = urwid.Pile([
+        urwid.AttrWrap(urwid.CheckBox(text, state=default), 'editbx', 'editfc'),
+        urwid.Padding(urwid.Text(tooltip), left=('relative', len(text)))
+    ])
+    return urwid.Padding(set, left=2, right=2)
+
+
 def tui_edit(content, default, tooltip):
     text = content+u": "
     set = urwid.Pile([
         urwid.AttrWrap(urwid.Edit(('editcp', text), default), 'editbx', 'editfc'),
-        urwid.Padding(urwid.Text(tooltip), ('relative', len(text)))
+        urwid.Padding(urwid.Text(tooltip), left=('relative', len(text)))
     ])
     return urwid.Padding(set, left=2, right=2)
 
@@ -46,13 +56,11 @@ def tui_main(ubuntu, wsl):
     # general_text = lambda x : urwid.Padding(urwid.Text(x), left=2, right=2)
     general_title = lambda x: urwid.Padding(urwid.Text(('important', x)), left=2, right=2, min_width=20)
     general_subtitle = lambda x: urwid.Padding(urwid.Text(('subimportant', x)), left=2, right=2, min_width=20)
-    general_checkbox = lambda x, y: urwid.Padding(urwid.CheckBox(x, state=y), left=2, right=2)
 
     blank = urwid.Divider()
 
-    listbox_content = []
+    listbox_content = [blank]
 
-    listbox_content.append(blank)
     for i in config.keys():
         listbox_content.append(general_title(conf_def[i]['_friendly_name']))
         listbox_content.append(blank)
@@ -63,12 +71,15 @@ def tui_main(ubuntu, wsl):
             j_tmp = i_tmp[j]
             for k in j_tmp.keys():
                 if isinstance(j_tmp[k], bool):
-                    listbox_content.append(general_checkbox(conf_def[i][j][k]['_friendly_name'], j_tmp[k]))
+                    listbox_content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
+                                                        conf_def[i][j][k]['tip']))
                 elif isinstance(j_tmp[k], str):
                     if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
-                        listbox_content.append(general_checkbox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k])))
+                        listbox_content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
+                                                            conf_def[i][j][k]['tip']))
                     else:
-                        listbox_content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k], conf_def[i][j][k]['tip']))
+                        listbox_content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
+                                                        conf_def[i][j][k]['tip']))
             listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')

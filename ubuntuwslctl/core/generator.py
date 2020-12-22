@@ -34,21 +34,14 @@ class SuperHandler:
         wsl_tmp = (self.WSLConf.get_config())._sections
         self.parsed_config = {"ubuntu": ubuntu_tmp, "wsl": wsl_tmp}
 
-        ubuntu_tmp_1 = (self.UbuntuConf.get_config(is_default=True))._sections
-        wsl_tmp_1 = (self.WSLConf.get_config(is_default=True))._sections
-        self.parsed_default_config = {"ubuntu": ubuntu_tmp_1, "wsl": wsl_tmp_1}
+    def get_config(self):
+        return self.parsed_config
 
-    def get_config(self, is_default=False):
-        return self.parsed_default_config if is_default else self.parsed_config
-
-    def export_file(self, is_default=False):
+    def export_file(self):
         with open(self.name, 'w+') as f:
-            if is_default:
-                json.dump(self.parsed_default_config, f)
-            else:
                 json.dump(self.parsed_config, f)
 
-    def import_file(self, is_default=False):
+    def import_file(self):
         pass
 
 

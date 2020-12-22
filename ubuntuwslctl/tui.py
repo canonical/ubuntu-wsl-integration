@@ -30,11 +30,13 @@ from ubuntuwslctl.core.generator import SuperHandler
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
+blank = urwid.Divider()
 
 def tui_checkbox(content, default, tooltip):
     set = urwid.Pile([
         urwid.CheckBox(content, state=default),
-        urwid.Padding(urwid.Text(tooltip), left=4)
+        urwid.Padding(urwid.Text(tooltip), left=4),
+
     ])
     return urwid.Padding(set, left=2, right=2)
 
@@ -55,8 +57,6 @@ def tui_main(ubuntu, wsl):
     # general_text = lambda x : urwid.Padding(urwid.Text(x), left=2, right=2)
     general_title = lambda x: urwid.Padding(urwid.Text(('important', x)), left=2, right=2, min_width=20)
     general_subtitle = lambda x: urwid.Padding(urwid.Text(('subimportant', x)), left=2, right=2, min_width=20)
-
-    blank = urwid.Divider()
 
     listbox_content = [blank]
 

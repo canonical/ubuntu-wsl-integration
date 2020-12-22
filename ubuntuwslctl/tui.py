@@ -33,7 +33,7 @@ from ubuntuwslctl.utils.helper import str2bool
 
 def tui_checkbox(content, default, tooltip):
     set = urwid.Pile([
-        urwid.AttrWrap(urwid.CheckBox(content, state=default), 'editbx', 'editfc'),
+        urwid.CheckBox(content, state=default),
         urwid.Padding(urwid.Text(tooltip), left=4)
     ])
     return urwid.Padding(set, left=2, right=2)
@@ -91,7 +91,7 @@ def tui_main(ubuntu, wsl):
         ('reverse', 'light gray', 'black'),
         ('header', 'black', 'white', 'bold'),
         ('important', 'dark blue', 'light gray', ('standout', 'underline')),
-        ('subimportant', 'dark blue', 'light gray', 'bold'),
+        ('subimportant', 'dark blue', 'light gray'),
         ('editfc', 'white', 'black', 'bold'),
         ('editbx', 'black', 'white'),
         ('editcp', '', '', 'standout'),

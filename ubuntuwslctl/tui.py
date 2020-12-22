@@ -95,14 +95,14 @@ def tui_main(ubuntu, wsl):
             for k in j_tmp.keys():
                 if isinstance(j_tmp[k], bool):
                     listbox_content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                        conf_def[i][j][k]['tip']), left_margin)
+                                                        conf_def[i][j][k]['tip'], left_margin))
                 elif isinstance(j_tmp[k], str):
                     if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
                         listbox_content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
-                                                            conf_def[i][j][k]['tip']), left_margin)
+                                                            conf_def[i][j][k]['tip'], left_margin))
                     else:
                         listbox_content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                        conf_def[i][j][k]['tip']), left_margin)
+                                                        conf_def[i][j][k]['tip'], left_margin))
             listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')

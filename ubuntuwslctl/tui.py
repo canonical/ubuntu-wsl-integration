@@ -38,17 +38,16 @@ def tui_main(ubuntu, wsl):
     # general_text = lambda x : urwid.Padding(urwid.Text(x), left=2, right=2)
     general_title = lambda x: urwid.Padding(urwid.Text(('important', x)), left=2, right=2, min_width=20)
     general_subtitle = lambda x: urwid.Padding(urwid.Text(('subimportant', x)), left=2, right=2, min_width=20)
-    general_edit = lambda x,y : urwid.Padding(urwid.AttrWrap(urwid.Edit(('editcp',x), y), 'editbx', 'editfc'), left=2, width=50)
-    general_checkbox = lambda x, y : urwid.Padding(urwid.CheckBox(x, state=y), left=2, right=2)
-
-    text_filler = u"This should be auto filled by config"
+    general_edit = lambda x, y: urwid.Padding(urwid.AttrWrap(urwid.Edit(('editcp', x), y), 'editbx', 'editfc'), left=2,
+                                              width=50)
+    general_checkbox = lambda x, y: urwid.Padding(urwid.CheckBox(x, state=y), left=2, right=2)
 
     blank = urwid.Divider()
 
     listbox_content = []
 
+    listbox_content.append(blank)
     for i in config.keys():
-        listbox_content.append(blank)
         if general_title(i) == "wsl":
             listbox_content.append(general_title(u"WSL Settings"))
         else:
@@ -67,6 +66,7 @@ def tui_main(ubuntu, wsl):
                         listbox_content.append(general_checkbox(k, str2bool(j_tmp[k])))
                     else:
                         listbox_content.append(general_edit(k, j_tmp[k]))
+            listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')
     footer = urwid.AttrWrap(urwid.Text(text_footer), 'header')
@@ -79,8 +79,8 @@ def tui_main(ubuntu, wsl):
         ('header', 'black', 'white', 'bold'),
         ('important', 'dark blue', 'light gray', ('standout', 'underline')),
         ('subimportant', 'dark blue', 'light gray', 'bold'),
-        ('editfc', 'black', 'white', 'bold'),
-        ('editbx', 'white', 'black'),
+        ('editfc', 'white', 'black', 'bold'),
+        ('editbx', 'black', 'white'),
         ('editcp', '', '', 'standout'),
         ('bright', 'dark gray', 'light gray', ('bold', 'standout')),
         ('buttn', 'black', 'dark cyan'),

@@ -91,7 +91,7 @@ def tui_main(ubuntu, wsl):
         ('reverse', 'light gray', 'black'),
         ('header', 'black', 'white', 'bold'),
         ('important', 'dark blue', 'light gray', ('standout', 'underline')),
-        ('subimportant', 'dark blue', 'light gray'),
+        ('subimportant', 'light gray', '', 'standout'),
         ('editfc', 'white', 'black', 'bold'),
         ('editbx', 'black', 'white'),
         ('editcp', '', '', 'standout'),

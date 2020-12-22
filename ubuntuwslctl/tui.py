@@ -52,7 +52,7 @@ def tui_edit(content, default, tooltip):
 def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"
     text_footer = u"UP / DOWN / PAGE UP / PAGE DOWN: scroll F5: save F8: exit"
-    config = SuperHandler(ubuntu, wsl, '', 'json').get_config(False)
+    config = SuperHandler(ubuntu, wsl, '', 'json').get_config()
 
     # general_text = lambda x : urwid.Padding(urwid.Text(x), left=2, right=2)
     general_title = lambda x: urwid.Padding(urwid.Text(('important', x)), left=2, right=2, min_width=20)

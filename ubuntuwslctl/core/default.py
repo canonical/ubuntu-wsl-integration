@@ -53,7 +53,7 @@
 conf_def = {
     'wsl': {
         '_friendly_name': 'WSL Settings',
-        '_file_location': 'wsl.conf',
+        '_file_location': '/etc/wsl.conf',
         'automount': {
             '_friendly_name': 'Auto-Mount',
             'enabled': {

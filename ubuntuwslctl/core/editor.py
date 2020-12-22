@@ -23,29 +23,35 @@ import os
 import re
 from configparser import ConfigParser
 
-from ubuntuwslctl.core.default import (
-     default_ubuntu_wsl_conf_file,
-     default_ubuntu_wsl_conf_type,
-     default_wsl_conf_file,
-     default_wsl_conf_type)
+from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.i18n import translation
 
 _ = translation.gettext
 
 
 class ConfigEditor:
-    def __init__(self, inst_type, default_conf, default_type, user_conf):
+    def __init__(self, inst_type):
         self.inst_type = inst_type
-        self.default_conf = default_conf
-        self.default_type = default_type
-        self.user_conf = user_conf
+        self.raw_conf = conf_def[inst_type]
+        self.user_conf = self.raw_conf['_file_location']
+        self.default_conf = {}
+        self._init_default_conf()
+
 
         self.config = ConfigParser()
         self.config.BasicInterpolcation = None
-        self.config.read_dict(default_conf)
+        self.config.read_dict(self.default_conf)
 
         if os.path.exists(self.user_conf):
             self.config.read(self.user_conf)
+
+    def _init_default_conf(self):
+        tmp = {}
+        for j in self.raw_conf.keys():
+            for k in self.raw_conf[j].keys():
+                tmp[j][k] = self.raw_conf[j][k]['default']
+
+        self.default_conf = tmp
 
     def _get_default(self):
         for section in self.config.sections():
@@ -53,13 +59,7 @@ class ConfigEditor:
         self.config.read_dict(self.default_conf)
 
     def _type_validation(self, config_section, config_setting, input_con):
-        assert type(self.default_type) in (str, dict), _("Bad 'default_type' passed. "
-                                                         "It should be either 'str' or 'dict'.")
-        if type(self.default_type) == str:
-            to_validate = self.default_type
-        else:
-            default_type_tmp = self.default_type
-            to_validate = default_type_tmp[config_section][config_setting]
+        to_validate = self.raw_conf[config_section][config_setting]['type']
 
         assert to_validate in ("bool", "pass", "mount"), _("Unknown type to be validated.")
         if to_validate == "bool":
@@ -72,7 +72,7 @@ class ConfigEditor:
             # and it is really hard to check which can be passed and which can't.
             return True, ""
 
-        return False, "Something went wrong, but how do you even get here?"
+        return False, _("Something went wrong, but how do you even get here?")
 
     def get_config(self, is_default=False):
         if is_default:
@@ -118,11 +118,9 @@ class ConfigEditor:
 
 class UbuntuWSLConfigEditor(ConfigEditor):
     def __init__(self):
-        ConfigEditor.__init__(
-            self, "ubuntu", default_ubuntu_wsl_conf_file, default_ubuntu_wsl_conf_type, "/etc/ubuntu-wsl.conf")
+        ConfigEditor.__init__(self, "ubuntu")
 
 
 class WSLConfigEditor(ConfigEditor):
     def __init__(self):
-        ConfigEditor.__init__(
-            self, "wsl", default_wsl_conf_file, default_wsl_conf_type, "/etc/wsl.conf")
+        ConfigEditor.__init__(self, "wsl")

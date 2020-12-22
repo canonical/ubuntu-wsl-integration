@@ -81,8 +81,8 @@ def tui_main(ubuntu, wsl):
                 elif isinstance(j_tmp[k], str):
                     if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false") and (left_margin < 4):
                         left_margin = 4
-                    elif left_margin < len(j_tmp[k])+2:
-                        left_margin = len(j_tmp[k])+2
+                    elif left_margin < len(k)+2:
+                        left_margin = len(k)+2
 
     for i in config.keys():
         listbox_content.append(tui_title(conf_def[i]['_friendly_name']))

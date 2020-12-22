@@ -32,53 +32,77 @@ from ubuntuwslctl.utils.helper import str2bool
 
 blank = urwid.Divider()
 
-def tui_checkbox(content, default, tooltip):
+
+def tui_text(content):
+    return urwid.Padding(urwid.Text(content), left=2, right=2)
+
+
+def tui_title(content):
+    return urwid.Padding(urwid.Text(('important', content)), left=2, right=2, min_width=20)
+
+
+def tui_subtitle(content):
+    return urwid.Padding(urwid.Text(('subimportant', content)), left=2, right=2, min_width=20)
+
+
+def tui_checkbox(content, default, tooltip, left_margin):
     set = urwid.Pile([
         urwid.CheckBox(content, state=default),
         urwid.Padding(urwid.Text(tooltip), left=4),
 
     ])
-    return urwid.Padding(set, left=2, right=2)
+    return urwid.Padding(set, left=2+left_margin-4, right=2)
 
 
-def tui_edit(content, default, tooltip):
+def tui_edit(content, default, tooltip, left_margin):
     text = content+u": "
     set = urwid.Pile([
         urwid.AttrWrap(urwid.Edit(('editcp', text), default), 'editbx', 'editfc'),
         urwid.Padding(urwid.Text(tooltip), left=len(text))
     ])
-    return urwid.Padding(set, left=2, right=2)
+    return urwid.Padding(set, left=2+left_margin-len(text), right=2)
+
 
 def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"
     text_footer = u"UP / DOWN / PAGE UP / PAGE DOWN: scroll F5: save F8: exit"
     config = SuperHandler(ubuntu, wsl, '', 'json').get_config()
 
-    # general_text = lambda x : urwid.Padding(urwid.Text(x), left=2, right=2)
-    general_title = lambda x: urwid.Padding(urwid.Text(('important', x)), left=2, right=2, min_width=20)
-    general_subtitle = lambda x: urwid.Padding(urwid.Text(('subimportant', x)), left=2, right=2, min_width=20)
-
     listbox_content = [blank]
 
+    left_margin = 0
     for i in config.keys():
-        listbox_content.append(general_title(conf_def[i]['_friendly_name']))
+        i_tmp = config[i]
+        for j in i_tmp.keys():
+            j_tmp = i_tmp[j]
+            for k in j_tmp.keys():
+                if isinstance(j_tmp[k], bool) & (left_margin < 4):
+                    left_margin = 4
+                elif isinstance(j_tmp[k], str):
+                    if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false") & (left_margin < 4):
+                        left_margin = 4
+                    elif left_margin < len(j_tmp[k])+2:
+                        left_margin = len(j_tmp[k])+2
+
+    for i in config.keys():
+        listbox_content.append(tui_title(conf_def[i]['_friendly_name']))
         listbox_content.append(blank)
         i_tmp = config[i]
         for j in i_tmp.keys():
-            listbox_content.append(general_subtitle(conf_def[i][j]['_friendly_name']))
+            listbox_content.append(tui_subtitle(conf_def[i][j]['_friendly_name']))
             listbox_content.append(blank)
             j_tmp = i_tmp[j]
             for k in j_tmp.keys():
                 if isinstance(j_tmp[k], bool):
                     listbox_content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                        conf_def[i][j][k]['tip']))
+                                                        conf_def[i][j][k]['tip']), left_margin)
                 elif isinstance(j_tmp[k], str):
                     if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
                         listbox_content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
-                                                            conf_def[i][j][k]['tip']))
+                                                            conf_def[i][j][k]['tip']), left_margin)
                     else:
                         listbox_content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                        conf_def[i][j][k]['tip']))
+                                                        conf_def[i][j][k]['tip']), left_margin)
             listbox_content.append(blank)
 
     header = urwid.AttrWrap(urwid.Text(text_header), 'header')

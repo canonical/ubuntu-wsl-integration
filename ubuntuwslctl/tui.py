@@ -27,11 +27,25 @@ from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
 
-class TuiButton(urwid.Button):
+class TuiButton(urwid.WidgetWrap):
+
     def __init__(self, label, on_press=None, user_data=None):
-        super().__init__(label, on_press, user_data)
-        cols = urwid.Columns([self._label], dividechars=0)
-        self.__super.__init__(cols)
+
+        self.widget = urwid.Text(label)
+        self.widget = urwid.AttrMap(self.widget, '', 'highlight')
+
+        self._hidden_btn = urwid.Button('hidden %s' % label, on_press, user_data)
+
+        super().__init__(self.widget)
+
+    def selectable(self):
+        return True
+
+    def keypress(self, *args, **kw):
+        return self._hidden_btn.keypress(*args, **kw)
+
+    def mouse_event(self, *args, **kw):
+        return self._hidden_btn.mouse_event(*args, **kw)
 
 
 blank = urwid.Divider()

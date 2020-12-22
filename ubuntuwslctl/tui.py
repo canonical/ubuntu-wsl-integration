@@ -83,7 +83,7 @@ def tui_edit(content, default, tooltip, left_margin):
     return urwid.Padding(set, left=2+left_margin-len(text), right=2)
 
 def tui_footer():
-    return urwid.Columns(
+    return urwid.GridFlow(
         (
             urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], tui_fun_save), 'buttn', 'buttn'),
             urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], tui_fun_reset), 'buttn', 'buttn'),
@@ -91,7 +91,7 @@ def tui_footer():
             urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], tui_fun_exp), 'buttn', 'buttn'),
             urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
         ),
-        min_width=6)
+        6, 0, 0, 'left')
 
 def tui_main(ubuntu, wsl):
     text_header = u"Ubuntu WSL Configuration UI (Experimental)"

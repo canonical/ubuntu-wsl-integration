@@ -49,9 +49,10 @@ class ConfigEditor:
         tmp = self.raw_conf
         for j in tmp.keys():
             if j not in ('_friendly_name', '_file_location'):
+                self.default_conf[j] = {}
                 for k in tmp[j].keys():
                     if k != '_friendly_name':
-                        self.default_conf[j][k] = self.raw_conf[j][k]['default']
+                        self.default_conf[j][k] = tmp[j][k]['default']
 
     def _get_default(self):
         for section in self.config.sections():

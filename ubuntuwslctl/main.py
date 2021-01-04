@@ -231,7 +231,8 @@ class Application:
 
     def do_ui(self):
         from ubuntuwslctl.tui import Tui
-        Tui(self.ubuntu_conf, self.wsl_conf).run()
+        t=Tui(self.ubuntu_conf, self.wsl_conf)
+        t.run()
 
     def do_export(self):
         self.handler.export_file(self._args.file)

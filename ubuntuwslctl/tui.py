@@ -130,13 +130,8 @@ class Tui:
             12, 0, 0, 'left')
 
     def _popup_constructor(self, button):
-        popup = urwid.Pile(
-            [
-                self._popup_widget()
-            ]
-        )
         self._over = urwid.Overlay(
-            popup,
+            self._popup_widget,
             self._body,
             align='center',
             valign='middle',

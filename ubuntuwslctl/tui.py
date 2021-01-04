@@ -97,7 +97,10 @@ class Tui:
         ('editcp', '', '', 'standout'),
         ('bright', 'dark gray', 'light gray', ('bold', 'standout')),
         ('buttn', 'black', 'dark cyan'),
-        ('sugbuttn', 'white', 'black')
+        ('sugbuttn', 'white', 'black'),
+        ('banner', 'black', 'light gray'),
+        ('selectable', 'white', 'black'),
+        ('focus', 'black', 'light gray')
     ]
 
     def __init__(self, ubuntu, wsl):
@@ -108,7 +111,7 @@ class Tui:
         self._parse_config()
 
         header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
-        footer = urwid.AttrWrap(self._tui_footer(), 'buttn')
+        footer = urwid.AttrWrap(self._tui_footer, 'buttn')
         listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
 
@@ -134,15 +137,8 @@ class Tui:
             12, 0, 0, 'left')
 
     def _popup_constructor(self, button):
-        overlay = urwid.Overlay(
-            urwid.Pile([self._popup_widget]),
-            self._body,
-            align='center',
-            valign='middle',
-            width=20,
-            height=10
-        )
-        self._loop._widget = overlay
+        self._loop.widget = urwid.Overlay(urwid.Pile([self._popup_widget]), self._body, align='center', valign='middle', width=20,
+                                          height=10)
 
     def _popup_rest_interface(self):
         self._loop.widget = self._body
@@ -167,7 +163,7 @@ class Tui:
         body = urwid.LineBox(body_padding)
 
         # Footer
-        footer = urwid.Button('Okay', self._popup_rest_interface())
+        footer = urwid.Button('Okay', self._popup_rest_interface)
         footer = urwid.AttrWrap(footer, 'selectable', 'focus')
         footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
@@ -178,6 +174,7 @@ class Tui:
             footer = footer,
             focus_part = 'footer'
         )
+        return layout
 
     def _parse_config(self):
         # Widget margin calculation

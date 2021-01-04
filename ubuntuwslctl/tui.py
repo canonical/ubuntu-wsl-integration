@@ -28,6 +28,8 @@ from ubuntuwslctl.utils.helper import str2bool
 
 class TuiButton(urwid.WidgetWrap):
 
+    _selectable = True
+
     def __init__(self, label, on_press=None, user_data=None):
 
         self.widget = urwid.Text(label)
@@ -38,7 +40,7 @@ class TuiButton(urwid.WidgetWrap):
         super().__init__(self.widget)
 
     def selectable(self):
-        return True
+        return self._selectable
 
     def keypress(self, *args, **kw):
         return self._hidden_btn.keypress(*args, **kw)

@@ -230,8 +230,8 @@ class Application:
             .update(config_section, config_setting, self._args.value)
 
     def do_ui(self):
-        from ubuntuwslctl.tui import tui_main
-        tui_main(self.ubuntu_conf, self.wsl_conf)
+        from ubuntuwslctl.tui import Tui
+        Tui(self.ubuntu_conf, self.wsl_conf).run()
 
     def do_export(self):
         self.handler.export_file(self._args.file)

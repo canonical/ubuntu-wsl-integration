@@ -39,7 +39,7 @@ class TuiButton(urwid.WidgetWrap):
         super().__init__(self.widget)
 
     def selectable(self):
-        return True
+        return False
 
     def keypress(self, *args, **kw):
         return self._hidden_btn.keypress(*args, **kw)
@@ -49,26 +49,6 @@ class TuiButton(urwid.WidgetWrap):
 
 
 blank = urwid.Divider()
-
-
-def tui_fun_exit():
-    urwid.ExitMainLoop()
-
-
-def tui_fun_exp():
-    pass
-
-
-def tui_fun_imp():
-    pass
-
-
-def tui_fun_reset():
-    pass
-
-
-def tui_fun_save():
-    pass
 
 
 def tui_text(content):
@@ -99,84 +79,107 @@ def tui_edit(content, default, tooltip, left_margin):
     ])
     return urwid.Padding(set, left=2+left_margin-len(text), right=2)
 
-def tui_footer():
-    return urwid.GridFlow(
-        (
-            urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], tui_fun_save), 'buttn', 'buttn'),
-            urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], tui_fun_reset), 'buttn', 'buttn'),
-            urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], tui_fun_imp), 'buttn', 'buttn'),
-            urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], tui_fun_exp), 'buttn', 'buttn'),
-            urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
-        ),
-        12, 0, 0, 'left')
+class Tui:
+    """
+    Main class of the text-based UI for Ubuntu WSL config management
+    """
+    def __init__(self, ubuntu, wsl):
+        self.config = SuperHandler(ubuntu, wsl).get_config()
+        self.content = [blank]
 
-def tui_main(ubuntu, wsl):
-    text_header = u"Ubuntu WSL Configuration UI (Experimental)"
-    text_footer = u"UP / DOWN / PAGE UP / PAGE DOWN: scroll | F5: save | F8: exit"
-    config = SuperHandler(ubuntu, wsl, '', 'json').get_config()
+        self._parse_config()
 
-    listbox_content = [blank]
+        header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
+        footer = urwid.AttrWrap(self._tui_footer(), 'buttn')
+        listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
+        self.frame = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
 
-    left_margin = 0
-    for i in config.keys():
-        i_tmp = config[i]
-        for j in i_tmp.keys():
-            j_tmp = i_tmp[j]
-            for k in j_tmp.keys():
-                if isinstance(j_tmp[k], bool) and (left_margin < 4):
-                    left_margin = 4
-                elif isinstance(j_tmp[k], str):
-                    if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false") and (left_margin < 4):
+        self.palette = [
+            ('body', '', '', 'standout'),
+            ('reverse', 'light gray', 'black'),
+            ('header', 'black', 'white', 'bold'),
+            ('important', 'dark blue', 'light gray', ('standout', 'underline')),
+            ('subimportant', 'light gray', '', 'standout'),
+            ('editfc', 'white', 'black', 'bold'),
+            ('editbx', 'black', 'white'),
+            ('editcp', '', '', 'standout'),
+            ('bright', 'dark gray', 'light gray', ('bold', 'standout')),
+            ('buttn', 'black', 'dark cyan'),
+            ('sugbuttn', 'white', 'black')
+        ]
+
+        # use appropriate Screen class
+        self.screen = urwid.raw_display.Screen()
+
+    def _tui_footer(self):
+
+        def tui_fun_exit():
+            urwid.ExitMainLoop()
+
+        def tui_fun_exp():
+            pass
+
+        def tui_fun_imp():
+            pass
+
+        def tui_fun_reset():
+            pass
+
+        def tui_fun_save():
+            pass
+
+        return urwid.GridFlow(
+            (
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], tui_fun_save), 'buttn', 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], tui_fun_reset), 'buttn', 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], tui_fun_imp), 'buttn', 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], tui_fun_exp), 'buttn', 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
+            ),
+            12, 0, 0, 'left')
+
+    def _parse_config(self):
+        # Widget margin calculation
+        left_margin = 0
+        for i in self.config.keys():
+            i_tmp = self.config[i]
+            for j in i_tmp.keys():
+                j_tmp = i_tmp[j]
+                for k in j_tmp.keys():
+                    if isinstance(j_tmp[k], bool) and (left_margin < 4):
                         left_margin = 4
-                    elif left_margin < len(k)+2:
-                        left_margin = len(k)+2
+                    elif isinstance(j_tmp[k], str):
+                        if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false") and (left_margin < 4):
+                            left_margin = 4
+                        elif left_margin < len(k) + 2:
+                            left_margin = len(k) + 2
 
-    for i in config.keys():
-        listbox_content.append(tui_title(conf_def[i]['_friendly_name']))
-        listbox_content.append(blank)
-        i_tmp = config[i]
-        for j in i_tmp.keys():
-            listbox_content.append(tui_subtitle(conf_def[i][j]['_friendly_name']))
-            listbox_content.append(blank)
-            j_tmp = i_tmp[j]
-            for k in j_tmp.keys():
-                if isinstance(j_tmp[k], bool):
-                    listbox_content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                        conf_def[i][j][k]['tip'], left_margin))
-                elif isinstance(j_tmp[k], str):
-                    if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
-                        listbox_content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
-                                                            conf_def[i][j][k]['tip'], left_margin))
-                    else:
-                        listbox_content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                        conf_def[i][j][k]['tip'], left_margin))
-            listbox_content.append(blank)
+        # Real config handling part
+        for i in self.config.keys():
+            self.content.append(tui_title(conf_def[i]['_friendly_name']))
+            self.content.append(blank)
+            i_tmp = self.config[i]
+            for j in i_tmp.keys():
+                self.content.append(tui_subtitle(conf_def[i][j]['_friendly_name']))
+                self.content.append(blank)
+                j_tmp = i_tmp[j]
+                for k in j_tmp.keys():
+                    if isinstance(j_tmp[k], bool):
+                        self.content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
+                                                         conf_def[i][j][k]['tip'], left_margin))
+                    elif isinstance(j_tmp[k], str):
+                        if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
+                            self.content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
+                                                             conf_def[i][j][k]['tip'], left_margin))
+                        else:
+                            self.content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
+                                                         conf_def[i][j][k]['tip'], left_margin))
+                self.content.append(blank)
 
-    header = urwid.AttrWrap(urwid.Text(text_header), 'header')
-    footer = urwid.AttrWrap(tui_footer(), 'buttn')
-    listbox = urwid.ListBox(urwid.SimpleListWalker(listbox_content))
-    frame = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
-
-    palette = [
-        ('body', '', '', 'standout'),
-        ('reverse', 'light gray', 'black'),
-        ('header', 'black', 'white', 'bold'),
-        ('important', 'dark blue', 'light gray', ('standout', 'underline')),
-        ('subimportant', 'light gray', '', 'standout'),
-        ('editfc', 'white', 'black', 'bold'),
-        ('editbx', 'black', 'white'),
-        ('editcp', '', '', 'standout'),
-        ('bright', 'dark gray', 'light gray', ('bold', 'standout')),
-        ('buttn', 'black', 'dark cyan'),
-        ('sugbuttn', 'white', 'black')
-    ]
-
-    # use appropriate Screen class
-    screen = urwid.raw_display.Screen()
-
-    def unhandled(key):
+    @staticmethod
+    def _unhandled_key(key):
         if key == 'f5':
             raise urwid.ExitMainLoop()
 
-    urwid.MainLoop(frame, palette, screen,
-                   unhandled_input=unhandled).run()
+    def run(self):
+        urwid.MainLoop(self.frame, self.palette, self.screen, unhandled_input=self._unhandled_key).run()

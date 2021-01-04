@@ -84,7 +84,8 @@ class Tui:
     Main class of the text-based UI for Ubuntu WSL config management
     """
     def __init__(self, ubuntu, wsl):
-        self.config = SuperHandler(ubuntu, wsl).get_config()
+        self.handler = SuperHandler(ubuntu, wsl)
+        self.config = self.handler.get_config()
         self.content = [blank]
 
         self._parse_config()
@@ -113,19 +114,19 @@ class Tui:
 
     def _tui_footer(self):
 
-        def tui_fun_exit():
+        def tui_fun_exit(button):
             urwid.ExitMainLoop()
 
-        def tui_fun_exp():
+        def tui_fun_exp(button):
             pass
 
-        def tui_fun_imp():
+        def tui_fun_imp(button):
+            self.handler.export_file("test.json")
+
+        def tui_fun_reset(button):
             pass
 
-        def tui_fun_reset():
-            pass
-
-        def tui_fun_save():
+        def tui_fun_save(button):
             pass
 
         return urwid.GridFlow(
@@ -178,7 +179,7 @@ class Tui:
 
     @staticmethod
     def _unhandled_key(key):
-        if key == 'f5':
+        if key == ('f5' or 'esc'):
             raise urwid.ExitMainLoop()
 
     def run(self):

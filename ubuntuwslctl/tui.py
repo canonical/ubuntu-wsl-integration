@@ -168,7 +168,7 @@ class Tui:
         body = urwid.LineBox(body_padding)
 
         # Footer
-        footer = urwid.Button('Okay', self.do)
+        footer = urwid.Button('Okay', self._popup_rest_interface())
         footer = urwid.AttrWrap(footer, 'selectable', 'focus')
         footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 

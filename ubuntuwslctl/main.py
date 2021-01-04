@@ -26,6 +26,7 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from ubuntuwslctl.utils.helper import config_name_extractor, query_yes_no, bcolors
 from ubuntuwslctl.utils.i18n import translation
 from ubuntuwslctl.core.editor import UbuntuWSLConfigEditor, WSLConfigEditor
+from ubuntuwslctl.core.generator import SuperHandler
 
 _ = translation.gettext
 
@@ -34,6 +35,7 @@ class Application:
     def __init__(self):
         self.ubuntu_conf = UbuntuWSLConfigEditor()
         self.wsl_conf = WSLConfigEditor()
+        self.handler = SuperHandler(self.ubuntu_conf, self.wsl_conf)
         self.parser = ArgumentParser(
             formatter_class=RawTextHelpFormatter,
             description=_("ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."),
@@ -232,8 +234,7 @@ class Application:
         tui_main(self.ubuntu_conf, self.wsl_conf)
 
     def do_export(self):
-        from ubuntuwslctl.core.generator import SuperHandler
-        SuperHandler(self.ubuntu_conf, self.wsl_conf, self._args.file, 'json').export_file()
+        self.handler.export_file(self._args.file)
 
     def do_import(self):
         pass

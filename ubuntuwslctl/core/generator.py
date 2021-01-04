@@ -27,8 +27,6 @@ class SuperHandler:
     def __init__(self, ubuntu, wsl, file_name, file_format):
         self.UbuntuConf = ubuntu
         self.WSLConf = wsl
-        self.format = file_format
-        self.name = file_name
 
         ubuntu_tmp = (self.UbuntuConf.get_config())._sections
         wsl_tmp = (self.WSLConf.get_config())._sections
@@ -37,8 +35,8 @@ class SuperHandler:
     def get_config(self):
         return self.parsed_config
 
-    def export_file(self):
-        with open(self.name, 'w+') as f:
+    def export_file(self, name):
+        with open(name, 'w+') as f:
                 json.dump(self.parsed_config, f)
 
     def import_file(self):

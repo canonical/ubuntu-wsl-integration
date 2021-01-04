@@ -38,7 +38,7 @@ class TuiButton(urwid.WidgetWrap):
         super().__init__(self.widget)
 
     def selectable(self):
-        return False
+        return True
 
     def keypress(self, *args, **kw):
         return self._hidden_btn.keypress(*args, **kw)
@@ -83,6 +83,21 @@ class Tui:
     """
     Main class of the text-based UI for Ubuntu WSL config management
     """
+
+    _palette = [
+        ('body', '', '', 'standout'),
+        ('reverse', 'light gray', 'black'),
+        ('header', 'black', 'white', 'bold'),
+        ('important', 'dark blue', 'light gray', ('standout', 'underline')),
+        ('subimportant', 'light gray', '', 'standout'),
+        ('editfc', 'white', 'black', 'bold'),
+        ('editbx', 'black', 'white'),
+        ('editcp', '', '', 'standout'),
+        ('bright', 'dark gray', 'light gray', ('bold', 'standout')),
+        ('buttn', 'black', 'dark cyan'),
+        ('sugbuttn', 'white', 'black')
+    ]
+
     def __init__(self, ubuntu, wsl):
         self.handler = SuperHandler(ubuntu, wsl)
         self.config = self.handler.get_config()
@@ -95,21 +110,7 @@ class Tui:
         listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
 
-        palette = [
-            ('body', '', '', 'standout'),
-            ('reverse', 'light gray', 'black'),
-            ('header', 'black', 'white', 'bold'),
-            ('important', 'dark blue', 'light gray', ('standout', 'underline')),
-            ('subimportant', 'light gray', '', 'standout'),
-            ('editfc', 'white', 'black', 'bold'),
-            ('editbx', 'black', 'white'),
-            ('editcp', '', '', 'standout'),
-            ('bright', 'dark gray', 'light gray', ('bold', 'standout')),
-            ('buttn', 'black', 'dark cyan'),
-            ('sugbuttn', 'white', 'black')
-        ]
-
-        self._loop = urwid.MainLoop(self._body, palette, urwid.raw_display.Screen(),
+        self._loop = urwid.MainLoop(self._body, self._palette, urwid.raw_display.Screen(),
                                     unhandled_input=self._unhandled_key)
 
     def _tui_footer(self):
@@ -132,7 +133,7 @@ class Tui:
 
     def _popup_constructor(self, button):
         overlay = urwid.Overlay(
-            self._popup_widget,
+            urwid.Pile([self._popup_widget]),
             self._body,
             align='center',
             valign='middle',
@@ -140,11 +141,9 @@ class Tui:
             height=10
         )
         self._loop._widget = overlay
-        self._loop.draw_screen()
 
     def _popup_rest_interface(self):
-        self._loop._widget = self._body
-        self._loop.draw_screen()
+        self._loop.widget = self._body
 
     def _popup_widget(self):
         '''

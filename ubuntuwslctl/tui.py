@@ -109,7 +109,8 @@ class Tui:
             ('sugbuttn', 'white', 'black')
         ]
 
-        self._loop = urwid.MainLoop(self._body, palette, urwid.raw_display.Screen(), unhandled_input=self._unhandled_key)
+        self._loop = urwid.MainLoop(self._body, palette, urwid.raw_display.Screen(),
+                                    unhandled_input=self._unhandled_key)
 
     def _tui_footer(self):
 
@@ -139,9 +140,11 @@ class Tui:
             height=10
         )
         self._loop.widget = self._over
+        self._loop.draw_screen()
 
     def _popup_rest_interface(self):
         self._loop.widget = self._body
+        self._loop.draw_screen()
 
     def _popup_widget(self):
         '''

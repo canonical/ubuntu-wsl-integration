@@ -24,7 +24,7 @@ class SuperHandler:
     """
     This class tries to handle everything Editor cannot handle.
     """
-    def __init__(self, ubuntu, wsl, file_name, file_format):
+    def __init__(self, ubuntu, wsl):
         self.UbuntuConf = ubuntu
         self.WSLConf = wsl
 
@@ -39,7 +39,7 @@ class SuperHandler:
         with open(name, 'w+') as f:
                 json.dump(self.parsed_config, f)
 
-    def import_file(self):
+    def import_file(self, name):
         pass
 
 

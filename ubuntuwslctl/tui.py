@@ -115,25 +115,28 @@ class Tui:
         self._loop = urwid.MainLoop(self._body, self._palette, urwid.raw_display.Screen(),
                                     unhandled_input=self._unhandled_key)
 
+    def _fun(self, button=None, fun=None):
+        if button is not None:
+            fun = button.label
+            fun = fun[2:].lower()
+        if fun in ("" or "exit"):
+            raise urwid.ExitMainLoop()
+        else:
+            self._popup_constructor(fun)
+
     def _footer(self):
 
         return urwid.GridFlow(
             (
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], self._footer_fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], self._footer_fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], self._footer_fun()), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], self._footer_fun()), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], self._footer_fun()), 'buttn')
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], self._fun), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], self._fun), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], self._fun), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], self._fun), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], self._fun), 'buttn')
             ),
             12, 0, 0, 'left')
 
-    def _footer_fun_exit(self, button):
-        raise urwid.ExitMainLoop()
-
-    def _footer_fun(self, button):
-        self._popup_constructor(button)
-
-    def _popup_constructor(self, button):
+    def _popup_constructor(self, fun):
         self._loop.widget = urwid.Overlay(self._popup_widget(), self._loop.widget, align='center',
                                           valign='middle', width=20, height=10)
 
@@ -205,10 +208,9 @@ class Tui:
                                                          conf_def[i][j][k]['tip'], left_margin))
                 self.content.append(blank)
 
-    @staticmethod
-    def _unhandled_key(key):
+    def _unhandled_key(self, key):
         if key == ('f5' or 'esc'):
-            raise urwid.ExitMainLoop()
+            self._fun(fun='exit')
 
     def run(self):
         self._loop.run()

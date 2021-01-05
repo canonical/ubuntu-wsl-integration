@@ -215,6 +215,16 @@ class Tui:
     def _unhandled_key(self, key):
         if key in ('f5', 'ctrl c', 'esc'):
             self._fun(fun='exit')
+        elif key == 'f4':
+            self._fun(fun='export')
+        elif key == 'f3':
+            self._fun(fun='import')
+        elif key == 'f2':
+            self._fun(fun='reset')
+        elif key == 'f1':
+            self._fun(fun='save')
+
+
 
     def run(self):
         self._loop.run()

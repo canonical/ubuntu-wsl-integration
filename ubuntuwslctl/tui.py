@@ -31,7 +31,7 @@ class TuiButton(urwid.WidgetWrap):
 
     def __init__(self, label, on_press=None, user_data=None):
         self.widget = urwid.Text(label)
-        self.widget = urwid.AttrMap(self.widget, 'buttn', 'buttn')
+        self.widget = urwid.AttrMap(self.widget, 'footer')
 
         self._hidden_btn = urwid.Button('hidden %s' % label, on_press, user_data)
 
@@ -55,11 +55,11 @@ def tui_text(content):
 
 
 def tui_title(content):
-    return urwid.Padding(urwid.Text(('important', content)), left=2, right=2, min_width=20)
+    return urwid.Padding(urwid.Text(('ttl', content)), left=2, right=2, min_width=20)
 
 
 def tui_subtitle(content):
-    return urwid.Padding(urwid.Text(('subimportant', content)), left=2, right=2, min_width=20)
+    return urwid.Padding(urwid.Text(('subttl', content)), left=2, right=2, min_width=20)
 
 
 def tui_checkbox(content, default, tooltip, left_margin):
@@ -85,18 +85,15 @@ class Tui:
     """
 
     _palette = [
-        ('body', '', '', 'standout'),
-        ('reverse', 'light gray', 'black'),
-        ('header', 'black', 'white', 'bold'),
-        ('important', 'dark blue', 'light gray', ('standout', 'underline')),
-        ('subimportant', 'light gray', '', 'standout'),
+        ('body', '', '', 'standout'),                   # body
+        ('header', 'black', 'white', 'bold'),           # header
+        ('footer', 'black', 'dark cyan'),               # footer
+        ('footerhlt', 'white', 'black'),                # footer highlight
+        ('ttl', 'dark blue', 'white', 'standout'),      # section title
+        ('subttl', 'light gray', '', 'standout'),       # section subtitle
         ('editfc', 'white', 'black', 'bold'),
         ('editbx', 'black', 'white'),
         ('editcp', '', '', 'standout'),
-        ('bright', 'dark gray', 'light gray', ('bold', 'standout')),
-        ('buttn', 'black', 'dark cyan'),
-        ('sugbuttn', 'white', 'black'),
-        ('banner', 'black', 'light gray'),
         ('selectable', 'white', 'black'),
         ('focus', 'black', 'light gray')
     ]
@@ -109,7 +106,7 @@ class Tui:
         self._parse_config()
 
         header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
-        footer = urwid.AttrWrap(self._footer(), 'buttn')
+        footer = urwid.AttrWrap(self._footer(), 'footer')
         listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
         self._loop = urwid.MainLoop(self._body, self._palette, urwid.raw_display.Screen(),
@@ -119,7 +116,7 @@ class Tui:
         if button is not None:
             fun = button.label
             fun = fun[2:].lower()
-        if fun in ("" or "exit"):
+        if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
         else:
             self._popup_constructor(fun)
@@ -128,42 +125,41 @@ class Tui:
 
         return urwid.GridFlow(
             (
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], self._fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], self._fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], self._fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], self._fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], self._fun), 'buttn')
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F1'), u'Save'], self._fun), 'footer'),
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F2'), u'Reset'], self._fun), 'footer'),
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F3'), u'Import'], self._fun), 'footer'),
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F4'), u'Export'], self._fun), 'footer'),
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F5'), u'Exit'], self._fun), 'footer')
             ),
             12, 0, 0, 'left')
 
     def _popup_constructor(self, fun):
-        self._loop.widget = urwid.Overlay(self._popup_widget(), self._loop.widget, align='center',
+        self._loop.widget = urwid.Overlay(self._popup_widget(fun), self._loop.widget, align='center',
                                           valign='middle', width=20, height=10)
 
     def _popup_rest_interface(self):
-        while True:
-            try:
-                self._loop.widget = self._loop.widget[0]
-            except:
-                break
+        self._loop.widget = self._body
 
-    def _popup_widget(self):
+    def _popup_widget(self, header, body=None, fun=None):
         '''
         Overlays a dialog box on top of the console UI
         '''
 
         # Header
-        header_text = urwid.Text(('banner', 'Help'), align='center')
-        header = urwid.AttrMap(header_text, 'banner')
+        header_text = urwid.Text(('header', header.title()), align='center')
+        header = urwid.AttrMap(header_text, 'header')
 
         # Body
-        body_text = urwid.Text('Hello world', align='center')
-        body_filler = urwid.Filler(body_text, valign='top')
-        body_padding = urwid.Padding(body_filler, left=1, right=1)
-        body = urwid.LineBox(body_padding)
+        if body is None:
+            body_text = urwid.Text('Hello world', align='center')
+            body_filler = urwid.Filler(body_text, valign='top')
+            body_padding = urwid.Padding(body_filler, left=1, right=1)
+            body = urwid.LineBox(body_padding)
 
         # Footer
-        footer = urwid.Button('Okay', self._popup_rest_interface)
+        if fun is None:
+            fun = self._popup_rest_interface
+        footer = urwid.Button('Okay', fun)
         footer = urwid.AttrWrap(footer, 'selectable', 'focus')
         footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
@@ -209,7 +205,7 @@ class Tui:
                 self.content.append(blank)
 
     def _unhandled_key(self, key):
-        if key == ('f5' or 'esc'):
+        if key in ('f5', 'ctrl c', 'esc'):
             self._fun(fun='exit')
 
     def run(self):

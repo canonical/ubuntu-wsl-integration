@@ -159,10 +159,9 @@ class Tui:
 
         # Body
         if body is None:
-            body_text = urwid.Text(('This is a placeholder text that will only be displayed '
-                                    'when _popup_widget.body received None. If you see this '
-                                    'in a production version, Please report the bug.'), align='center')
-            body = urwid.Filler(body_text, valign='top')
+            body = urwid.Text(('This is a placeholder text that will only be displayed '
+                               'when _popup_widget.body received None. If you see this '
+                               'in a production version, Please report the bug.'), align='center')
 
         body = urwid.Padding(body, left=1, right=1)
 
@@ -173,7 +172,7 @@ class Tui:
             footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
         # Layout
-        return urwid.ListBox(urwid.Filler(urwid.Pile([header, body, footer])))
+        return urwid.LineBox(urwid.Filler(urwid.Pile([header, body, footer])))
 
     def _parse_config(self):
         # Widget margin calculation

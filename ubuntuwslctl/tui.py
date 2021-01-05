@@ -124,7 +124,8 @@ class Tui:
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
         elif fun == "reset":
-
+            body = urwid.Filler(urwid.Text(u"Do you really want to reset?", align='left'), valign='top')
+            self._popup_constructor(fun, body)
         else:
             self._popup_constructor(fun)
 
@@ -147,7 +148,7 @@ class Tui:
     def _popup_rest_interface(self, button):
         self._loop.widget = self._body
 
-    def _popup_widget(self, header, body=None, fun=None):
+    def _popup_widget(self, header, body=None, footer=None):
         '''
         Overlays a dialog box on top of the console UI
         '''
@@ -166,11 +167,10 @@ class Tui:
         body = urwid.Padding(body, left=1, right=1)
 
         # Footer
-        if fun is None:
-            fun = self._popup_rest_interface
-        footer = urwid.Button('Okay', fun)
-        footer = urwid.AttrWrap(footer, 'selectable', 'focus')
-        footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
+        if footer is None:
+            footer = urwid.Button('Okay', self._popup_rest_interface)
+            footer = urwid.AttrWrap(footer, 'selectable', 'focus')
+            footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
         # Layout
         return urwid.ListBox(urwid.Filler(urwid.Pile([header, body, footer])))

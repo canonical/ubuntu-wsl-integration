@@ -114,7 +114,6 @@ class Tui:
     def _fun(self, button=None, fun=None):
         if button is not None:
             fun = button.label
-            fun = fun[1].lower()
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
         else:
@@ -134,7 +133,7 @@ class Tui:
 
     def _popup_constructor(self, fun):
         self._loop.widget = urwid.Overlay(self._popup_widget(fun), self._loop.widget, align='center',
-                                          valign='middle', width=20, height=10)
+                                          valign='middle', width=40, height=20)
 
     def _popup_rest_interface(self, button):
         self._loop.widget = self._body
@@ -150,7 +149,9 @@ class Tui:
 
         # Body
         if body is None:
-            body_text = urwid.Text('Hello world', align='center')
+            body_text = urwid.Text(('This is a placeholder text that is passed '
+                                    'when body received None. If you see this '
+                                    'in production version, Please contact author.'), align='center')
             body_filler = urwid.Filler(body_text, valign='top')
             body_padding = urwid.Padding(body_filler, left=1, right=1)
             body = urwid.LineBox(body_padding)

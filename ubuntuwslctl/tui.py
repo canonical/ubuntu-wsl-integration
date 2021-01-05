@@ -28,14 +28,17 @@ from ubuntuwslctl.utils.helper import str2bool
 
 
 class TuiButton(urwid.WidgetWrap):
-
     def __init__(self, label, on_press=None, user_data=None):
+        self.text_c = label
         self.widget = urwid.Text(label)
         self.widget = urwid.AttrMap(self.widget, 'footer')
 
         self._hidden_btn = urwid.Button('hidden %s' % label, on_press, user_data)
 
         super().__init__(self.widget)
+
+    def get_actual_label(self):
+        return self.text_c[1].lower()
 
     def selectable(self):
         return True
@@ -114,8 +117,7 @@ class Tui:
 
     def _fun(self, button=None, fun=None):
         if button is not None:
-            fun = button.label
-            fun = fun[2:].lower()
+            fun = button.get_actual_label()
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
         else:
@@ -137,7 +139,7 @@ class Tui:
         self._loop.widget = urwid.Overlay(self._popup_widget(fun), self._loop.widget, align='center',
                                           valign='middle', width=20, height=10)
 
-    def _popup_rest_interface(self):
+    def _popup_rest_interface(self, button):
         self._loop.widget = self._body
 
     def _popup_widget(self, header, body=None, fun=None):

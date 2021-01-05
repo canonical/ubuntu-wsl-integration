@@ -132,8 +132,7 @@ class Tui:
         raise urwid.ExitMainLoop()
 
     def _footer_fun(self, button):
-        # self._popup_constructor(button)
-        pass
+        self._popup_constructor(button)
 
     def _popup_constructor(self, button):
         self._loop.widget = urwid.Overlay(urwid.Pile([self._popup_widget]), self._loop.widget, align='center',

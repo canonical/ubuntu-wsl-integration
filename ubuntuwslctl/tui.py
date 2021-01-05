@@ -28,7 +28,6 @@ from ubuntuwslctl.utils.helper import str2bool
 
 
 class TuiButton(urwid.WidgetWrap):
-    _selectable = True
 
     def __init__(self, label, on_press=None, user_data=None):
         self.widget = urwid.Text(label)
@@ -39,7 +38,7 @@ class TuiButton(urwid.WidgetWrap):
         super().__init__(self.widget)
 
     def selectable(self):
-        return self._selectable
+        return True
 
     def keypress(self, *args, **kw):
         return self._hidden_btn.keypress(*args, **kw)
@@ -110,7 +109,7 @@ class Tui:
         self._parse_config()
 
         header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
-        footer = urwid.AttrWrap(self._footer, 'buttn')
+        footer = urwid.AttrWrap(self._footer(), 'buttn')
         listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
 

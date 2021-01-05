@@ -32,7 +32,7 @@ class TuiButton(urwid.WidgetWrap):
         self.widget = urwid.Text(label)
         self.widget = urwid.AttrMap(self.widget, 'footer')
 
-        self._hidden_btn = urwid.Button('hidden %s' % label, on_press, user_data)
+        self._hidden_btn = urwid.Button(label, on_press, user_data)
 
         super().__init__(self.widget)
 
@@ -114,6 +114,7 @@ class Tui:
     def _fun(self, button=None, fun=None):
         if button is not None:
             fun = button.label
+            fun = button[2:].lower()
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
         else:

@@ -26,12 +26,11 @@ from ubuntuwslctl.core.generator import SuperHandler
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
-class TuiButton(urwid.WidgetWrap):
 
+class TuiButton(urwid.WidgetWrap):
     _selectable = True
 
     def __init__(self, label, on_press=None, user_data=None):
-
         self.widget = urwid.Text(label)
         self.widget = urwid.AttrMap(self.widget, 'buttn', 'buttn')
 
@@ -69,16 +68,16 @@ def tui_checkbox(content, default, tooltip, left_margin):
         urwid.CheckBox(content, state=default),
         urwid.Padding(urwid.Text(tooltip), left=4)
     ])
-    return urwid.Padding(set, left=2+left_margin-4, right=2)
+    return urwid.Padding(set, left=2 + left_margin - 4, right=2)
 
 
 def tui_edit(content, default, tooltip, left_margin):
-    text = content+u": "
+    text = content + u": "
     set = urwid.Pile([
         urwid.AttrWrap(urwid.Edit(('editcp', text), default), 'editbx', 'editfc'),
         urwid.Padding(urwid.Text(tooltip), left=len(text))
     ])
-    return urwid.Padding(set, left=2+left_margin-len(text), right=2)
+    return urwid.Padding(set, left=2 + left_margin - len(text), right=2)
 
 
 class Tui:
@@ -111,37 +110,42 @@ class Tui:
         self._parse_config()
 
         header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
-        footer = urwid.AttrWrap(self._tui_footer, 'buttn')
+        footer = urwid.AttrWrap(self._footer, 'buttn')
         listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
 
         self._loop = urwid.MainLoop(self._body, self._palette, urwid.raw_display.Screen(),
                                     unhandled_input=self._unhandled_key)
 
-    def _tui_footer(self):
-
-        def tui_fun_exit(button):
-            raise urwid.ExitMainLoop()
-
-        def tui_fun(button):
-            self._popup_constructor(button)
+    def _footer(self):
 
         return urwid.GridFlow(
             (
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], tui_fun), 'buttn', 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], tui_fun), 'buttn', 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], tui_fun), 'buttn', 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], tui_fun), 'buttn', 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], tui_fun_exit), 'buttn', 'buttn')
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], self._footer_fun), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], self._footer_fun), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], self._footer_fun), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], self._footer_fun), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], self._footer_fun_exit), 'buttn')
             ),
             12, 0, 0, 'left')
 
+    def _footer_fun_exit(self, button):
+        raise urwid.ExitMainLoop()
+
+    def _footer_fun(self, button):
+        # self._popup_constructor(button)
+        pass
+
     def _popup_constructor(self, button):
-        self._loop.widget = urwid.Overlay(urwid.Pile([self._popup_widget]), self._body, align='center', valign='middle', width=20,
-                                          height=10)
+        self._loop.widget = urwid.Overlay(urwid.Pile([self._popup_widget]), self._loop.widget, align='center',
+                                          valign='middle', width=20, height=10)
 
     def _popup_rest_interface(self):
-        self._loop.widget = self._body
+        while True:
+            try:
+                self._loop.widget = self._loop.widget[0]
+            except:
+                break
 
     def _popup_widget(self):
         '''
@@ -149,17 +153,13 @@ class Tui:
         '''
 
         # Header
-        header_text = urwid.Text(('banner', 'Help'), align = 'center')
+        header_text = urwid.Text(('banner', 'Help'), align='center')
         header = urwid.AttrMap(header_text, 'banner')
 
         # Body
-        body_text = urwid.Text('Hello world', align = 'center')
-        body_filler = urwid.Filler(body_text, valign = 'top')
-        body_padding = urwid.Padding(
-            body_filler,
-            left = 1,
-            right = 1
-        )
+        body_text = urwid.Text('Hello world', align='center')
+        body_filler = urwid.Filler(body_text, valign='top')
+        body_padding = urwid.Padding(body_filler, left=1, right=1)
         body = urwid.LineBox(body_padding)
 
         # Footer
@@ -168,13 +168,7 @@ class Tui:
         footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
         # Layout
-        layout = urwid.Frame(
-            body,
-            header = header,
-            footer = footer,
-            focus_part = 'footer'
-        )
-        return layout
+        return urwid.Frame(body, header=header, footer=footer, focus_part='footer')
 
     def _parse_config(self):
         # Widget margin calculation

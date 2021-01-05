@@ -52,21 +52,53 @@ blank = urwid.Divider() # friendly name for Divider
 
 
 def tui_text(content):
-    '''
-    Text Field
-    '''
+    """
+    General Text Field
+
+    Args:
+        content: text of the content.
+    Returns:
+        a Padded Text
+    """
     return urwid.Padding(urwid.Text(content), left=2, right=2)
 
 
 def tui_title(content):
+    """
+    General Title Field
+
+    Args:
+        content: text of the title.
+    Returns:
+        a themed title
+    """
     return urwid.Padding(urwid.Text(('ttl', content)), left=2, right=2, min_width=20)
 
 
 def tui_subtitle(content):
+    """
+    General Subtitle Field
+
+    Args:
+        content: text of the subtitle.
+    Returns:
+        a themed subtitle
+    """
     return urwid.Padding(urwid.Text(('subttl', content)), left=2, right=2, min_width=20)
 
 
 def tui_checkbox(content, default, tooltip, left_margin):
+    """
+    General Checkbox Field
+
+    Args:
+        content: text of the checkbox
+        default: default value of the checkbox
+        tooltip: the tooltip of the checkbox
+        left_margin: The left margin of the Checkbox
+    Returns:
+        a general checkbox field
+    """
     cbset = urwid.Pile([
         urwid.CheckBox(content, state=default),
         urwid.Padding(urwid.Text(tooltip), left=4)
@@ -75,6 +107,17 @@ def tui_checkbox(content, default, tooltip, left_margin):
 
 
 def tui_edit(content, default, tooltip, left_margin):
+    """
+    General Edit Field
+
+    Args:
+        content: text of the editbox
+        default: default value of the editbox
+        tooltip: tooltip of the editbox
+        left_margin: left_margin of the editbox
+    Returns:
+        a general edit field
+    """
     text = content + u": "
     edset = urwid.Pile([
         urwid.AttrWrap(urwid.Edit(('editcp', text), default), 'editbx', 'editfc'),
@@ -117,6 +160,14 @@ class Tui:
                                     unhandled_input=self._unhandled_key)
 
     def _fun(self, button=None, fun=None):
+        """
+        Core function for different actions.
+        This function can accept button callback from `button` or function name from `func`
+
+        Args:
+            button: the `urwid.Button` instance returned from a button callback.
+            fun: the name of the function
+        """
         if button is not None:
             fun = button.label
             fun = fun[2:].lower()
@@ -133,11 +184,10 @@ class Tui:
                         urwid.Text(u"file name to export: ", align='left'),
                         urwid.AttrWrap(urwid.Edit(u"", "settings.json"), 'editbx', 'editfc')
                    ), valign='top')
-        else:
+        else: # unhandled input all went here
             self._popup_constructor(fun)
 
     def _footer(self):
-
         return urwid.GridFlow(
             (
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F1'), u'Save'], self._fun), 'footer'),
@@ -149,16 +199,35 @@ class Tui:
             12, 0, 0, 'left')
 
     def _popup_constructor(self, fun, body=None, footer=None):
+        """
+        Construct a popup widget that overlays the UI.
+
+        Args:
+            fun: title of the Popup
+            body: content of the Popup. Leave empty for the placeholder.
+            footer: footer of the Popup. Leave empty for the single Okay button.
+        """
         self._loop.widget = urwid.Overlay(self._popup_widget(fun, body, footer), self._loop.widget, align='center',
                                           valign='middle', height=30, width=30)
 
     def _popup_rest_interface(self, button):
+        """
+        Clear the Overlay.
+        """
         self._loop.widget = self._body
 
     def _popup_widget(self, header, body=None, footer=None):
-        '''
-        Overlays a dialog box on top of the console UI
-        '''
+        """
+        Content of the Popup Widget.
+
+        Args:
+            header: title of the Popup
+            body: content of the Popup. Leave empty for the placeholder.
+            footer: footer of the Popup. Leave empty for the single Okay button.
+        Returns:
+            `urwid.LineBox` that hold the widget.
+        """
+
 
         # Header
         header_text = urwid.Text(('header', header.title()), align='center')
@@ -182,6 +251,7 @@ class Tui:
         return urwid.LineBox(urwid.Filler(urwid.Pile([header, body, footer])))
 
     def _parse_config(self):
+
         # Widget margin calculation
         left_margin = 0
         for i in self.config.keys():
@@ -220,6 +290,9 @@ class Tui:
                 self.content.append(blank)
 
     def _unhandled_key(self, key):
+        """
+        handle keys
+        """
         if key in ('f5', 'ctrl c', 'esc'):
             self._fun(fun='exit')
         elif key == 'f4':
@@ -231,7 +304,8 @@ class Tui:
         elif key == 'f1':
             self._fun(fun='save')
 
-
-
     def run(self):
+        """
+        Start the UI
+        """
         self._loop.run()

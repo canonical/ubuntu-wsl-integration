@@ -28,10 +28,12 @@ from ubuntuwslctl.utils.helper import str2bool
 
 
 class TuiButton(urwid.WidgetWrap):
+    '''
+    Custom button that used in the footer
+    '''
     def __init__(self, label, on_press=None, user_data=None):
         self.widget = urwid.Text(label)
         self.widget = urwid.AttrMap(self.widget, 'footer')
-
         self._hidden_btn = urwid.Button(label, on_press, user_data)
 
         super().__init__(self.widget)
@@ -46,10 +48,13 @@ class TuiButton(urwid.WidgetWrap):
         return self._hidden_btn.mouse_event(*args, **kw)
 
 
-blank = urwid.Divider()
+blank = urwid.Divider() # friendly name for Divider
 
 
 def tui_text(content):
+    '''
+    Text Field
+    '''
     return urwid.Padding(urwid.Text(content), left=2, right=2)
 
 
@@ -62,14 +67,15 @@ def tui_subtitle(content):
 
 
 def tui_checkbox(content, default, tooltip, left_margin):
-    set = urwid.Pile([
+    cbset = urwid.Pile([
         urwid.CheckBox(content, state=default),
         urwid.Padding(urwid.Text(tooltip), left=4)
     ])
-    return urwid.Padding(set, left=2 + left_margin - 4, right=2)
+    return urwid.Padding(cbset, left=2 + left_margin - 4, right=2)
 
 
 def tui_edit(content, default, tooltip, left_margin):
+
     text = content + u": "
     set = urwid.Pile([
         urwid.AttrWrap(urwid.Edit(('editcp', text), default), 'editbx', 'editfc'),
@@ -114,9 +120,11 @@ class Tui:
     def _fun(self, button=None, fun=None):
         if button is not None:
             fun = button.label
-            fun = button[2:].lower()
+            fun = fun[2:].lower()
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
+        elif fun == "reset":
+
         else:
             self._popup_constructor(fun)
 
@@ -150,12 +158,12 @@ class Tui:
 
         # Body
         if body is None:
-            body_text = urwid.Text(('This is a placeholder text that is passed '
-                                    'when body received None. If you see this '
-                                    'in production version, Please contact author.'), align='center')
-            body_filler = urwid.Filler(body_text, valign='top')
-            body_padding = urwid.Padding(body_filler, left=1, right=1)
-            body = urwid.LineBox(body_padding)
+            body_text = urwid.Text(('This is a placeholder text that will only be displayed '
+                                    'when _popup_widget.body received None. If you see this '
+                                    'in a production version, Please report the bug.'), align='center')
+            body = urwid.Filler(body_text, valign='top')
+
+        body = urwid.Padding(body, left=1, right=1)
 
         # Footer
         if fun is None:
@@ -165,7 +173,7 @@ class Tui:
         footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
         # Layout
-        return urwid.Frame(body, header=header, footer=footer, focus_part='footer')
+        return urwid.ListBox(urwid.Filler(urwid.Pile([header, body, footer])))
 
     def _parse_config(self):
         # Widget margin calculation

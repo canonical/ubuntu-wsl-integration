@@ -75,13 +75,12 @@ def tui_checkbox(content, default, tooltip, left_margin):
 
 
 def tui_edit(content, default, tooltip, left_margin):
-
     text = content + u": "
-    set = urwid.Pile([
+    edset = urwid.Pile([
         urwid.AttrWrap(urwid.Edit(('editcp', text), default), 'editbx', 'editfc'),
         urwid.Padding(urwid.Text(tooltip), left=len(text))
     ])
-    return urwid.Padding(set, left=2 + left_margin - len(text), right=2)
+    return urwid.Padding(edset, left=2 + left_margin - len(text), right=2)
 
 
 class Tui:
@@ -125,7 +124,15 @@ class Tui:
             raise urwid.ExitMainLoop()
         elif fun == "reset":
             body = urwid.Filler(urwid.Text(u"Do you really want to reset?", align='left'), valign='top')
-            self._popup_constructor(fun, body)
+            ok_btn = urwid.AttrWrap(urwid.Button('Okay', self._popup_rest_interface), 'selectable', 'focus')
+            cc_btn = urwid.AttrWrap(urwid.Button('Cancel', self._popup_rest_interface), 'selectable', 'focus')
+            footer = urwid.GridFlow([ok_btn, cc_btn], 8, 1, 1, 'center')
+            self._popup_constructor(fun, body, footer)
+        elif fun == "export":
+            body = urwid.Filler(urwid.Pile(
+                        urwid.Text(u"file name to export: ", align='left'),
+                        urwid.AttrWrap(urwid.Edit(u"", "settings.json"), 'editbx', 'editfc')
+                   ), valign='top')
         else:
             self._popup_constructor(fun)
 

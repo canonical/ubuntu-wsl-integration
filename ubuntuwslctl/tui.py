@@ -112,7 +112,6 @@ class Tui:
         footer = urwid.AttrWrap(self._footer(), 'buttn')
         listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
-
         self._loop = urwid.MainLoop(self._body, self._palette, urwid.raw_display.Screen(),
                                     unhandled_input=self._unhandled_key)
 
@@ -122,9 +121,9 @@ class Tui:
             (
                 urwid.AttrWrap(TuiButton([('sugbuttn', u'F1'), u'Save'], self._footer_fun), 'buttn'),
                 urwid.AttrWrap(TuiButton([('sugbuttn', u'F2'), u'Reset'], self._footer_fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], self._footer_fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], self._footer_fun), 'buttn'),
-                urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], self._footer_fun_exit), 'buttn')
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F3'), u'Import'], self._footer_fun()), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F4'), u'Export'], self._footer_fun()), 'buttn'),
+                urwid.AttrWrap(TuiButton([('sugbuttn', u'F5'), u'Exit'], self._footer_fun()), 'buttn')
             ),
             12, 0, 0, 'left')
 
@@ -135,7 +134,7 @@ class Tui:
         self._popup_constructor(button)
 
     def _popup_constructor(self, button):
-        self._loop.widget = urwid.Overlay(urwid.Pile([self._popup_widget]), self._loop.widget, align='center',
+        self._loop.widget = urwid.Overlay(self._popup_widget(), self._loop.widget, align='center',
                                           valign='middle', width=20, height=10)
 
     def _popup_rest_interface(self):

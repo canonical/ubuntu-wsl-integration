@@ -150,7 +150,7 @@ class Tui:
 
     def _popup_constructor(self, fun, body=None, footer=None):
         self._loop.widget = urwid.Overlay(self._popup_widget(fun, body, footer), self._loop.widget, align='center',
-                                          valign='middle')
+                                          valign='middle', height=30, width=30)
 
     def _popup_rest_interface(self, button):
         self._loop.widget = self._body

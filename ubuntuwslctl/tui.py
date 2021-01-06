@@ -242,7 +242,7 @@ class Tui:
             footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
         # Layout
-        return urwid.LineBox(urwid.Pile([body, footer]),
+        return urwid.LineBox(urwid.Filler(urwid.Pile([body, footer])),
                              title=header.title(), title_attr='header', title_align='center')
 
     def _parse_config(self):

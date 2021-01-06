@@ -169,17 +169,17 @@ class Tui:
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
         elif fun == "reload":
-            self._body_builder()
-            self._loop.widget = self._body
+            self._reload_ui()
             self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
         elif fun == "reset":
             def reset(button):
                 self.handler.reset_all()
+                self._reload_ui()
                 self._popup_constructor(fun, urwid.Text(u"Reset complete. Restart Ubuntu to take effect.",
                                                         align='left'))
             body = urwid.Text(u"Do you really want to reset?", align='left')
             ok_btn = urwid.AttrWrap(urwid.Button('Yes', reset), 'selectable', 'focus')
-            cc_btn = urwid.AttrWrap(urwid.Button('No', self._popup_rest_interface), 'selectable', 'focus')
+            cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":
@@ -215,10 +215,11 @@ class Tui:
         self._loop.widget = urwid.Overlay(self._popup_widget(fun, body, footer), self._loop.widget, align='center',
                                           valign='middle', height='pack', width=40)
 
-    def _popup_rest_interface(self, button):
+    def _reload_ui(self, button):
         """
-        Clear the Overlay.
+        Clear the Overlay and reload everything again.
         """
+        self._body_builder()
         self._loop.widget = self._body
 
     def _popup_widget(self, header, body=None, footer=None):
@@ -243,7 +244,7 @@ class Tui:
 
         # Footer
         if footer is None:
-            footer = urwid.Button('Okay', self._popup_rest_interface)
+            footer = urwid.Button('Okay', self._reload_ui)
             footer = urwid.AttrWrap(footer, 'selectable', 'focus')
             footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 

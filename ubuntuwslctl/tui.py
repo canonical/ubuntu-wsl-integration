@@ -177,7 +177,7 @@ class Tui:
             body = urwid.Text(u"Do you really want to reset?", align='left')
             ok_btn = urwid.AttrWrap(urwid.Button('Okay', self._popup_rest_interface), 'selectable', 'focus')
             cc_btn = urwid.AttrWrap(urwid.Button('Cancel', self._popup_rest_interface), 'selectable', 'focus')
-            footer = urwid.GridFlow([ok_btn, cc_btn], 8, 1, 1, 'center')
+            footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":
             body = urwid.Filler(urwid.Pile([
@@ -191,12 +191,14 @@ class Tui:
         return urwid.GridFlow(
             (
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F1'), u'Save'], self._fun), 'footer'),
+
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F2'), u'Reset'], self._fun), 'footer'),
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F3'), u'Import'], self._fun), 'footer'),
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F4'), u'Export'], self._fun), 'footer'),
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F5'), u'Exit'], self._fun), 'footer')
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F5'), u'Reload'], self._fun), 'footer'),
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F6'), u'Exit'], self._fun), 'footer')
             ),
-            12, 0, 0, 'left')
+            10, 0, 0, 'left')
 
     def _popup_constructor(self, fun, body=None, footer=None):
         """
@@ -208,7 +210,7 @@ class Tui:
             footer: footer of the Popup. Leave empty for the single Okay button.
         """
         self._loop.widget = urwid.Overlay(self._popup_widget(fun, body, footer), self._loop.widget, align='center',
-                                          valign='middle', height=30, width=30)
+                                          valign='middle', width=40)
 
     def _popup_rest_interface(self, button):
         """
@@ -288,8 +290,10 @@ class Tui:
         """
         handle keys
         """
-        if key in ('f5', 'ctrl c', 'esc'):
+        if key in ('f6', 'ctrl c', 'esc'):
             self._fun(fun='exit')
+        elif key == 'f5':
+            self._fun(fun='reload')
         elif key == 'f4':
             self._fun(fun='export')
         elif key == 'f3':

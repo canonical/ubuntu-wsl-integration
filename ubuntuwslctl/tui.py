@@ -177,7 +177,7 @@ class Tui:
             body = urwid.Text(u"Do you really want to reset?", align='left')
             ok_btn = urwid.AttrWrap(urwid.Button('Okay', self._popup_rest_interface), 'selectable', 'focus')
             cc_btn = urwid.AttrWrap(urwid.Button('Cancel', self._popup_rest_interface), 'selectable', 'focus')
-            footer = urwid.GridFlow([ok_btn, cc_btn], 16, 1, 1, 'center')
+            footer = urwid.GridFlow([ok_btn, cc_btn], 8, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":
             body = urwid.Filler(urwid.Pile([
@@ -242,7 +242,7 @@ class Tui:
             footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
         # Layout
-        return urwid.LineBox(urwid.Filler(urwid.Pile([body, footer])),
+        return urwid.LineBox(urwid.Pile([body, footer]),
                              title=header.title(), title_attr='header', title_align='center')
 
     def _parse_config(self):

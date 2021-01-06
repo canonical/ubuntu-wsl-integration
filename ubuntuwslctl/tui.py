@@ -148,14 +148,9 @@ class Tui:
     def __init__(self, ubuntu, wsl):
         self.handler = SuperHandler(ubuntu, wsl)
         self.config = self.handler.get_config()
-        self.content = [blank]
+        self.content = []
 
-        self._parse_config()
-
-        header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
-        footer = urwid.AttrWrap(self._footer(), 'footer')
-        listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
-        self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
+        self._body_builder()
         self._loop = urwid.MainLoop(self._body, self._palette, urwid.raw_display.Screen(),
                                     unhandled_input=self._unhandled_key)
 
@@ -173,6 +168,9 @@ class Tui:
             fun = fun[2:].lower()
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
+        elif fun == "reload":
+            self._body_builder()
+            self._loop.widget = self._body
         elif fun == "reset":
             body = urwid.Text(u"Do you really want to reset?", align='left')
             ok_btn = urwid.AttrWrap(urwid.Button('Okay', self._popup_rest_interface), 'selectable', 'focus')
@@ -233,7 +231,8 @@ class Tui:
         if body is None:
             body = urwid.Text(('This is a placeholder text that will only be displayed '
                                'when _popup_widget.body received None. If you see this '
-                               'in a production version, Please report the bug.'), align='center')
+                               'in a production version of ubuntuwsl, Please report the '
+                               'bug to WSL team at Canonical.'), align='left')
 
         body = urwid.Padding(body, left=1, right=1)
 
@@ -248,6 +247,7 @@ class Tui:
                              title=header.title(), title_attr='header', title_align='center')
 
     def _parse_config(self):
+        self.content = [blank]
 
         # Widget margin calculation
         left_margin = 0
@@ -285,6 +285,19 @@ class Tui:
                             self.content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
                                                          conf_def[i][j][k]['tip'], left_margin))
                 self.content.append(blank)
+
+    def _body_builder(self):
+        """
+        Allows building the body.
+        Also used in page refreshing after a reset and when pressing reload botton
+        """
+        self._parse_config()
+
+        header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
+        footer = urwid.AttrWrap(self._footer(), 'footer')
+        listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
+        self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
+
 
     def _unhandled_key(self, key):
         """

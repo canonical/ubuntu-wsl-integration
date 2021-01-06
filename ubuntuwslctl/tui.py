@@ -208,7 +208,7 @@ class Tui:
             footer: footer of the Popup. Leave empty for the single Okay button.
         """
         self._loop.widget = urwid.Overlay(self._popup_widget(fun, body, footer), self._loop.widget, align='center',
-                                          valign='middle', width=40)
+                                          valign='middle', height='pack', width=40)
 
     def _popup_rest_interface(self, button):
         """
@@ -297,7 +297,6 @@ class Tui:
         footer = urwid.AttrWrap(self._footer(), 'footer')
         listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
-
 
     def _unhandled_key(self, key):
         """

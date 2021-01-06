@@ -63,6 +63,8 @@ class SuperHandler:
         with open(name, 'w+') as f:
             json.dump(self.parsed_config, f)
 
+        return name
+
     def import_file(self, name):
         with open(name, 'r+') as f:
             file = json.load(f)

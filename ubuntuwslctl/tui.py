@@ -172,21 +172,30 @@ class Tui:
             self._reload_ui()
             self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
         elif fun == "reset":
-            def reset(button):
+            def _reset(button):
                 self.handler.reset_all()
-                self._reload_ui()
                 self._popup_constructor(fun, urwid.Text(u"Reset complete. Restart Ubuntu to take effect.",
                                                         align='left'))
             body = urwid.Text(u"Do you really want to reset?", align='left')
-            ok_btn = urwid.AttrWrap(urwid.Button('Yes', reset), 'selectable', 'focus')
+            ok_btn = urwid.AttrWrap(urwid.Button('Yes', _reset), 'selectable', 'focus')
             cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":
-            body = urwid.Filler(urwid.Pile([
+            name = urwid.Edit(u"", "settings.json")
+
+            def _export(button):
+                ef = self.handler.export_file(name.edit_text)
+                self._popup_constructor(fun, urwid.Text(u"Exported as {}.".format(ef),
+                                                        align='left'))
+            body = urwid.Pile([
                         urwid.Text(u"file name to export: ", align='left'),
-                        urwid.AttrWrap(urwid.Edit(u"", "settings.json"), 'editbx', 'editfc')
-                   ]), valign='top')
+                        urwid.AttrWrap(name, 'editbx', 'editfc')
+                   ])
+            ok_btn = urwid.AttrWrap(urwid.Button('Yes', _export), 'selectable', 'focus')
+            cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
+            footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
+            self._popup_constructor(fun, body, footer)
         else:  # unhandled input all went here
             self._popup_constructor(fun)
 

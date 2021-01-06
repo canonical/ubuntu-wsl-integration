@@ -123,25 +123,32 @@ class StyledCheckBox(urwid.Padding):
         return self.core.get_state()
 
 
+class StyledEdit(urwid.Padding):
+    def __init__(self, content, default, tooltip, left_margin, source=None):
+        """
+        General Edit Field
 
-def tui_edit(content, default, tooltip, left_margin):
-    """
-    General Edit Field
-
-    Args:
-        content: text of the editbox
-        default: default value of the editbox
-        tooltip: tooltip of the editbox
-        left_margin: left_margin of the editbox
-    Returns:
-        a general edit field
-    """
-    text = content + u": "
-    edset = urwid.Pile([
-        urwid.AttrWrap(urwid.Edit(('editcp', text), default), 'editbx', 'editfc'),
+        Args:
+            content: text of the editbox
+            default: default value of the editbox
+            tooltip: tooltip of the editbox
+            left_margin: left_margin of the editbox
+            source: there this item is from for value reference
+        """
+        text = content + u": "
+        self.core = urwid.Edit(('editcp', text), default)
+        self.source = source
+        self.widget = urwid.Pile([
+        urwid.AttrWrap(self.core, 'editbx', 'editfc'),
         urwid.Padding(urwid.Text(tooltip), left=len(text))
     ])
-    return urwid.Padding(edset, left=2 + left_margin - len(text), right=2)
+        super().__init__(self.widget,  left=2 + left_margin - len(text), right=2)
+
+    def get_source(self):
+        return self.source
+
+    def get_core_value(self):
+        return self.core.get_edit_text()
 
 
 class Tui:
@@ -331,8 +338,8 @@ class Tui:
                             self.content.append(StyledCheckBox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
                                                              conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
                         else:
-                            self.content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                         conf_def[i][j][k]['tip'], left_margin))
+                            self.content.append(StyledEdit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
+                                                         conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
                 self.content.append(blank)
 
     def _body_builder(self):

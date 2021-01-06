@@ -191,8 +191,7 @@ class Application:
             self.parser.parse_args(['-h'])
 
     def do_list(self):
-        self.ubuntu_conf.list(self._args.default)
-        self.wsl_conf.list(self._args.default)
+        self.handler.list_all(self._args.default)
 
     def do_reset(self):
         print(bcolors.WARNING + _("WARNING: ") + bcolors.ENDC +
@@ -231,8 +230,7 @@ class Application:
 
     def do_ui(self):
         from ubuntuwslctl.tui import Tui
-        t=Tui(self.ubuntu_conf, self.wsl_conf)
-        t.run()
+        Tui(self.ubuntu_conf, self.wsl_conf).run()
 
     def do_export(self):
         self.handler.export_file(self._args.file)

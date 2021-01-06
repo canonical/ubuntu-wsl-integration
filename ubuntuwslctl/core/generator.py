@@ -18,38 +18,53 @@
 #  On Debian systems, the complete text of the GNU General
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 import json
+import time
 
 
 class SuperHandler:
     """
-    This class tries to handle everything Editor cannot handle.
+    This class tries to handle everything Editor cannot handle elegantly.
     """
-    def __init__(self, ubuntu, wsl):
-        self.UbuntuConf = ubuntu
-        self.WSLConf = wsl
 
-        ubuntu_tmp = (self.UbuntuConf.get_config())._sections
-        wsl_tmp = (self.WSLConf.get_config())._sections
+    def __init__(self, ubuntu, wsl):
+        self.ubuntu_conf = ubuntu
+        self.wsl_conf = wsl
+
+        ubuntu_tmp = (self.ubuntu_conf.get_config())._sections
+        wsl_tmp = (self.wsl_conf.get_config())._sections
         self.parsed_config = {"ubuntu": ubuntu_tmp, "wsl": wsl_tmp}
+
+    def _select_config(self, type_input):
+        type_input = type_input.lower()
+        if type_input == "ubuntu":
+            return self.ubuntu_conf
+        elif type_input == "wsl":
+            return self.wsl_conf
+        else:
+            raise ValueError("Invalid config name. Please check again.")
+
+    def list_all(self, default):
+        self.ubuntu_conf.list(default)
+        self.wsl_conf.list(default)
 
     def get_config(self):
         return self.parsed_config
 
     def export_file(self, name):
+        t = time.gmtime(time.time())
+        ts = "{}{:02d}{:02d}{:02d}{:02d}{:02d}UTC".format(t[0], t[1], t[2], t[3], t[4], t[5])
+        self.parsed_config['time_exported'] = ts
+        if name == "":
+            name = "exported_settings_{}.json".format(ts)
         with open(name, 'w+') as f:
-                json.dump(self.parsed_config, f)
+            json.dump(self.parsed_config, f)
 
     def import_file(self, name):
-        pass
-
-
-
-
-
-
-
-
-
-
-
-
+        with open(name, 'r+') as f:
+            file = json.load(f)
+            for i in ("ubuntu", "wsl"):
+                conf_to_read = file[i]
+                for j in conf_to_read.keys():
+                    j_tmp = conf_to_read[j]
+                    for k in j_tmp.keys():
+                        self._select_config(i).update(j, k, j_tmp[k])

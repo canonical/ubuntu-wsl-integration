@@ -43,6 +43,10 @@ class SuperHandler:
         else:
             raise ValueError("Invalid config name. Please check again.")
 
+    def reset_all(self):
+        self.ubuntu_conf.reset_all()
+        self.wsl_conf.reset_all()
+
     def list_all(self, default):
         self.ubuntu_conf.list(default)
         self.wsl_conf.list(default)

@@ -174,17 +174,17 @@ class Tui:
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
         elif fun == "reset":
-            body = urwid.Filler(urwid.Text(u"Do you really want to reset?", align='left'), valign='top')
+            body = urwid.Text(u"Do you really want to reset?", align='left')
             ok_btn = urwid.AttrWrap(urwid.Button('Okay', self._popup_rest_interface), 'selectable', 'focus')
             cc_btn = urwid.AttrWrap(urwid.Button('Cancel', self._popup_rest_interface), 'selectable', 'focus')
-            footer = urwid.GridFlow([ok_btn, cc_btn], 8, 1, 1, 'center')
+            footer = urwid.GridFlow([ok_btn, cc_btn], 16, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":
-            body = urwid.Filler(urwid.Pile(
+            body = urwid.Filler(urwid.Pile([
                         urwid.Text(u"file name to export: ", align='left'),
                         urwid.AttrWrap(urwid.Edit(u"", "settings.json"), 'editbx', 'editfc')
-                   ), valign='top')
-        else: # unhandled input all went here
+                   ]), valign='top')
+        else:  # unhandled input all went here
             self._popup_constructor(fun)
 
     def _footer(self):
@@ -227,12 +227,6 @@ class Tui:
         Returns:
             `urwid.LineBox` that hold the widget.
         """
-
-
-        # Header
-        header_text = urwid.Text(('header', header.title()), align='center')
-        header = urwid.AttrMap(header_text, 'header')
-
         # Body
         if body is None:
             body = urwid.Text(('This is a placeholder text that will only be displayed '
@@ -248,7 +242,8 @@ class Tui:
             footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
         # Layout
-        return urwid.LineBox(urwid.Filler(urwid.Pile([header, body, footer])))
+        return urwid.LineBox(urwid.Filler(urwid.Pile([body, footer])),
+                             title=header.title(), title_attr='header', title_align='center')
 
     def _parse_config(self):
 

@@ -51,49 +51,26 @@ class TuiButton(urwid.WidgetWrap):
 blank = urwid.Divider() # friendly name for Divider
 
 
-def tui_text(content):
-    """
-    General Text Field
+class StyledText(urwid.Padding):
 
-    Args:
-        content: text of the content.
-    Returns:
-        a Padded Text
-    """
-    return urwid.Padding(urwid.Text(content), left=2, right=2)
+    def __init__(self, content, style=None):
+        """
+        General Text Field
 
-
-def tui_title(content):
-    """
-    General Title Field
-
-    Args:
-        content: text of the title.
-    Returns:
-        a themed title
-    """
-    return urwid.Padding(urwid.Text(('ttl', content)), left=2, right=2, min_width=20)
-
-
-def tui_subtitle(content):
-    """
-    General Subtitle Field
-
-    Args:
-        content: text of the subtitle.
-    Returns:
-        a themed subtitle
-    """
-    return urwid.Padding(urwid.Text(('subttl', content)), left=2, right=2, min_width=20)
-
-
-def tui_checkbox(content, default, tooltip, left_margin):
-
-    cbset = urwid.Pile([
-        urwid.CheckBox(content, state=default),
-        urwid.Padding(urwid.Text(tooltip), left=4)
-    ])
-    return urwid.Padding(cbset, left=2 + left_margin - 4, right=2)
+        Args:
+            content: the text.
+            style: the style of the text, can be `title` or `subtitle`, leave for the plain padded text.
+        """
+        self.text = content
+        _text = self.text
+        _min_width = None
+        if style == 'title':
+            _text = ('ttl', self.text)
+            _min_width = 20
+        elif style == 'subtitle':
+            _text = ('subttl', self.text)
+            _min_width = 20
+        super().__init__(urwid.Text(_text), left=2, right=2, min_width=_min_width)
 
 
 class StyledCheckBox(urwid.Padding):
@@ -322,11 +299,11 @@ class Tui:
 
         # Real config handling part
         for i in self.config.keys():
-            self.content.append(tui_title(conf_def[i]['_friendly_name']))
+            self.content.append(StyledText(conf_def[i]['_friendly_name'], 'title'))
             self.content.append(blank)
             i_tmp = self.config[i]
             for j in i_tmp.keys():
-                self.content.append(tui_subtitle(conf_def[i][j]['_friendly_name']))
+                self.content.append(StyledText(conf_def[i][j]['_friendly_name'], 'subtitle'))
                 self.content.append(blank)
                 j_tmp = i_tmp[j]
                 for k in j_tmp.keys():

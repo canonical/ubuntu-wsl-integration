@@ -72,6 +72,9 @@ class StyledText(urwid.Padding):
             _min_width = 20
         super().__init__(urwid.Text(_text), left=2, right=2, min_width=_min_width)
 
+    def get_text(self):
+        return self.text
+
 
 class StyledCheckBox(urwid.Padding):
     def __init__(self, content, default, tooltip, left_margin, source=None):

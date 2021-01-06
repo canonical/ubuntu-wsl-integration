@@ -88,22 +88,40 @@ def tui_subtitle(content):
 
 
 def tui_checkbox(content, default, tooltip, left_margin):
-    """
-    General Checkbox Field
 
-    Args:
-        content: text of the checkbox
-        default: default value of the checkbox
-        tooltip: the tooltip of the checkbox
-        left_margin: The left margin of the Checkbox
-    Returns:
-        a general checkbox field
-    """
     cbset = urwid.Pile([
         urwid.CheckBox(content, state=default),
         urwid.Padding(urwid.Text(tooltip), left=4)
     ])
     return urwid.Padding(cbset, left=2 + left_margin - 4, right=2)
+
+
+class StyledCheckBox(urwid.Padding):
+    def __init__(self, content, default, tooltip, left_margin, source=None):
+        """
+        General Checkbox Field
+
+        Args:
+            content: text of the checkbox
+            default: default value of the checkbox
+            tooltip: the tooltip of the checkbox
+            left_margin: The left margin of the Checkbox
+            source: there this item is from for value reference
+        """
+        self.core = urwid.CheckBox(content, state=default)
+        self.source = source
+        self.widget = urwid.Pile([
+            self.core,
+            urwid.Padding(urwid.Text(tooltip), left=4)
+        ])
+        super().__init__(self.widget, left=2 + left_margin - 4, right=2)
+
+    def get_source(self):
+        return self.source
+
+    def get_core_value(self):
+        return self.core.get_state()
+
 
 
 def tui_edit(content, default, tooltip, left_margin):
@@ -306,12 +324,12 @@ class Tui:
                 j_tmp = i_tmp[j]
                 for k in j_tmp.keys():
                     if isinstance(j_tmp[k], bool):
-                        self.content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                         conf_def[i][j][k]['tip'], left_margin))
+                        self.content.append(StyledCheckBox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
+                                                         conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
                     elif isinstance(j_tmp[k], str):
                         if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
-                            self.content.append(tui_checkbox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
-                                                             conf_def[i][j][k]['tip'], left_margin))
+                            self.content.append(StyledCheckBox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
+                                                             conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
                         else:
                             self.content.append(tui_edit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
                                                          conf_def[i][j][k]['tip'], left_margin))

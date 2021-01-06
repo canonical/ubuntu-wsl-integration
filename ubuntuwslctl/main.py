@@ -162,7 +162,7 @@ class Application:
             description=_("Export the settings (Experimental)"),
             help=_("Export settings as a json string (Experimental)"))
         export_cmd.add_argument(
-            "file",
+            "file", nargs="?", default="",
             help=_("the name of the file to export."))
         export_cmd.set_defaults(func=self.do_export)
 
@@ -170,6 +170,9 @@ class Application:
             "import", aliases=["in"],
             description=_("Import settings (Super Experimental)"),
             help=_("Import settings from a json file (Super Experimental)"))
+        import_cmd.add_argument(
+            "file",
+            help=_("the name of the file to export."))
         import_cmd.set_defaults(func=self.do_import)
 
         joke_cmd = commands.add_parser("joke")

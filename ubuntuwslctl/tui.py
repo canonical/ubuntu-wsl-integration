@@ -183,17 +183,33 @@ class Tui:
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":
-            exp_name = urwid.Edit(u"", "settings.json")
+            exp_name = urwid.Edit(u"", "")
 
             def _export(button):
                 ef = self.handler.export_file(exp_name.edit_text)
                 self._popup_constructor(fun, urwid.Text(u"Exported as {}.".format(ef),
                                                         align='left'))
             body = urwid.Pile([
-                        urwid.Text(u"file name to export: ", align='left'),
+                        urwid.Text(u"file name to export(optional): ", align='left'),
                         urwid.AttrWrap(exp_name, 'editbx', 'editfc')
                    ])
             ok_btn = urwid.AttrWrap(urwid.Button('Yes', _export), 'selectable', 'focus')
+            cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
+            footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
+            self._popup_constructor(fun, body, footer)
+        elif fun == "import":
+            exp_name = urwid.Edit(u"", "")
+
+            def _import(button):
+                ef = self.handler.import_file(exp_name.edit_text)
+                self._popup_constructor(fun,
+                                        urwid.Text(u"{} imported. Please restart Ubuntu to take effect.".format(ef),
+                                        align='left'))
+            body = urwid.Pile([
+                        urwid.Text(u"file name to import: ", align='left'),
+                        urwid.AttrWrap(exp_name, 'editbx', 'editfc')
+                   ])
+            ok_btn = urwid.AttrWrap(urwid.Button('Yes', _import), 'selectable', 'focus')
             cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
@@ -258,7 +274,7 @@ class Tui:
             footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
 
         # Layout
-        return urwid.LineBox(urwid.Pile([body, blank, footer]),
+        return urwid.LineBox(urwid.Pile([blank, body, blank, footer]),
                              title=header.title(), title_attr='header', title_align='center')
 
     def _parse_config(self):

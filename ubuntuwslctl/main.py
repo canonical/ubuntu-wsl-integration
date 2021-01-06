@@ -63,7 +63,7 @@ class Application:
             sys.exit(1)
         except Exception:
             print(bcolors.FAIL + _("ERROR:") + bcolors.ENDC +
-                  _("Something happened during the execution. Following are the details:").format(name=self._args.name))
+                  _("Something happened during the execution. Following are the details:"))
             raise
             sys.exit(1)
 

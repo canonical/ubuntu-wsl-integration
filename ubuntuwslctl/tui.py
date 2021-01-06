@@ -171,10 +171,11 @@ class Tui:
         elif fun == "reload":
             self._body_builder()
             self._loop.widget = self._body
+            self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
         elif fun == "reset":
             body = urwid.Text(u"Do you really want to reset?", align='left')
-            ok_btn = urwid.AttrWrap(urwid.Button('Okay', self._popup_rest_interface), 'selectable', 'focus')
-            cc_btn = urwid.AttrWrap(urwid.Button('Cancel', self._popup_rest_interface), 'selectable', 'focus')
+            ok_btn = urwid.AttrWrap(urwid.Button('Yes', self._popup_rest_interface), 'selectable', 'focus')
+            cc_btn = urwid.AttrWrap(urwid.Button('No', self._popup_rest_interface), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":

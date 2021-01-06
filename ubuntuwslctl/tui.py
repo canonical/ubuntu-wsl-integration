@@ -169,11 +169,12 @@ class Tui:
         if fun in ("", "exit"):
             raise urwid.ExitMainLoop()
         elif fun == "reload":
-            self._reload_ui()
+            self._body_builder()
             self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
         elif fun == "reset":
             def _reset(button):
                 self.handler.reset_all()
+                self._body_builder()
                 self._popup_constructor(fun, urwid.Text(u"Reset complete. Restart Ubuntu to take effect.",
                                                         align='left'))
             body = urwid.Text(u"Do you really want to reset?", align='left')
@@ -182,15 +183,15 @@ class Tui:
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":
-            name = urwid.Edit(u"", "settings.json")
+            exp_name = urwid.Edit(u"", "settings.json")
 
             def _export(button):
-                ef = self.handler.export_file(name.edit_text)
+                ef = self.handler.export_file(exp_name.edit_text)
                 self._popup_constructor(fun, urwid.Text(u"Exported as {}.".format(ef),
                                                         align='left'))
             body = urwid.Pile([
                         urwid.Text(u"file name to export: ", align='left'),
-                        urwid.AttrWrap(name, 'editbx', 'editfc')
+                        urwid.AttrWrap(exp_name, 'editbx', 'editfc')
                    ])
             ok_btn = urwid.AttrWrap(urwid.Button('Yes', _export), 'selectable', 'focus')
             cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
@@ -228,7 +229,6 @@ class Tui:
         """
         Clear the Overlay and reload everything again.
         """
-        self._body_builder()
         self._loop.widget = self._body
 
     def _popup_widget(self, header, body=None, footer=None):

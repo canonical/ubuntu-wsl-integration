@@ -184,6 +184,7 @@ class Tui:
                 j, k, l = i.get_source()
                 m = i.get_core_value()
                 self.handler.update(j, k, l, m)
+            self._body_builder()
             self._popup_constructor(fun, urwid.Text(u"Saved. Restart Ubuntu to make effect.", align='left'))
         elif fun == "reset":
             def _reset(button):
@@ -216,10 +217,15 @@ class Tui:
             exp_name = urwid.Edit(u"", "")
 
             def _import(button):
-                ef = self.handler.import_file(exp_name.edit_text)
-                self._popup_constructor(fun,
-                                        urwid.Text(u"{} imported. Please restart Ubuntu to take effect.".format(ef),
-                                                   align='left'))
+                if exp_name == "":
+                    b = urwid.Text(u"No input in name, action aborted.".format(exp_name.edit_text),
+                                   align='left')
+                    self._popup_constructor(fun, b)
+                else:
+                    self.handler.import_file(exp_name.edit_text)
+                    b = urwid.Text(u"{} imported. Please restart Ubuntu to take effect.".format(exp_name.edit_text),
+                                align='left')
+                    self._popup_constructor(fun, b)
 
             body = urwid.Pile([
                 urwid.Text(u"file name to import: ", align='left'),

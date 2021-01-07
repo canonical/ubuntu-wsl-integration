@@ -31,6 +31,7 @@ class TuiButton(urwid.WidgetWrap):
     '''
     Custom button that used in the footer
     '''
+
     def __init__(self, label, on_press=None, user_data=None):
         self.widget = urwid.Text(label)
         self.widget = urwid.AttrMap(self.widget, 'footer')
@@ -48,7 +49,7 @@ class TuiButton(urwid.WidgetWrap):
         return self._hidden_btn.mouse_event(*args, **kw)
 
 
-blank = urwid.Divider() # friendly name for Divider
+blank = urwid.Divider()  # friendly name for Divider
 
 
 class StyledText(urwid.Padding):
@@ -119,10 +120,10 @@ class StyledEdit(urwid.Padding):
         self.core = urwid.Edit(('editcp', text), default)
         self.source = source
         self.widget = urwid.Pile([
-        urwid.AttrWrap(self.core, 'editbx', 'editfc'),
-        urwid.Padding(urwid.Text(tooltip), left=len(text))
-    ])
-        super().__init__(self.widget,  left=2 + left_margin - len(text), right=2)
+            urwid.AttrWrap(self.core, 'editbx', 'editfc'),
+            urwid.Padding(urwid.Text(tooltip), left=len(text))
+        ])
+        super().__init__(self.widget, left=2 + left_margin - len(text), right=2)
 
     def get_source(self):
         return self.source
@@ -137,12 +138,12 @@ class Tui:
     """
 
     _palette = [
-        ('body', '', '', 'standout'),                   # body
-        ('header', 'black', 'white', 'bold'),           # header
-        ('footer', 'black', 'dark cyan'),               # footer
-        ('footerhlt', 'white', 'black'),                # footer highlight
-        ('ttl', 'dark blue', 'white', 'standout'),      # section title
-        ('subttl', 'light gray', '', 'standout'),       # section subtitle
+        ('body', '', '', 'standout'),  # body
+        ('header', 'black', 'white', 'bold'),  # header
+        ('footer', 'black', 'dark cyan'),  # footer
+        ('footerhlt', 'white', 'black'),  # footer highlight
+        ('ttl', 'dark blue', 'white', 'standout'),  # section title
+        ('subttl', 'light gray', '', 'standout'),  # section subtitle
         ('editfc', 'white', 'black', 'bold'),
         ('editbx', 'black', 'white'),
         ('editcp', '', '', 'standout'),
@@ -194,10 +195,11 @@ class Tui:
                 ef = self.handler.export_file(exp_name.edit_text)
                 self._popup_constructor(fun, urwid.Text(u"Exported as {}.".format(ef),
                                                         align='left'))
+
             body = urwid.Pile([
-                        urwid.Text(u"file name to export(optional): ", align='left'),
-                        urwid.AttrWrap(exp_name, 'editbx', 'editfc')
-                   ])
+                urwid.Text(u"file name to export(optional): ", align='left'),
+                urwid.AttrWrap(exp_name, 'editbx', 'editfc')
+            ])
             ok_btn = urwid.AttrWrap(urwid.Button('Yes', _export), 'selectable', 'focus')
             cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
@@ -209,11 +211,12 @@ class Tui:
                 ef = self.handler.import_file(exp_name.edit_text)
                 self._popup_constructor(fun,
                                         urwid.Text(u"{} imported. Please restart Ubuntu to take effect.".format(ef),
-                                        align='left'))
+                                                   align='left'))
+
             body = urwid.Pile([
-                        urwid.Text(u"file name to import: ", align='left'),
-                        urwid.AttrWrap(exp_name, 'editbx', 'editfc')
-                   ])
+                urwid.Text(u"file name to import: ", align='left'),
+                urwid.AttrWrap(exp_name, 'editbx', 'editfc')
+            ])
             ok_btn = urwid.AttrWrap(urwid.Button('Yes', _import), 'selectable', 'focus')
             cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
@@ -225,7 +228,6 @@ class Tui:
         return urwid.GridFlow(
             (
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F1'), u'Save'], self._fun), 'footer'),
-
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F2'), u'Reset'], self._fun), 'footer'),
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F3'), u'Import'], self._fun), 'footer'),
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F4'), u'Export'], self._fun), 'footer'),
@@ -312,14 +314,14 @@ class Tui:
                 for k in j_tmp.keys():
                     if isinstance(j_tmp[k], bool):
                         self.content.append(StyledCheckBox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                         conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
+                                                           conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
                     elif isinstance(j_tmp[k], str):
                         if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
                             self.content.append(StyledCheckBox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
-                                                             conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
+                                                               conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
                         else:
                             self.content.append(StyledEdit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                         conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
+                                                           conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
                 self.content.append(blank)
 
     def _body_builder(self):

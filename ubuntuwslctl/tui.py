@@ -173,6 +173,7 @@ class Tui:
             fun = button.label
             fun = fun[2:].lower()
         if fun in ("", "exit"):
+            self._loop.screen.stop()
             raise urwid.ExitMainLoop()
         elif fun == "reload":
             self._body_builder()
@@ -217,7 +218,7 @@ class Tui:
             exp_name = urwid.Edit(u"", "")
 
             def _import(button):
-                if exp_name == "":
+                if exp_name.edit_text == "":
                     b = urwid.Text(u"No input in name, action aborted.".format(exp_name.edit_text),
                                    align='left')
                     self._popup_constructor(fun, b)

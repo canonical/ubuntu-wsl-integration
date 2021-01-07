@@ -177,6 +177,14 @@ class Tui:
         elif fun == "reload":
             self._body_builder()
             self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
+        elif fun == "save":
+            for i in self.content:
+                if not hasattr(i, "get_source"):
+                    continue
+                j, k, l = i.get_source()
+                m = i.get_core_value()
+                self.handler.update(j, k, l, m)
+            self._popup_constructor(fun, urwid.Text(u"Saved. Restart Ubuntu to make effect.", align='left'))
         elif fun == "reset":
             def _reset(button):
                 self.handler.reset_all()

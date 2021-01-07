@@ -69,7 +69,7 @@ class Application:
 
     def _init_parser(self):
         self.parser.add_argument(
-            '--version', action='version', version="ubuntuwsl 0.20.1")
+            '--version', action='version', version="ubuntuwsl 0.25.0")
         self.parser.set_defaults(func=self.do_help)
         self.parser.add_argument(
             "-y", "--yes", action="store_true",

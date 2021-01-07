@@ -1,3 +1,10 @@
+ubuntu-wsl-integration (0.25.0) groovy; urgency=medium
+
+  * (Experimental) Completed initial tui implementation
+  * (Experimental) working import function
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Thu, 07 Jan 2021 13:51:10 +0800
+
 ubuntu-wsl-integration (0.24.1) groovy; urgency=medium
 
   * (Super Experimental) Proper footer for TUI Interface

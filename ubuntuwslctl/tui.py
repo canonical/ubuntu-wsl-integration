@@ -21,115 +21,10 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
 import urwid
-import urwid.raw_display
 from ubuntuwslctl.core.generator import SuperHandler
+from ubuntuwslctl.core.decor import blank, StyledCheckBox, StyledEdit, StyledText, TuiButton
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
-
-
-class TuiButton(urwid.WidgetWrap):
-    '''
-    Custom button that used in the footer
-    '''
-
-    def __init__(self, label, on_press=None, user_data=None):
-        self.widget = urwid.Text(label)
-        self.widget = urwid.AttrMap(self.widget, 'footer')
-        self._hidden_btn = urwid.Button(label, on_press, user_data)
-
-        super().__init__(self.widget)
-
-    def selectable(self):
-        return True
-
-    def keypress(self, *args, **kw):
-        return self._hidden_btn.keypress(*args, **kw)
-
-    def mouse_event(self, *args, **kw):
-        return self._hidden_btn.mouse_event(*args, **kw)
-
-
-blank = urwid.Divider()  # friendly name for Divider
-
-
-class StyledText(urwid.Padding):
-
-    def __init__(self, content, style=None):
-        """
-        General Text Field
-
-        Args:
-            content: the text.
-            style: the style of the text, can be `title` or `subtitle`, leave for the plain padded text.
-        """
-        self.text = content
-        _text = self.text
-        _min_width = None
-        if style == 'title':
-            _text = ('ttl', self.text)
-            _min_width = 20
-        elif style == 'subtitle':
-            _text = ('subttl', self.text)
-            _min_width = 20
-        super().__init__(urwid.Text(_text), left=2, right=2, min_width=_min_width)
-
-    def get_text(self):
-        return self.text
-
-
-class StyledCheckBox(urwid.Padding):
-    def __init__(self, content, default, tooltip, left_margin, source=None):
-        """
-        General Checkbox Field
-
-        Args:
-            content: text of the checkbox
-            default: default value of the checkbox
-            tooltip: the tooltip of the checkbox
-            left_margin: The left margin of the Checkbox
-            source: there this item is from for value reference
-        """
-        self.core = urwid.CheckBox(content, state=default)
-        self.source = source
-        self.widget = urwid.Pile([
-            self.core,
-            urwid.Padding(urwid.Text(tooltip), left=4)
-        ])
-        super().__init__(self.widget, left=2 + left_margin - 4, right=2)
-
-    def get_source(self):
-        return self.source
-
-    def get_core_value(self):
-        return "true" if self.core.get_state() else "false"
-
-
-class StyledEdit(urwid.Padding):
-    def __init__(self, content, default, tooltip, left_margin, source=None):
-        """
-        General Edit Field
-
-        Args:
-            content: text of the editbox
-            default: default value of the editbox
-            tooltip: tooltip of the editbox
-            left_margin: left_margin of the editbox
-            source: there this item is from for value reference
-        """
-        text = content + u": "
-        self.core = urwid.Edit(('editcp', text), default)
-        self.source = source
-        self.widget = urwid.Pile([
-            urwid.AttrWrap(self.core, 'editbx', 'editfc'),
-            urwid.Padding(urwid.Text(tooltip), left=len(text))
-        ])
-        super().__init__(self.widget, left=2 + left_margin - len(text), right=2)
-
-    def get_source(self):
-        return self.source
-
-    def get_core_value(self):
-        return self.core.get_edit_text()
 
 
 class Tui:
@@ -173,7 +68,7 @@ class Tui:
             fun = button.label
             fun = fun[2:].lower()
         if fun in ("", "exit"):
-            self._loop.screen.stop()
+
             raise urwid.ExitMainLoop()
         elif fun == "reload":
             self._body_builder()

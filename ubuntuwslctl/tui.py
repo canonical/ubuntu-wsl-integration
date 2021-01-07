@@ -101,7 +101,7 @@ class StyledCheckBox(urwid.Padding):
         return self.source
 
     def get_core_value(self):
-        return self.core.get_state()
+        return "true" if self.core.get_state() else "false"
 
 
 class StyledEdit(urwid.Padding):

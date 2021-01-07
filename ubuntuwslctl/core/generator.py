@@ -65,6 +65,9 @@ class SuperHandler:
 
         return name
 
+    def update(self, config_type, section, config, value):
+        self._select_config(config_type).update(section, config, value)
+
     def import_file(self, name):
         with open(name, 'r+') as f:
             file = json.load(f)
@@ -73,4 +76,4 @@ class SuperHandler:
                 for j in conf_to_read.keys():
                     j_tmp = conf_to_read[j]
                     for k in j_tmp.keys():
-                        self._select_config(i).update(j, k, j_tmp[k])
+                        self.update(i, j, k, j_tmp[k])

@@ -31,6 +31,9 @@ pip-delete-this-directory.txt
 nosetests.xml
 coverage.xml
 
+# debian generated files
+debian/files
+
 # Translations
 *.mo
 

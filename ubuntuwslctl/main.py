@@ -153,8 +153,8 @@ class Application:
 
         ui_cmd = commands.add_parser(
             "visual", aliases=["ui", "tui"],
-            description=_("Display a friendly text-based user interface. (Super Experimental)"),
-            help=_("Display a WIP friendly text-based user interface. (Super Experimental)"))
+            description=_("Display a friendly text-based user interface. (Experimental)"),
+            help=_("Display a friendly text-based user interface. (Experimental)"))
         ui_cmd.set_defaults(func=self.do_ui)
 
         export_cmd = commands.add_parser(
@@ -168,8 +168,8 @@ class Application:
 
         import_cmd = commands.add_parser(
             "import", aliases=["in"],
-            description=_("Import settings (Super Experimental)"),
-            help=_("Import settings from a json file (Super Experimental)"))
+            description=_("Import settings (Experimental)"),
+            help=_("Import settings from a json file (Experimental)"))
         import_cmd.add_argument(
             "file",
             help=_("the name of the file to export."))

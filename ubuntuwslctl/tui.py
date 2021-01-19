@@ -38,7 +38,7 @@ class Tui:
         ('footer', 'black', 'dark cyan', '', "#000", "#f4aa90"),  # footer
         ('footerhlt', 'white', 'black'),  # footer highlight
         ('ttl', 'light red', 'white', 'standout', "#e95420", "#fff"),  # section title
-        ('subttl', 'light gray', '', 'standout', "#ed764d", "#fff"),  # section subtitle
+        ('subttl', 'light gray', '', 'standout', "#ed764d", ''),  # section subtitle
         ('editfc', 'white', 'black', 'bold'),
         ('editbx', 'black', 'white'),
         ('editcp', '', '', 'standout'),

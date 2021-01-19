@@ -34,7 +34,7 @@ class Tui:
 
     _palette = [
         ('body', '', '', 'standout'),  # body
-        ('header', 'black', 'white', 'bold'),  # header
+        ('header', 'black', 'white', 'bold', "#fff", "#e95420"),  # header
         ('footer', 'black', 'dark cyan'),  # footer
         ('footerhlt', 'white', 'black'),  # footer highlight
         ('ttl', 'dark blue', 'white', 'standout'),  # section title
@@ -50,9 +50,13 @@ class Tui:
         self.handler = SuperHandler(ubuntu, wsl)
         self.config = self.handler.get_config()
         self.content = []
+        self.screen = urwid.raw_display.Screen()
+
+        self.screen.set_terminal_properties(2**24)
+        self.screen.register_palette(self._palette)
 
         self._body_builder()
-        self._loop = urwid.MainLoop(self._body, self._palette, urwid.raw_display.Screen(),
+        self._loop = urwid.MainLoop(self._body, screen=self.screen,
                                     unhandled_input=self._unhandled_key)
 
     def _fun(self, button=None, fun=None):

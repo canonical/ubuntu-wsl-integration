@@ -60,13 +60,16 @@ class StyledText(Padding):
         self.text = content
         _text = self.text
         _min_width = None
+        _align = "left"
         if style == 'title':
             _text = ('ttl', self.text)
             _min_width = 20
+            _align = "center"
         elif style == 'subtitle':
             _text = ('subttl', self.text)
             _min_width = 20
-        super().__init__(Text(_text), left=2, right=2, min_width=_min_width)
+            _align = "center"
+        super().__init__(Text(_text), left=2, right=2, align=_align, min_width=_min_width)
 
     def get_text(self):
         return self.text

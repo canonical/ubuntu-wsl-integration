@@ -87,7 +87,7 @@ conf_def = {
         }
     },
     'ubuntu': {
-        '_friendly_name': 'Ubuntu WSL Settings',
+        '_friendly_name': 'Ubuntu Settings',
         '_file_location': '/etc/ubuntu-wsl.conf',
         'Interop': {
             '_friendly_name': 'Interoperability',

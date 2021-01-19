@@ -76,6 +76,10 @@ class Tui:
         if fun in ("", "exit"):
 
             raise urwid.ExitMainLoop()
+        elif fun == "help":
+            self._popup_constructor(fun, urwid.Text((u"Use UP/DOWN/LEFT/RIGHT arrow to navigate between "
+                                                     u"option. Use SPACE to toggle the settings. "
+                                                     u" Use ENTER or your mouse to press a button."), align='left'))
         elif fun == "reload":
             self._body_builder()
             self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
@@ -148,7 +152,8 @@ class Tui:
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F3'), u'Import'], self._fun), 'footer'),
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F4'), u'Export'], self._fun), 'footer'),
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F5'), u'Reload'], self._fun), 'footer'),
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F6'), u'Exit'], self._fun), 'footer')
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F6'), u'Help'], self._fun), 'footer'),
+                urwid.AttrWrap(TuiButton([('footerhlt', u'F7'), u'Exit'], self._fun), 'footer')
             ),
             10, 0, 0, 'left')
 
@@ -256,8 +261,10 @@ class Tui:
         """
         handle keys
         """
-        if key in ('f6', 'ctrl c', 'esc'):
+        if key in ('f7', 'ctrl c', 'esc'):
             self._fun(fun='exit')
+        elif key == 'f6':
+            self._fun(fun='help')
         elif key == 'f5':
             self._fun(fun='reload')
         elif key == 'f4':

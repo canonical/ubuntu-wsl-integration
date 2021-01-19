@@ -34,8 +34,8 @@ class Tui:
 
     _palette = [
         ('body', '', '', 'standout'),  # body
-        ('header', 'black', 'white', 'bold', "#fff", "#e95420"),  # header
-        ('footer', 'black', 'dark cyan', '', "#000", "#f4aa90"),  # footer
+        ('header', 'black', 'white', 'bold', "#e95420", "#fff"),  # header
+        ('footer', 'black', 'dark cyan', '', "#000", "#aea79f"),  # footer
         ('footerhlt', 'white', 'black'),  # footer highlight
         ('ttl', 'light red', 'white', 'standout', "#e95420", "#fff"),  # section title
         ('subttl', 'light gray', '', 'standout', "#ed764d", ''),  # section subtitle

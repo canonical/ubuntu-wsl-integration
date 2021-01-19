@@ -34,10 +34,10 @@ class Tui:
 
     _palette = [
         ('body', '', '', 'standout'),  # body
-        ('header', 'black', 'white', 'bold', "#e95420", "#fff"),  # header
+        ('header', 'white', 'light red', 'bold', "#fff", "#e95420"),  # header
         ('footer', 'black', 'dark cyan', '', "#000", "#aea79f"),  # footer
         ('footerhlt', 'white', 'black'),  # footer highlight
-        ('ttl', 'light red', 'white', 'standout', "#e95420", "#fff"),  # section title
+        ('ttl', 'light red', 'white', 'standout', "#fff", "#e95420"),  # section title
         ('subttl', 'light gray', '', 'standout', "#ed764d", ''),  # section subtitle
         ('editfc', 'white', 'black', 'bold'),
         ('editbx', 'black', 'white'),
@@ -46,13 +46,15 @@ class Tui:
         ('focus', 'black', 'light gray')
     ]
 
-    def __init__(self, ubuntu, wsl):
+    def __init__(self, ubuntu, wsl, color_fallback=False):
         self.handler = SuperHandler(ubuntu, wsl)
         self.config = self.handler.get_config()
         self.content = []
         self.screen = urwid.raw_display.Screen()
 
         self.screen.set_terminal_properties(2**24)
+        if color_fallback:
+            self.screen.set_terminal_properties(16)
         self.screen.register_palette(self._palette)
 
         self._body_builder()

@@ -249,7 +249,7 @@ class Tui:
 
         header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
         footer = urwid.AttrWrap(self._footer(), 'footer')
-        listbox = urwid.ListBox(urwid.SimpleListWalker(self.content))
+        listbox = urwid.TreeListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
 
     def _unhandled_key(self, key):

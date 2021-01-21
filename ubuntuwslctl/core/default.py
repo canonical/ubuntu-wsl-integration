@@ -117,7 +117,7 @@ conf_def = {
                 '_friendly_name': 'WSL News',
                 'default': 'true',
                 'type': 'bool',
-                'tip': 'This options allows you to control your MOTD News.'
+                'tip': 'This options allows you to control your MOTD News. Toggling it on allows you to see the MOTD.'
             },
         }
     }

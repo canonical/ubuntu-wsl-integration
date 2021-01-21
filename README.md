@@ -6,8 +6,11 @@ This is proposed to ship with Ubuntu WSL metapackage in 20.10 under Ubuntu WSL m
 
 This contains:
 - Ubuntu WSL Integration script that can be used when startup or with `wslusc` utility in `wslu`;
-- WSL specific motd script;
 - A cli for managing the integration.
+
+## Bugs
+
+Please report bugs to launchpad here: <https://bugs.launchpad.net/ubuntu-wsl-integration>
 
 ## License
 

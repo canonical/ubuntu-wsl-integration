@@ -252,7 +252,7 @@ class Tui:
         """
         self._parse_config()
 
-        header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)"), 'header')
+        header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)", align='center'), 'header')
         footer = urwid.AttrWrap(self._footer(), 'footer')
         listbox = urwid.TreeListBox(urwid.SimpleListWalker(self.content))
         self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)

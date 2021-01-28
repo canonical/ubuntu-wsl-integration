@@ -26,7 +26,7 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from ubuntuwslctl.utils.helper import config_name_extractor, query_yes_no, bcolors
 from ubuntuwslctl.utils.i18n import translation
 from ubuntuwslctl.core.editor import UbuntuWSLConfigEditor, WSLConfigEditor
-from ubuntuwslctl.core.generator import SuperHandler
+from ubuntuwslctl.core.handler import SuperHandler
 
 _ = translation.gettext
 
@@ -175,8 +175,8 @@ class Application:
             help=_("the name of the file to export."))
         import_cmd.set_defaults(func=self.do_import)
 
-        joke_cmd = commands.add_parser("joke")
-        joke_cmd.set_defaults(func=self.do_joke)
+        fun_cmd = commands.add_parser("fun")
+        fun_cmd.set_defaults(func=self.do_fun)
 
     def _select_config(self, type_input):
         type_input = type_input.lower()
@@ -232,7 +232,7 @@ class Application:
 
     def do_ui(self):
         from ubuntuwslctl.tui import Tui
-        Tui(self.ubuntu_conf, self.wsl_conf).run()
+        Tui(self.handler).run()
 
     def do_export(self):
         self.handler.export_file(self._args.file)
@@ -241,11 +241,13 @@ class Application:
         self.handler.import_file(self._args.file)
 
     @staticmethod
-    def do_joke():
+    def do_fun():
         import base64
-        joke = b'CuKghOKghOKghOKghOKghOKghOKghOKghOKghOKiuOKjhOKjr+Kiv+Khn+KggeKjgOKgtOKgiOKggeKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgiOKgsuKjhOKghOKiv+Kjv+KhpuKghOKjgOKghOKghOKghOKghArioITioITioITioITioITioITioITioITioITioITio7/io7/io6/io6TioJ7ioIHioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioIjioLvio67io7/io7/io7vioKXioKTioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qC44qO/4qGf4qCb4qCB4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCI4qC74qO/4qOe4qKm4qCE4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKihOKjgOKjgOKjtOKjv+Kjv+KghuKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgmOKjv+KhhOKggeKghOKghOKghArioITioITioITioITioITioITioITioLniopvio7/io7/ioIbioITioITioITioITiorDio6Tio6TiooDio4DioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioKDior/ioYfioITioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qG84qK74qO/4qO+4qCE4qCE4qCE4qKA4qO84qO/4qO/4qOn4qGf4qCB4qGA4qKA4qGi4qKk4qO24qOO4qOA4qGA4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qO84qCB4qCE4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKghOKghOKghOKguOKjn+Kjv+KghOKghOKigeKjpuKjgOKgiOKgu+KjvuKjtOKjv+Kjn+KjvOKjt+KjpuKjveKjv+Kjv+Kjv+Kjt+KghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKigOKggeKigOKhoOKghOKghOKghArioITioITioITioITioITioITioITioITioITiooDio7HioZnioITioITioITiooXioLbioojio7bio7/io7/io7/io7/io7/io7/io7/io7/io7/io7/io7/io7/ioITioITioITioITioITioITioITioITioITioITioITioITioYvioIHioITioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCI4qCJ4qCB4qCH4qCE4qCE4qCE4qK44qO/4qO/4qO/4qG/4qC/4qC/4qC/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCb4qKG4qCE4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKiv+Kjv+Kjt+KjpuKhgOKjoOKjv+Kjv+Kjv+Kjv+Kjv+Kgn+KjveKjv+Khn+KghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgoOKghOKghOKghOKghOKghOKghArioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioIjior/io7/io7/io7/io7/iob3ioLfioJvioJvioIvioqDio7/io7/ioYfioITioITioITioITioITioITioITioITioITioITioITioITiooHioYDio4DioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCI4qC74qO/4qO/4qOm4qKA4qOk4qO24qG24qO24qO84qO/4qO/4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCi4qGA4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgiOKiv+Kjv+KjluKjv+Kjn+Kjv+Kjv+Kjv+Kjv+Kgh+KghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKgiOKgu+KjpuKghOKghArioITioITioITio6Dio6Tio7bio7bioYDioITioITioITioITioITioITioITioITioITioITioITioITioITioJnio7/io63io4nio4nio7Tio7/iob/ioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioJHioIQK4qCE4qCE4qOA4qO/4qO/4qG/4qCL4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCY4qC/4qC/4qC/4qCb4qCB4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCD4qCE4qCECuKigOKjvuKjv+Kjv+Kgi+KghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKhgOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKhhuKghOKghArio7/io7fioJ/ioIHioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioJjio6TioYDioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioIQK4qGu4qCB4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qOP4qG34qKA4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCECuKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKjgOKjvOKjv+Kjt+Kjv+KjpeKhhOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghArioITioITioITioITioITioITioITioITioITioITio4Dio6Dio6Tio7bio7bio77io7/io7/io7/io7/io7/io7/io7/io7/io7fio6DioYDioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioITioIQK4qCE4qCE4qCE4qCE4qCE4qOA4qOk4qO04qO24qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qO/4qG74qOc4qO34qO94qO34qO/4qOm4qGA4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCE4qCECuKghOKghOKghOKjoOKjvuKjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kin+Kjr+KjvuKjv+Kjv+Kjv+Kjv+Kjv+Kjv+Kjv+KjpuKhgOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghOKghAouLllvdSBhcmUgZXhwZWN0aW5nIGEgam9rZSwgYnV0IGl0IHdhcyBtZSwgRGlvIS4uCg=='
-
-        print(base64.b64decode(joke).decode("utf-8"))
+        fun = b'44CA44CA44CA4oinX+KIpyAgICAgICAgZnVuPwrjgIDjgIAgKOOAgO+9pc+J772lKSAK44CAIO+8v3zjgIDiioPvvI8o77y/77y' \
+              b'/XyAgCu+8j+OAgOKUlC0o77y/77y/77y/X++8jyAK77+j77+j77+j77+j77+j77+j77' \
+              b'+jCiAgICAgICAgICAgICAgc2xlZXAgaXMgZnVuCuOAgO+8nOKMku+8j+ODvS3vvaRf77y/XwrvvI/vvJxfL++8v++8v++8v++8v' \
+              b'++8jwrvv6Pvv6Pvv6Pvv6Pvv6Pvv6Pvv6M='
+        print(base64.b64decode(fun).decode("utf-8"))
 
 
 def main():

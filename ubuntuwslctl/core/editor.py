@@ -37,7 +37,6 @@ class ConfigEditor:
         self.default_conf = {}
         self._init_default_conf()
 
-
         self.config = ConfigParser()
         self.config.BasicInterpolcation = None
         self.config.read_dict(self.default_conf)

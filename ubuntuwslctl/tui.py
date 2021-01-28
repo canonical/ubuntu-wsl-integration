@@ -21,7 +21,6 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
 import urwid
-from ubuntuwslctl.core.generator import SuperHandler
 from ubuntuwslctl.core.decor import blank, StyledCheckBox, StyledEdit, StyledText, TuiButton
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
@@ -46,8 +45,8 @@ class Tui:
         ('focus', 'black', 'light gray')
     ]
 
-    def __init__(self, ubuntu, wsl, color_fallback=False):
-        self.handler = SuperHandler(ubuntu, wsl)
+    def __init__(self, handler, color_fallback=False):
+        self.handler = handler
         self.config = self.handler.get_config()
         self.content = []
         self.screen = urwid.raw_display.Screen()

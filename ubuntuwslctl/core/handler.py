@@ -20,15 +20,17 @@
 import json
 import time
 
+from ubuntuwslctl.core.editor import UbuntuWSLConfigEditor, WSLConfigEditor
+
 
 class SuperHandler:
     """
-    This class tries to handle everything Editor cannot handle elegantly.
+    The Core Handler.
     """
 
-    def __init__(self, ubuntu, wsl):
-        self.ubuntu_conf = ubuntu
-        self.wsl_conf = wsl
+    def __init__(self):
+        self.ubuntu_conf = UbuntuWSLConfigEditor()
+        self.wsl_conf = WSLConfigEditor()
 
         ubuntu_tmp = (self.ubuntu_conf.get_config())._sections
         wsl_tmp = (self.wsl_conf.get_config())._sections
@@ -43,6 +45,15 @@ class SuperHandler:
         else:
             raise ValueError("Invalid config name. Please check again.")
 
+    def get_config(self):
+        return self.parsed_config
+
+    def update(self, config_type, section, config, value):
+        self._select_config(config_type).update(section, config, value)
+
+    def reset(self, config_type, section, config):
+        self._select_config(config_type).reset(section, config)
+
     def reset_all(self):
         self.ubuntu_conf.reset_all()
         self.wsl_conf.reset_all()
@@ -50,9 +61,6 @@ class SuperHandler:
     def list_all(self, default):
         self.ubuntu_conf.list(default)
         self.wsl_conf.list(default)
-
-    def get_config(self):
-        return self.parsed_config
 
     def export_file(self, name):
         t = time.gmtime(time.time())
@@ -64,9 +72,6 @@ class SuperHandler:
             json.dump(self.parsed_config, f)
 
         return name
-
-    def update(self, config_type, section, config, value):
-        self._select_config(config_type).update(section, config, value)
 
     def import_file(self, name):
         with open(name, 'r+') as f:

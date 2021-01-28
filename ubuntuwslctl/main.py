@@ -33,15 +33,12 @@ _ = translation.gettext
 
 class Application:
     def __init__(self):
-        self.ubuntu_conf = UbuntuWSLConfigEditor()
-        self.wsl_conf = WSLConfigEditor()
-        self.handler = SuperHandler(self.ubuntu_conf, self.wsl_conf)
+        self.handler = SuperHandler()
         self.parser = ArgumentParser(
             formatter_class=RawTextHelpFormatter,
             description=_("ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."),
             epilog=_("Note: \"Super Experimental\" means it is WIP and not working. "
-                     "\"Experimental\" means it is WIP but most of the part is working."
-                     "\n\nThis cli has the ability to make a joke."))
+                     "\"Experimental\" means it is WIP but most of the part is working."))
         self._init_parser()
         self._args = self.parser.parse_args()
 
@@ -178,15 +175,6 @@ class Application:
         fun_cmd = commands.add_parser("fun")
         fun_cmd.set_defaults(func=self.do_fun)
 
-    def _select_config(self, type_input):
-        type_input = type_input.lower()
-        if type_input == "ubuntu":
-            return self.ubuntu_conf
-        elif type_input == "wsl":
-            return self.wsl_conf
-        else:
-            raise ValueError(_("Invalid config name. Please check again."))
-
     def do_help(self):
         if 'cmd' in self._args and self._args.cmd is not None:
             self.parser.parse_args([self._args.cmd, '-h'])
@@ -205,8 +193,7 @@ class Application:
             if query_yes_no(_("You are trying to reset `{name}`."
                               "Do you still want to proceed?").format(name=self._args.name),
                             default="no", assume_yes=assume_yes):
-                self._select_config(config_type) \
-                    .reset(config_section, config_setting)
+                self.handler.reset(config_type, config_section, config_setting)
         else:
             if query_yes_no(_("You are trying to reset all settings, "
                               "including ubuntu-wsl.conf and wsl.conf. "

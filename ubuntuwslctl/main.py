@@ -25,7 +25,6 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 
 from ubuntuwslctl.utils.helper import config_name_extractor, query_yes_no, bcolors
 from ubuntuwslctl.utils.i18n import translation
-from ubuntuwslctl.core.editor import UbuntuWSLConfigEditor, WSLConfigEditor
 from ubuntuwslctl.core.handler import SuperHandler
 
 _ = translation.gettext
@@ -208,8 +207,7 @@ class Application:
         print(bcolors.WARNING + _("WARNING: ") + bcolors.ENDC +
               _("you need to restart Ubuntu distribution to take effect."))
         config_type, config_section, config_setting = config_name_extractor(self._args.name)
-        self._select_config(config_type) \
-            .update(config_section, config_setting, self._args.value)
+        self.handler.update(config_type, config_section, config_setting, self._args.value)
 
     def do_ui(self):
         from ubuntuwslctl.tui import Tui

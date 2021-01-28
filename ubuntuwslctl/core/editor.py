@@ -91,7 +91,7 @@ class ConfigEditor:
         for config_item in self.config[config_section]:
             self.show(config_section, config_item, is_short, is_default)
 
-    def list(self, is_default=False, is_short=False):
+    def list(self, is_short=False, is_default=False):
         for section in self.config.sections():
             self.show_list(section, is_short, is_default)
 

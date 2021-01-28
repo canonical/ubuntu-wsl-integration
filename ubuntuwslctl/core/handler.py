@@ -51,6 +51,14 @@ class SuperHandler:
     def update(self, config_type, section, config, value):
         self._select_config(config_type).update(section, config, value)
 
+    def show(self, config_type, section, config, is_short, is_default):
+        if section == "*":  # top level wild card display
+            self._select_config(config_type).list(is_short, is_default)
+        elif config == "*": # second level wild card display
+            self._select_config(config_type).show_list(section, is_short, is_default)
+        else:
+            self._select_config(config_type).show(section, config, is_short, is_default)
+
     def reset(self, config_type, section, config):
         self._select_config(config_type).reset(section, config)
 
@@ -59,8 +67,8 @@ class SuperHandler:
         self.wsl_conf.reset_all()
 
     def list_all(self, default):
-        self.ubuntu_conf.list(default)
-        self.wsl_conf.list(default)
+        self.ubuntu_conf.list(is_default=default)
+        self.wsl_conf.list(is_default=default)
 
     def export_file(self, name):
         t = time.gmtime(time.time())

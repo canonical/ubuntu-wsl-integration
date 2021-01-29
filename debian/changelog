@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.27.0) hirsute; urgency=medium
+
+  * Several final code refactoring.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Fri, 29 Jan 2021 10:54:34 +0800
+
 ubuntu-wsl-integration (0.26.0) hirsute; urgency=medium
 
   * Improved color palette for TUI.

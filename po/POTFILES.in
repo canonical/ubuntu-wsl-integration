@@ -3,7 +3,7 @@ ubuntuwslctl/__init__.py
 ubuntuwslctl/core/__init__.py
 ubuntuwslctl/core/default.py
 ubuntuwslctl/core/editor.py
-ubuntuwslctl/core/generator.py
+ubuntuwslctl/core/handler.py
 ubuntuwslctl/core/decor.py
 ubuntuwslctl/utils/__init__.py
 ubuntuwslctl/utils/helper.py

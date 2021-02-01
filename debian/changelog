@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.27.2) hirsute; urgency=medium
+
+  * debian: add source/local-options for local builds
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Mon, 01 Feb 2021 10:35:18 +0800
+
 ubuntu-wsl-integration (0.27.1) hirsute; urgency=medium
 
   * update translation and WSL for submitting the package.

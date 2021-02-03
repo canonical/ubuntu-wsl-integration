@@ -67,10 +67,21 @@ class ConfigEditor:
         elif to_validate == "path":
             return re.fullmatch(r"(/[^/ ]*)+/?", input_con) is not None, _("Input should be a valid UNIX path")
         elif to_validate == "mount":
-            # Not validating this one for now;
-            # This is mostly because documentations about DrvFS is very limited
-            # and it is really hard to check which can be passed and which can't.
-            return True, ""
+            if input_con == "":
+                return True, ""
+            iset = input_con.split(',')
+            x = True
+            for i in iset:
+                if i == "":
+                    x = x and False
+                elif re.fullmatch(r"(metadata|(u|g)id=\d+|(u|f|d)mask=(4|2|1|0)?[0-7]{3})", i) is not None:
+                    x = x and True
+                else:
+                    x = x and False
+            return x, _("Input is not a valid set of DrvFS mount options. Please check "
+                        "https://docs.microsoft.com/en-us/windows/wsl/wsl-config#mount-options "
+                        "for correct valid input")
+
 
         return False, _("Something went wrong, but how do you even get here?")
 

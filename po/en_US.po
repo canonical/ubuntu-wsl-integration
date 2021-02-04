@@ -1,0 +1,189 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ubuntuwslctl\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-04 16:50+0800\n"
+"PO-Revision-Date: 2021-01-05 14:21-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../ubuntuwslctl/helper.py:89
+#, python-brace-format
+msgid "invalid default answer: '{name}'"
+msgstr ""
+
+#: ../ubuntuwslctl/helper.py:102
+msgid "Please respond with 'yes' or 'no' (or 'y' or 'n').\n"
+msgstr ""
+
+#: ../ubuntuwslctl/loader.py:56
+msgid "Bad 'default_type' passed. It should be either 'str' or 'dict'."
+msgstr ""
+
+#: ../ubuntuwslctl/loader.py:64
+msgid "Unknown type to be validated."
+msgstr ""
+
+#: ../ubuntuwslctl/loader.py:66
+msgid "Input should be either 'true' or 'false'"
+msgstr ""
+
+#: ../ubuntuwslctl/loader.py:68
+msgid "Input should be a valid UNIX path"
+msgstr ""
+
+#: ../ubuntuwslctl/loader.py:99 ../ubuntuwslctl/loader.py:105
+#: ../ubuntuwslctl/loader.py:111
+msgid "OK.\n"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:39
+msgid "ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:47
+msgid "KeyError: "
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:48
+#, python-brace-format
+msgid "Unknown key name `{name}` passed. Aborting."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:51
+msgid "ValidationError: "
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:52
+#, python-brace-format
+msgid "{error}. Aborting."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:55
+msgid "IOError: "
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:56
+msgid ""
+"There is an error whe trying to read/write the conf file. You need to have "
+"root privileges to perform such action. Aborting."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:60
+msgid "ERROR:"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:61
+msgid "Something happened during the execution. Following are the details:"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:71
+msgid "When passed, always assume yes."
+msgstr ""
+
+#. self.parser.add_argument(
+#. "-c", "--config", type=str, choices=["ubuntu", "wsl", "both"], default="both",
+#. help=_("When passed, handling ubuntu-wsl.conf only."), required=False)
+#: ../ubuntuwslctl/main.py:75
+msgid "commands"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:80
+msgid ""
+"With no arguments, displays the list of ubuntuwslctl commands. If a command "
+"name is given, displays the description and options for the named command. "
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:83
+msgid "Displays help about the specified command"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:94
+msgid ""
+"Change the value of one or more boot configuration settings. To reset the "
+"value of a setting to its default, simply omit the new value."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:97 ../ubuntuwslctl/main.py:113
+msgid "Change the state of one or more boot settings"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:100
+msgid "The name of the configuration to be updated"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:104
+msgid "The value you want to set for this configuration"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:111
+msgid "Reset(remove) the value of one configuration settings."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:117
+msgid "The name of the configuration to be reset"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:124
+msgid "Display the specified stored configuration."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:125
+msgid "Show the specified stored configuration"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:128
+msgid "The name of the boot configuration to display"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:132
+msgid "When enabled, only value will be displayed."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:135 ../ubuntuwslctl/main.py:145
+msgid ""
+"Show the default configuration settings instead of current user-defined ones."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:141
+msgid "List all configurations."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:142
+msgid "List all configuration settings from ubuntu-wsl.conf and wsl.conf."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:155
+msgid "Invalid config name. Please check again."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:168 ../ubuntuwslctl/main.py:196
+msgid "WARNING: "
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:169 ../ubuntuwslctl/main.py:197
+msgid "you need to restart Ubuntu distribution to take effect."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:173
+#, python-brace-format
+msgid "You are trying to reset `{name}`.Do you still want to proceed?"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:179
+msgid ""
+"You are trying to reset all settings, including ubuntu-wsl.conf and wsl."
+"conf. Do you still want to proceed?"
+msgstr ""

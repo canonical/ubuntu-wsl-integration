@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-15 18:34+0800\n"
+"POT-Creation-Date: 2021-02-04 16:53+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,105 +17,111 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../ubuntuwslctl/helper.py:89
+#: ../ubuntuwslctl/core/editor.py:64
+msgid "Unknown type `{}` to be validated."
+msgstr ""
+
+#: ../ubuntuwslctl/core/editor.py:66
+msgid "Input should be either 'true' or 'false'"
+msgstr ""
+
+#: ../ubuntuwslctl/core/editor.py:68
+msgid "Input should be a valid UNIX path"
+msgstr ""
+
+#: ../ubuntuwslctl/core/editor.py:81
+msgid ""
+"Input is not a valid set of DrvFS mount options. Please check https://docs."
+"microsoft.com/en-us/windows/wsl/wsl-config#mount-options for correct valid "
+"input"
+msgstr ""
+
+#: ../ubuntuwslctl/core/editor.py:86
+msgid "Something went wrong, but how do you even get here?"
+msgstr ""
+
+#: ../ubuntuwslctl/utils/helper.py:85
 #, python-brace-format
 msgid "invalid default answer: '{name}'"
 msgstr ""
 
-#: ../ubuntuwslctl/helper.py:102
+#: ../ubuntuwslctl/utils/helper.py:98
 msgid "Please respond with 'yes' or 'no' (or 'y' or 'n').\n"
 msgstr ""
 
-#: ../ubuntuwslctl/loader.py:56
-msgid "Bad 'default_type' passed. It should be either 'str' or 'dict'."
-msgstr ""
-
-#: ../ubuntuwslctl/loader.py:64
-msgid "Unknown type to be validated."
-msgstr ""
-
-#: ../ubuntuwslctl/loader.py:66
-msgid "Input should be either 'true' or 'false'"
-msgstr ""
-
-#: ../ubuntuwslctl/loader.py:68
-msgid "Input should be a valid UNIX path"
-msgstr ""
-
-#: ../ubuntuwslctl/loader.py:99 ../ubuntuwslctl/loader.py:105
-#: ../ubuntuwslctl/loader.py:111
-msgid "OK.\n"
-msgstr ""
-
-#: ../ubuntuwslctl/main.py:39
+#: ../ubuntuwslctl/main.py:38
 msgid "ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:47
-msgid "KeyError: "
+#: ../ubuntuwslctl/main.py:39
+msgid ""
+"Note: \"Super Experimental\" means it is WIP and not working. \"Experimental"
+"\" means it is WIP but most of the part is working."
 msgstr ""
 
 #: ../ubuntuwslctl/main.py:48
+msgid "KeyError: "
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:49
 #, python-brace-format
 msgid "Unknown key name `{name}` passed. Aborting."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:51
+#: ../ubuntuwslctl/main.py:52
 msgid "ValidationError: "
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:52
+#: ../ubuntuwslctl/main.py:53
 #, python-brace-format
 msgid "{error}. Aborting."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:55
+#: ../ubuntuwslctl/main.py:56
 msgid "IOError: "
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:56
+#: ../ubuntuwslctl/main.py:57
 msgid ""
 "There is an error whe trying to read/write the conf file. You need to have "
 "root privileges to perform such action. Aborting."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:60
+#: ../ubuntuwslctl/main.py:61
 msgid "ERROR:"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:61
+#: ../ubuntuwslctl/main.py:62
 msgid "Something happened during the execution. Following are the details:"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:71
+#: ../ubuntuwslctl/main.py:72
 msgid "When passed, always assume yes."
 msgstr ""
 
 #. self.parser.add_argument(
 #. "-c", "--config", type=str, choices=["ubuntu", "wsl", "both"], default="both",
 #. help=_("When passed, handling ubuntu-wsl.conf only."), required=False)
-#: ../ubuntuwslctl/main.py:75
+#: ../ubuntuwslctl/main.py:76
 msgid "commands"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:80
+#: ../ubuntuwslctl/main.py:81
 msgid ""
 "With no arguments, displays the list of ubuntuwslctl commands. If a command "
 "name is given, displays the description and options for the named command. "
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:83
+#: ../ubuntuwslctl/main.py:84
 msgid "Displays help about the specified command"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:94
-msgid ""
-"Change the value of one or more boot configuration settings. To reset the "
-"value of a setting to its default, simply omit the new value."
+#: ../ubuntuwslctl/main.py:95
+msgid "Change the value of a WSL or Ubuntu configuration settings. "
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:97 ../ubuntuwslctl/main.py:113
-msgid "Change the state of one or more boot settings"
+#: ../ubuntuwslctl/main.py:97
+msgid "Change the state of a specific setting"
 msgstr ""
 
 #: ../ubuntuwslctl/main.py:100
@@ -130,57 +136,81 @@ msgstr ""
 msgid "Reset(remove) the value of one configuration settings."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:117
+#: ../ubuntuwslctl/main.py:113
+msgid "Reset(remove) the value of a specific setting"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:118
 msgid "The name of the configuration to be reset"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:124
+#: ../ubuntuwslctl/main.py:125
 msgid "Display the specified stored configuration."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:125
+#: ../ubuntuwslctl/main.py:126
 msgid "Show the specified stored configuration"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:128
-msgid "The name of the boot configuration to display"
+#: ../ubuntuwslctl/main.py:129
+msgid "The name of the configurations"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:132
+#: ../ubuntuwslctl/main.py:133
 msgid "When enabled, only value will be displayed."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:135 ../ubuntuwslctl/main.py:145
+#: ../ubuntuwslctl/main.py:136 ../ubuntuwslctl/main.py:146
 msgid ""
 "Show the default configuration settings instead of current user-defined ones."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:141
+#: ../ubuntuwslctl/main.py:142
 msgid "List all configurations."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:142
+#: ../ubuntuwslctl/main.py:143
 msgid "List all configuration settings from ubuntu-wsl.conf and wsl.conf."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:155
-msgid "Invalid config name. Please check again."
+#: ../ubuntuwslctl/main.py:152 ../ubuntuwslctl/main.py:153
+msgid "Display a friendly text-based user interface. (Experimental)"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:168 ../ubuntuwslctl/main.py:196
+#: ../ubuntuwslctl/main.py:158
+msgid "Export the settings (Experimental)"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:159
+msgid "Export settings as a json string (Experimental)"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:162 ../ubuntuwslctl/main.py:171
+msgid "the name of the file to export."
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:167
+msgid "Import settings (Experimental)"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:168
+msgid "Import settings from a json file (Experimental)"
+msgstr ""
+
+#: ../ubuntuwslctl/main.py:187 ../ubuntuwslctl/main.py:207
 msgid "WARNING: "
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:169 ../ubuntuwslctl/main.py:197
+#: ../ubuntuwslctl/main.py:188 ../ubuntuwslctl/main.py:208
 msgid "you need to restart Ubuntu distribution to take effect."
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:173
+#: ../ubuntuwslctl/main.py:192
 #, python-brace-format
 msgid "You are trying to reset `{name}`.Do you still want to proceed?"
 msgstr ""
 
-#: ../ubuntuwslctl/main.py:179
+#: ../ubuntuwslctl/main.py:197
 msgid ""
 "You are trying to reset all settings, including ubuntu-wsl.conf and wsl."
 "conf. Do you still want to proceed?"

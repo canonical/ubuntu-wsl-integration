@@ -1,3 +1,10 @@
+ubuntu-wsl-integration (0.28.0) hirsute; urgency=medium
+
+  * include validation of DrvFs mount option
+  * i18n initial build system
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Thu, 04 Feb 2021 16:59:17 +0800
+
 ubuntu-wsl-integration (0.27.2) hirsute; urgency=medium
 
   * debian: add source/local-options for local builds

@@ -69,7 +69,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='ubuntuwslctl',
-      version='0.27.2',
+      version='0.28.0',
       description="Ubuntu WSL Utility to manage Ubuntu WSL settings",
       long_description=long_description,
       long_description_content_type="text/markdown",

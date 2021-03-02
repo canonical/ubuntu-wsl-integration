@@ -67,20 +67,29 @@ class ConfigEditor:
         elif to_validate == "path":
             return re.fullmatch(r"(/[^/ ]*)+/?", input_con) is not None, _("Input should be a valid UNIX path")
         elif to_validate == "mount":
+            fsimo = [r"async", r"(no)?atime", r"(no)?auto", r"(fs|def|root)?context=\w+", r"(no)?dev", r"(no)?diratime",
+                     r"dirsync", r"(no)?exec", r"group", r"(no)?iversion", r"(no)?mand", r"_netdev", r"nofail",
+                     r"(no)?relatime", r"(no)?strictatime", r"(no)?suid", r"owner", r"remount", r"ro", r"rw",
+                     r"_rnetdev", r"sync", r"(no)?user", r"users"]
+            drvfsmo = r"case=(dir|force|off)|metadata|(u|g)id=\d+|(u|f|d)mask=\d+|"
+            fso = "{0}{1}".format(drvfsmo, '|'.join(fsimo))
             if input_con == "":
                 return True, ""
             iset = input_con.split(',')
             x = True
+            e_t = ""
             for i in iset:
                 if i == "":
+                    e_t += _("an empty entry detected; ")
                     x = x and False
-                elif re.fullmatch(r"(metadata|(u|g)id=\d+|(u|f|d)mask=(4|2|1|0)?[0-7]{3})", i) is not None:
+                elif re.fullmatch(fso, i) is not None:
                     x = x and True
                 else:
+                    e_t += _("{} is not a valid mount option; ").format(i)
                     x = x and False
-            return x, _("Input is not a valid set of DrvFS mount options. Please check "
+            return x, _("Invalid Input: {}Please check "
                         "https://docs.microsoft.com/en-us/windows/wsl/wsl-config#mount-options "
-                        "for correct valid input")
+                        "for correct valid input").format(e_t)
 
 
         return False, _("Something went wrong, but how do you even get here?")

@@ -84,8 +84,7 @@ class Application:
             help=_("Displays help about the specified command"))
         help_cmd.add_argument(
             "cmd", metavar="command", nargs='?',
-            help=(
-                "The name of the command to output help for")
+            help=("The name of the command to output help for")
         )
         help_cmd.set_defaults(func=self.do_help)
 

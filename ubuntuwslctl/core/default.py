@@ -92,23 +92,24 @@ conf_def = {
         'Interop': {
             '_friendly_name': 'Interoperability',
             'guiintegration': {
-                '_friendly_name': 'GUI Integration',
+                '_friendly_name': 'Legacy GUI Integration',
                 'default': 'false',
                 'type': 'bool',
-                'tip': 'This option enables the GUI Integration on Windows 10. Requires a Third-party X Server.'
+                'tip': 'This option enables the Legacy GUI Integration on Windows 10. Requires a Third-party X Server.'
             },
             'audiointegration': {
-                '_friendly_name': 'Audio Integration',
+                '_friendly_name': 'Legacy Audio Integration',
                 'default': 'false',
                 'type': 'bool',
-                'tip': 'This option enables the Audio Integration on Windows 10. Requires PulseAudio for Windows Installed.'
+                'tip': 'This option enables the Legacy Audio Integration on Windows 10. Requires PulseAudio for '
+                       'Windows Installed. '
             },
             'advancedipdetection': {
                 '_friendly_name': 'Advanced IP Detection',
                 'default': 'false',
                 'type': 'bool',
                 'tip': 'This option enables advanced detection of IP by Windows IPv4 Address which is more reliable to '
-                       'use with WSL2. Requires WSL interopability enabled. '
+                       'use with WSL2. Requires WSL interoperability enabled. '
             },
         },
         'Motd': {

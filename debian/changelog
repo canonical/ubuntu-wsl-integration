@@ -1,3 +1,11 @@
+ubuntu-wsl-integration (0.29.0) hirsute; urgency=medium
+
+  * Expand validation of DrvFs mount option
+  * Update some information
+  * WSL motd news brought back
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Tue, 16 Mar 2021 15:49:53 +0800
+
 ubuntu-wsl-integration (0.28.0) hirsute; urgency=medium
 
   * include validation of DrvFs mount option

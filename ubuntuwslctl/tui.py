@@ -48,7 +48,8 @@ class Tui:
     def __init__(self, handler, color_fallback=False):
         self.handler = handler
         self.config = self.handler.get_config()
-        self.content = []
+        self.navigator = []
+        self.content = {}
         self.screen = urwid.raw_display.Screen()
 
         self.screen.set_terminal_properties(2**24)
@@ -205,7 +206,6 @@ class Tui:
                              title=header.title(), title_attr='header', title_align='center')
 
     def _parse_config(self):
-        self.content = [blank]
 
         # Widget margin calculation
         left_margin = 0
@@ -224,25 +224,28 @@ class Tui:
 
         # Real config handling part
         for i in self.config.keys():
-            self.content.append(StyledText(conf_def[i]['_friendly_name'], 'title'))
-            self.content.append(blank)
+            i_def = conf_def[i]
+            self.navigator.append(StyledText(i_def['_friendly_name'], 'title'))
             i_tmp = self.config[i]
+            self.content[i] = []
             for j in i_tmp.keys():
-                self.content.append(StyledText(conf_def[i][j]['_friendly_name'], 'subtitle'))
-                self.content.append(blank)
+                j_def = i_def[j]
+                self.content[i].append(StyledText(j_def['_friendly_name'], 'subtitle'))
+                self.content[i].append(blank)
                 j_tmp = i_tmp[j]
                 for k in j_tmp.keys():
+                    k_def = j_def[k]
                     if isinstance(j_tmp[k], bool):
-                        self.content.append(StyledCheckBox(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                           conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
+                        self.content[i].append(StyledCheckBox(k_def['_friendly_name'], j_tmp[k],
+                                                              k_def['tip'], left_margin, [i, j, k]))
                     elif isinstance(j_tmp[k], str):
                         if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
-                            self.content.append(StyledCheckBox(conf_def[i][j][k]['_friendly_name'], str2bool(j_tmp[k]),
-                                                               conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
+                            self.content[i].append(StyledCheckBox(k_def['_friendly_name'], str2bool(j_tmp[k]),
+                                                                  k_def['tip'], left_margin, [i, j, k]))
                         else:
-                            self.content.append(StyledEdit(conf_def[i][j][k]['_friendly_name'], j_tmp[k],
-                                                           conf_def[i][j][k]['tip'], left_margin, [i, j, k]))
-                self.content.append(blank)
+                            self.content[i].append(StyledEdit(k_def['_friendly_name'], j_tmp[k],
+                                                              k_def['tip'], left_margin, [i, j, k]))
+                self.content[i].append(blank)
 
     def _body_builder(self):
         """
@@ -253,8 +256,10 @@ class Tui:
 
         header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)", align='center'), 'header')
         footer = urwid.AttrWrap(self._footer(), 'footer')
-        listbox = urwid.TreeListBox(urwid.SimpleListWalker(self.content))
-        self._body = urwid.Frame(urwid.AttrWrap(listbox, 'body'), header=header, footer=footer)
+        navbox = urwid.ListBox(urwid.SimpleListWalker(self.navigator))
+        contentbox = urwid.ListBox(urwid.SimpleListWalker(self.content['ubuntu']))
+        content = urwid.Columns([navbox, contentbox])
+        self._body = urwid.Frame(urwid.AttrWrap(content, 'body'), header=header, footer=footer)
 
     def _unhandled_key(self, key):
         """

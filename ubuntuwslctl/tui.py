@@ -92,11 +92,12 @@ class Tui:
             self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
         elif fun == "save":
             for i in self.content:
-                if not hasattr(i, "get_source"):
-                    continue
-                j, k, l = i.get_source()
-                m = i.get_core_value()
-                self.handler.update(j, k, l, m)
+                for j in self.content[i]:
+                    if not hasattr(j, "get_source"):
+                        continue
+                    k, l, m = j.get_source()
+                    n = j.get_core_value()
+                    self.handler.update(k, l, m, n)
             self._body_builder()
             self._popup_constructor(fun, urwid.Text(u"Saved. Restart Ubuntu to make effect.", align='left'))
         elif fun == "reset":
@@ -213,6 +214,8 @@ class Tui:
                              title=header.title(), title_attr='header', title_align='center')
 
     def _parse_config(self):
+        self.navigator = []
+        self.content = {}
 
         # Widget margin calculation
         left_margin = 0
@@ -232,7 +235,8 @@ class Tui:
         # Real config handling part
         for i in self.config.keys():
             i_def = conf_def[i]
-            self.navigator.append(urwid.AttrWrap(SelectableStyledText(i_def['_friendly_name'], assigned_value=i), 'nv', 'nvfc'))
+            self.navigator.append(urwid.AttrWrap(SelectableStyledText(i_def['_friendly_name'], assigned_value=i),
+                                                 'nv', 'nvfc'))
             i_tmp = self.config[i]
             self.content[i] = []
             for j in i_tmp.keys():

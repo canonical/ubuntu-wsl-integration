@@ -124,14 +124,15 @@ class StyledEdit(Padding):
             left_margin: left_margin of the editbox
             source: there this item is from for value reference
         """
-        text = content + u": "
-        self.core = Edit(('editcp', text), default)
+        text = u" *  "+content + u": "
+        self.core = Edit(('editcp', ""), default)
         self.source = source
         self.widget = Pile([
-            AttrWrap(self.core, 'editbx', 'editfc'),
-            Padding(Text(tooltip), left=len(text))
+            Text(text),
+            Padding(AttrWrap(self.core, 'editbx', 'editfc'), left=4),
+            Padding(Text(tooltip), left=4)
         ])
-        super().__init__(self.widget, left=2 + left_margin - len(text), right=2)
+        super().__init__(self.widget, left=2 + left_margin - 4, right=2)
 
     def get_source(self):
         return self.source

@@ -59,8 +59,9 @@ class Tui:
         self.screen.register_palette(self._palette)
 
         self.header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)", align='center'),
-                                                'header')
+                                     'header')
         self.footer = urwid.AttrWrap(self._footer(), 'footer')
+        self.vline = urwid.SolidFill(u'\u2502')
         self.navbox = None
         self.contentbox = None
 
@@ -85,8 +86,8 @@ class Tui:
             raise urwid.ExitMainLoop()
         elif fun == "help":
             self._popup_constructor(fun, urwid.Text((u"Use UP/DOWN/LEFT/RIGHT arrow to navigate between "
-                                                     u"option. Use SPACE to toggle the settings. "
-                                                     u" Use ENTER or your mouse to press a button."), align='left'))
+                                                     u"option.\nUse SPACE to toggle the settings. "
+                                                     u"\nUse ENTER or your mouse to press a button."), align='left'))
         elif fun == "reload":
             self._body_builder()
             self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
@@ -221,19 +222,19 @@ class Tui:
         self.content = {}
 
         # Widget margin calculation
-        left_margin = 0
-        for i in self.config.keys():
-            i_tmp = self.config[i]
-            for j in i_tmp.keys():
-                j_tmp = i_tmp[j]
-                for k in j_tmp.keys():
-                    if isinstance(j_tmp[k], bool) and (left_margin < 4):
-                        left_margin = 4
-                    elif isinstance(j_tmp[k], str):
-                        if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false") and (left_margin < 4):
-                            left_margin = 4
-                        elif left_margin < len(k) + 2:
-                            left_margin = len(k) + 2
+        left_margin = 4
+        # for i in self.config.keys():
+        #     i_tmp = self.config[i]
+        #     for j in i_tmp.keys():
+        #         j_tmp = i_tmp[j]
+        #         for k in j_tmp.keys():
+        #             if isinstance(j_tmp[k], bool) and (left_margin < 4):
+        #                 left_margin = 4
+        #             elif isinstance(j_tmp[k], str):
+        #                 if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false") and (left_margin < 4):
+        #                     left_margin = 4
+        #                 elif left_margin < len(k) + 2:
+        #                     left_margin = len(k) + 2
 
         # Real config handling part
         for i in self.config.keys():
@@ -244,6 +245,7 @@ class Tui:
             self.content[i] = []
             for j in i_tmp.keys():
                 j_def = i_def[j]
+                self.content[i].append(blank)
                 self.content[i].append(StyledText(j_def['_friendly_name'], 'subtitle'))
                 self.content[i].append(blank)
                 j_tmp = i_tmp[j]
@@ -259,7 +261,7 @@ class Tui:
                         else:
                             self.content[i].append(StyledEdit(k_def['_friendly_name'], j_tmp[k],
                                                               k_def['tip'], left_margin, [i, j, k]))
-                self.content[i].append(blank)
+                    self.content[i].append(blank)
 
     def _nav_update(self):
         """
@@ -267,7 +269,7 @@ class Tui:
         """
         def_nav = self.navbox.get_focus()[0].get_assigned_value()
         self.contentbox = SimpleListBox(self.content[def_nav])
-        content = urwid.Columns([('weight', 0.2, self.navbox), self.contentbox])
+        content = urwid.Columns([self.navbox,('fixed', 1, self.vline), ('weight', 2, self.contentbox)])
         self._loop.widget = urwid.Frame(urwid.AttrWrap(content, 'body'), header=self.header, footer=self.footer)
 
     def _body_builder(self):
@@ -280,7 +282,7 @@ class Tui:
         self.navbox = SimpleListBox(self.navigator)
         def_nav = self.navbox.get_focus()[0].get_assigned_value()
         self.contentbox = SimpleListBox(self.content[def_nav])
-        content = urwid.Columns([('weight', 0.2, self.navbox), self.contentbox])
+        content = urwid.Columns([self.navbox,('fixed', 1, self.vline), ('weight', 2, self.contentbox)])
         urwid.connect_signal(self.navbox.walker, 'modified', self._nav_update)
         self._body = urwid.Frame(urwid.AttrWrap(content, 'body'), header=self.header, footer=self.footer)
 

@@ -21,7 +21,7 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
 import urwid
-from ubuntuwslctl.core.decor import blank, StyledCheckBox, StyledEdit, StyledText, TuiButton
+from ubuntuwslctl.core.decor import blank, StyledCheckBox, StyledEdit, StyledText, TuiButton, SelectableStyledText, SimpleListBox
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
@@ -36,7 +36,8 @@ class Tui:
         ('header', 'white', 'light red', 'bold', "#fff", "#e95420"),  # header
         ('footer', 'black', 'dark cyan', '', "#000", "#aea79f"),  # footer
         ('footerhlt', 'white', 'black'),  # footer highlight
-        ('ttl', 'light red', 'white', 'standout', "#fff", "#e95420"),  # section title
+        ('nv', '', 'white', 'standout', "#fff", ""),  # section nav
+        ('nvfc', 'white', 'black', 'standout', "#e95420", "#000"),
         ('subttl', 'light gray', '', 'standout', "#ed764d", ''),  # section subtitle
         ('editfc', 'white', 'black', 'bold'),
         ('editbx', 'black', 'white'),
@@ -56,6 +57,12 @@ class Tui:
         if color_fallback:
             self.screen.set_terminal_properties(16)
         self.screen.register_palette(self._palette)
+
+        self.header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)", align='center'),
+                                                'header')
+        self.footer = urwid.AttrWrap(self._footer(), 'footer')
+        self.navbox = None
+        self.contentbox = None
 
         self._body_builder()
         self._loop = urwid.MainLoop(self._body, screen=self.screen,
@@ -225,7 +232,7 @@ class Tui:
         # Real config handling part
         for i in self.config.keys():
             i_def = conf_def[i]
-            self.navigator.append(StyledText(i_def['_friendly_name'], 'title'))
+            self.navigator.append(urwid.AttrWrap(SelectableStyledText(i_def['_friendly_name'], assigned_value=i), 'nv', 'nvfc'))
             i_tmp = self.config[i]
             self.content[i] = []
             for j in i_tmp.keys():
@@ -247,6 +254,12 @@ class Tui:
                                                               k_def['tip'], left_margin, [i, j, k]))
                 self.content[i].append(blank)
 
+    def _nav_update(self):
+        def_nav = self.navbox.get_focus()[0].get_assigned_value()
+        self.contentbox = SimpleListBox(self.content[def_nav])
+        content = urwid.Columns([('weight', 0.2, self.navbox), self.contentbox])
+        self._loop.widget = urwid.Frame(urwid.AttrWrap(content, 'body'), header=self.header, footer=self.footer)
+
     def _body_builder(self):
         """
         Allows building the body.
@@ -254,12 +267,12 @@ class Tui:
         """
         self._parse_config()
 
-        header = urwid.AttrWrap(urwid.Text(u"Ubuntu WSL Configuration UI (Experimental)", align='center'), 'header')
-        footer = urwid.AttrWrap(self._footer(), 'footer')
-        navbox = urwid.ListBox(urwid.SimpleListWalker(self.navigator))
-        contentbox = urwid.ListBox(urwid.SimpleListWalker(self.content['ubuntu']))
-        content = urwid.Columns([navbox, contentbox])
-        self._body = urwid.Frame(urwid.AttrWrap(content, 'body'), header=header, footer=footer)
+        self.navbox = SimpleListBox(self.navigator)
+        def_nav = self.navbox.get_focus()[0].get_assigned_value()
+        self.contentbox = SimpleListBox(self.content[def_nav])
+        content = urwid.Columns([('weight', 0.2, self.navbox), self.contentbox])
+        urwid.connect_signal(self.navbox.walker, 'modified', self._nav_update)
+        self._body = urwid.Frame(urwid.AttrWrap(content, 'body'), header=self.header, footer=self.footer)
 
     def _unhandled_key(self, key):
         """

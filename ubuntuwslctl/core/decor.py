@@ -20,7 +20,8 @@
 #  On Debian systems, the complete text of the GNU General
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
-from urwid import Divider, WidgetWrap, AttrMap, Text, Button, Padding, CheckBox, Pile, AttrWrap, Edit
+from urwid import Divider, WidgetWrap, AttrMap, Text, Button, Padding, CheckBox, Pile, AttrWrap, Edit, ListBox, \
+    SimpleListWalker
 
 blank = Divider()  # friendly name for Divider
 
@@ -49,7 +50,7 @@ class TuiButton(WidgetWrap):
 
 class StyledText(Padding):
 
-    def __init__(self, content, style=None):
+    def __init__(self, content, style=None, assigned_value=None):
         """
         General Text Field
 
@@ -58,13 +59,12 @@ class StyledText(Padding):
             style: the style of the text, can be `title` or `subtitle`, leave for the plain padded text.
         """
         self.text = content
+        self.assigned_value = assigned_value
         _text = self.text
         _min_width = None
         _align = "left"
         if style == 'title':
-            _text = ('ttl', self.text)
-            _min_width = 20
-            _align = "center"
+            _text = ('nv', self.text)
         elif style == 'subtitle':
             _text = ('subttl', "* " + self.text)
             _min_width = 20
@@ -72,6 +72,17 @@ class StyledText(Padding):
 
     def get_text(self):
         return self.text
+
+    def get_assigned_value(self):
+        return self.assigned_value
+
+
+class SelectableStyledText(StyledText):
+    def selectable(self):
+        return True
+
+    def keypress(self, size, key):
+        return key
 
 
 class StyledCheckBox(Padding):
@@ -127,3 +138,9 @@ class StyledEdit(Padding):
 
     def get_core_value(self):
         return self.core.get_edit_text()
+
+
+class SimpleListBox(ListBox):
+    def __init__(self, content):
+        self.walker = SimpleListWalker(content)
+        super(SimpleListBox, self).__init__(self.walker)

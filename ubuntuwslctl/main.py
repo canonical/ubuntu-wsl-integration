@@ -220,6 +220,7 @@ class Application:
 
     @staticmethod
     def do_fun():
+        # OwO no touchy
         import base64
         fun = b'44CA44CA44CA4oinX+KIpyAgICAgICAgZnVuPwrjgIDjgIAgKOOAgO+9pc+J772lKSAK44CAIO+8v3zjgIDiioPvvI8o77y/77y' \
               b'/XyAgCu+8j+OAgOKUlC0o77y/77y/77y/X++8jyAK77+j77+j77+j77+j77+j77+j77' \

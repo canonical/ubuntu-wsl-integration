@@ -214,6 +214,9 @@ class Tui:
                              title=header.title(), title_attr='header', title_align='center')
 
     def _parse_config(self):
+        """
+        Parse the config and place them in self.havigator and self.content accordingly.
+        """
         self.navigator = []
         self.content = {}
 
@@ -259,6 +262,9 @@ class Tui:
                 self.content[i].append(blank)
 
     def _nav_update(self):
+        """
+        Update the navigation location
+        """
         def_nav = self.navbox.get_focus()[0].get_assigned_value()
         self.contentbox = SimpleListBox(self.content[def_nav])
         content = urwid.Columns([('weight', 0.2, self.navbox), self.contentbox])

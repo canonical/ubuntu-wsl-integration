@@ -64,6 +64,7 @@ class Tui:
         self.vline = urwid.SolidFill(u'\u2502')
         self.navbox = None
         self.contentbox = None
+        self.focus_content = None
 
         self._body_builder()
         self._loop = urwid.MainLoop(self._body, screen=self.screen,
@@ -89,7 +90,6 @@ class Tui:
                                                      u"option.\nUse SPACE to toggle the settings. "
                                                      u"\nUse ENTER or your mouse to press a button."), align='left'))
         elif fun == "reload":
-            self._body_builder()
             self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
         elif fun == "save":
             for i in self.content:
@@ -99,12 +99,10 @@ class Tui:
                     k, l, m = j.get_source()
                     n = j.get_core_value()
                     self.handler.update(k, l, m, n)
-            self._body_builder()
             self._popup_constructor(fun, urwid.Text(u"Saved. Restart Ubuntu to make effect.", align='left'))
         elif fun == "reset":
             def _reset(button):
                 self.handler.reset_all()
-                self._body_builder()
                 self._popup_constructor(fun, urwid.Text(u"Reset complete. Restart Ubuntu to take effect.",
                                                         align='left'))
             body = urwid.Text(u"Do you really want to reset?", align='left')
@@ -154,6 +152,12 @@ class Tui:
             self._popup_constructor(fun)
 
     def _footer(self):
+        """
+        return a footer.
+
+        Returns:
+            `urwid.GridFlow` that contains footer.
+        """
         return urwid.GridFlow(
             (
                 urwid.AttrWrap(TuiButton([('footerhlt', u'F1'), u'Save'], self._fun), 'footer'),
@@ -182,7 +186,11 @@ class Tui:
         """
         Clear the Overlay and reload everything again.
         """
+        self._body_builder()
         self._loop.widget = self._body
+        #k = self.navbox.walker[0].get_assigned_value()
+        #self._nav_update(forced_value=k)
+        #self._body_builder()
 
     def _popup_widget(self, header, body=None, footer=None):
         """
@@ -251,25 +259,58 @@ class Tui:
                 j_tmp = i_tmp[j]
                 for k in j_tmp.keys():
                     k_def = j_def[k]
+                    wg = None
                     if isinstance(j_tmp[k], bool):
-                        self.content[i].append(StyledCheckBox(k_def['_friendly_name'], j_tmp[k],
-                                                              k_def['tip'], left_margin, [i, j, k]))
+                        wg = StyledCheckBox(k_def['_friendly_name'], j_tmp[k],
+                                                              k_def['tip'], left_margin, [i, j, k])
                     elif isinstance(j_tmp[k], str):
                         if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
-                            self.content[i].append(StyledCheckBox(k_def['_friendly_name'], str2bool(j_tmp[k]),
-                                                                  k_def['tip'], left_margin, [i, j, k]))
+                            wg = StyledCheckBox(k_def['_friendly_name'], str2bool(j_tmp[k]),
+                                                                  k_def['tip'], left_margin, [i, j, k])
                         else:
-                            self.content[i].append(StyledEdit(k_def['_friendly_name'], j_tmp[k],
-                                                              k_def['tip'], left_margin, [i, j, k]))
+                            wg = StyledEdit(k_def['_friendly_name'], j_tmp[k],
+                                                              k_def['tip'], left_margin, [i, j, k])
+                    self.content[i].append(wg)
                     self.content[i].append(blank)
 
-    def _nav_update(self):
+    def _content_validation(self):
+        """
+        Validate the content in current widget as the focus moved away.
+        """
+        if self.focus_content is None:
+            self.focus_content = self.contentbox.focus_position
+            return
+        if self.focus_content > len(self.contentbox.walker):
+            return
+        realc = self.contentbox.walker[self.focus_content]
+        #self._popup_constructor(u"Debug", urwid.Text(str(realc)))
+        self.focus_content = self.contentbox.focus_position
+        if not hasattr(realc, "get_source"):
+            return
+        k, l, m = realc.get_source()
+        n = realc.get_core_value()
+        a, b = self.handler.validate(k, l, m, n)
+        if not a:
+            def _better_reload(button):
+                self._nav_update(forced_value=k)
+                self.contentbox.set_focus(self.focus_content)
+            footer = urwid.AttrWrap(urwid.Button('Okay', _better_reload), 'selectable', 'focus')
+            footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
+            self._popup_constructor(u"Validation Error", urwid.Text(b), footer)
+
+    def _nav_update(self, forced_value=None):
         """
         Update the navigation location
+
+        Args:
+            forced_value: force to set the navigation to a section. default is None.
         """
         def_nav = self.navbox.get_focus()[0].get_assigned_value()
+        if forced_value is not None:
+            def_nav = forced_value
         self.contentbox = SimpleListBox(self.content[def_nav])
         content = urwid.Columns([self.navbox,('fixed', 1, self.vline), ('weight', 2, self.contentbox)])
+        urwid.connect_signal(self.contentbox.walker, 'modified', self._content_validation)
         self._loop.widget = urwid.Frame(urwid.AttrWrap(content, 'body'), header=self.header, footer=self.footer)
 
     def _body_builder(self):
@@ -284,6 +325,7 @@ class Tui:
         self.contentbox = SimpleListBox(self.content[def_nav])
         content = urwid.Columns([self.navbox,('fixed', 1, self.vline), ('weight', 2, self.contentbox)])
         urwid.connect_signal(self.navbox.walker, 'modified', self._nav_update)
+        urwid.connect_signal(self.contentbox.walker, 'modified', self._content_validation)
         self._body = urwid.Frame(urwid.AttrWrap(content, 'body'), header=self.header, footer=self.footer)
 
     def _unhandled_key(self, key):

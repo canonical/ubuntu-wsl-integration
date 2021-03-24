@@ -78,6 +78,13 @@ class StyledText(Padding):
 
 
 class SelectableStyledText(StyledText):
+    """
+    General Selectable Text Field
+
+    Args:
+        content: the text.
+        style: the style of the text, can be `title` or `subtitle`, leave for the plain padded text.
+    """
     def selectable(self):
         return True
 
@@ -142,6 +149,12 @@ class StyledEdit(Padding):
 
 
 class SimpleListBox(ListBox):
+    """
+    A ListBox that exposes its walker.
+
+    Args:
+        content: a list of widgets.
+    """
     def __init__(self, content):
         self.walker = SimpleListWalker(content)
         super(SimpleListBox, self).__init__(self.walker)

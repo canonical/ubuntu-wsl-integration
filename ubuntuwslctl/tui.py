@@ -188,9 +188,6 @@ class Tui:
         """
         self._body_builder()
         self._loop.widget = self._body
-        #k = self.navbox.walker[0].get_assigned_value()
-        #self._nav_update(forced_value=k)
-        #self._body_builder()
 
     def _popup_widget(self, header, body=None, footer=None):
         """
@@ -246,6 +243,8 @@ class Tui:
 
         # Real config handling part
         for i in self.config.keys():
+            if i == "time_exported":
+                continue
             i_def = conf_def[i]
             self.navigator.append(urwid.AttrWrap(SelectableStyledText(i_def['_friendly_name'], assigned_value=i),
                                                  'nv', 'nvfc'))

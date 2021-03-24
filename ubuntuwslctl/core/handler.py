@@ -82,6 +82,7 @@ class SuperHandler:
         with open(name, 'w+') as f:
             json.dump(self.parsed_config, f)
 
+        del self.parsed_config['time_exported']
         return name
 
     def import_file(self, name):

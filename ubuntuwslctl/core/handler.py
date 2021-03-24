@@ -48,6 +48,9 @@ class SuperHandler:
     def get_config(self):
         return self.parsed_config
 
+    def validate(self, config_type, section, config, value):
+        return self._select_config(config_type).type_validation(section, config, value)
+
     def update(self, config_type, section, config, value):
         self._select_config(config_type).update(section, config, value)
 

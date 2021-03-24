@@ -58,7 +58,7 @@ class ConfigEditor:
             self.config.remove_section(section)
         self.config.read_dict(self.default_conf)
 
-    def _type_validation(self, config_section, config_setting, input_con):
+    def type_validation(self, config_section, config_setting, input_con):
         to_validate = self.raw_conf[config_section][config_setting]['type']
 
         assert to_validate in ("bool", "path", "mount"), _("Unknown type `{}` to be validated.").format(to_validate)
@@ -116,7 +116,7 @@ class ConfigEditor:
             self.show_list(section, is_short, is_default)
 
     def update(self, config_section, config_setting, config_value):
-        assert_check, assert_warn = self._type_validation(config_section, config_setting, config_value)
+        assert_check, assert_warn = self.type_validation(config_section, config_setting, config_value)
         assert assert_check, assert_warn
         self.config[config_section][config_setting] = config_value
         with open(self.user_conf, 'w') as configfile:

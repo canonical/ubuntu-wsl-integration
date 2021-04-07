@@ -170,6 +170,15 @@ class Application:
             help=_("the name of the file to export."))
         import_cmd.set_defaults(func=self.do_import)
 
+        tricks_cmd = commands.add_parser(
+            "tricks",
+            description=_("Trigger Tricks/workarounds (Super Experimental)"),
+            help=_("Tricks/workarounds on some issues we are unable to include in images. (Super Experimental)"))
+        tricks_cmd.add_argument(
+            "tricks",
+            help=_("the name of the file to export."))
+        tricks_cmd.set_defaults(func=self.do_import)
+
         fun_cmd = commands.add_parser("fun")
         fun_cmd.set_defaults(func=self.do_fun)
 

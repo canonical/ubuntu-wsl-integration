@@ -21,17 +21,23 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 import os
 
+class Tricks:
 
-def tricks_fstab():
-    if os.path.exists("/etc/fstab"):
-        os.mknod("/etc/fstab")
+    def __init__(self, name):
+        self.name = name
 
+    def tricks_gh6044(self):
+        """
+        Tricks for https://github.com/Microsoft/WSL/issues/6044
+        Prevetning the use of `nftables` on Ubuntu WSL
+        """
+        if os.path.exists("/etc/fstab"):
+            os.mknod("/etc/fstab")
+        os.system("update-alternatives --set iptables /usr/sbin/iptables-legacy")
+        os.system("update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy")
 
-def tricks_nftable():
-    os.system("update-alternatives --set iptables /usr/sbin/iptables-legacy")
-    os.system("update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy")
+    def do(self):
+        t_f = f"tricks_{self.name}"
+        if hasattr(self, t_f) and callable(func := getattr(self, t_f)):
+            func()
 
-
-def tricks_local_docker():
-    tricks_fstab()
-    tricks_nftable()

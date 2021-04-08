@@ -21,23 +21,37 @@
 #  Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 import os
 
+
 class Tricks:
+    @staticmethod
+    def __cmd_p(cmd):
+        print(">>", cmd)
+        os.system(cmd)
 
-    def __init__(self, name):
-        self.name = name
+    """ BEGIN OF TRICKS """
 
-    def tricks_gh6044(self):
+    def tricks_gh6044(self, help=False):
         """
         Tricks for https://github.com/Microsoft/WSL/issues/6044
-        Prevetning the use of `nftables` on Ubuntu WSL
+        use legacy `iptables` instead of `nftables` on Ubuntu
         """
-        if os.path.exists("/etc/fstab"):
-            os.mknod("/etc/fstab")
-        os.system("update-alternatives --set iptables /usr/sbin/iptables-legacy")
-        os.system("update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy")
+        if help:
+            return "use legacy `iptables` instead of `nftables` on Ubuntu"
+        self.__cmd_p("update-alternatives --verbose --set iptables /usr/sbin/iptables-legacy")
+        self.__cmd_p("update-alternatives --verbose --set ip6tables /usr/sbin/ip6tables-legacy")
 
-    def do(self):
-        t_f = f"tricks_{self.name}"
+    tricks_nftables = tricks_native_docker = tricks_gh6044
+
+    """ END OF TRICKS """
+
+    def do(self, name):
+        t_f = f"tricks_{name}"
         if hasattr(self, t_f) and callable(func := getattr(self, t_f)):
             func()
+        else:
+            print("Invalid Name: ", name)
 
+    def list(self):
+        for func in dir(self):
+            if callable(cfunc := getattr(self, func)) and func.startswith("tricks_"):
+                print("{}: {}".format(func[7:], cfunc(help=True)))

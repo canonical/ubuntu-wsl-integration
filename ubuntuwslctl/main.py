@@ -175,8 +175,11 @@ class Application:
             description=_("Trigger Tricks/workarounds (Super Experimental)"),
             help=_("Tricks/workarounds on some issues we are unable to include in images. (Super Experimental)"))
         tricks_cmd.add_argument(
-            "tricks",
-            help=_("the name of the file to export."))
+            "name", nargs="?", default="",
+            help=_("the name of the tricks/workarounds."))
+        tricks_cmd.add_argument(
+            "-l", "--list", action="store_true",
+            help=_("Show the possible tricka."))
         tricks_cmd.set_defaults(func=self.do_tricks)
 
         fun_cmd = commands.add_parser("fun")
@@ -229,7 +232,11 @@ class Application:
 
     def do_tricks(self):
         from ubuntuwslctl.utils.actions import Tricks
-        Tricks(self._args.name).do()
+        tricks = Tricks()
+        if self._args.list:
+            tricks.list()
+        else:
+            tricks.do(self._args.name)
 
     @staticmethod
     def do_fun():

@@ -177,7 +177,7 @@ class Application:
         tricks_cmd.add_argument(
             "tricks",
             help=_("the name of the file to export."))
-        tricks_cmd.set_defaults(func=self.do_import)
+        tricks_cmd.set_defaults(func=self.do_tricks)
 
         fun_cmd = commands.add_parser("fun")
         fun_cmd.set_defaults(func=self.do_fun)
@@ -226,6 +226,10 @@ class Application:
 
     def do_import(self):
         self.handler.import_file(self._args.file)
+
+    def do_tricks(self):
+        from ubuntuwslctl.utils.actions import Tricks
+        Tricks(self._args.name).do()
 
     @staticmethod
     def do_fun():

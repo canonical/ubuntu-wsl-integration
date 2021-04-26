@@ -30,6 +30,20 @@ class Tricks:
 
     """ BEGIN OF TRICKS """
 
+    def tricks_gui_enhancement(self, help=False):
+        if help:
+            return "native GUI Improvements"
+        glist = ["xclip","gnome-themes-standard","gtk2-engines-murrine","dbus","dbus-x11",
+                 "mesa-utils","libqt5core5a","binutils","libnss3","libegl1-mesa", "yaru-theme-gtk", "yaru-theme-icon"]
+        g_str = "apt install -y " + " ".join(glist)
+        self.__cmd_p(g_str)
+        self.__cmd_p("gsettings set org.gnome.desktop.interface gtk-theme 'Yaru'")
+        self.__cmd_p("gsettings set org.gnome.desktop.interface icon-theme 'Yaru'")
+        self.__cmd_p("gsettings set org.gnome.desktop.interface cursor-theme 'Yaru'")
+        self.__cmd_p("gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'")
+
+    tricks_gui = tricks_gui_enhancement
+
     def tricks_gh6044(self, help=False):
         """
         Tricks for https://github.com/Microsoft/WSL/issues/6044

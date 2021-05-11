@@ -89,6 +89,23 @@ conf_def = {
     'ubuntu': {
         '_friendly_name': 'Ubuntu Settings',
         '_file_location': '/etc/ubuntu-wsl.conf',
+        'GUI': {
+            '_friendly_name': 'GUI (WSLg)',
+            'theme': {
+                '_friendly_name': 'GUI Theme',
+                'default': 'default',
+                'type': 'theme',
+                'tip': 'This option changes the Ubuntu theme. You can choose from `default`, `dark` or `light`. By '
+                       'default it is `default`. '
+            },
+            'followwintheme': {
+                '_friendly_name': 'Follow Windows Theme',
+                'default': 'false',
+                'type': 'bool',
+                'tip': 'This option manages whether the Ubuntu theme follows the windows theme; that is, when Windows '
+                       'uses dark theme, Ubuntu also uses dark theme. Requires Interoperability enabled. '
+            }
+        },
         'Interop': {
             '_friendly_name': 'Interoperability',
             'guiintegration': {

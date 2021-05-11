@@ -64,6 +64,8 @@ class ConfigEditor:
         assert to_validate in ("bool", "path", "mount"), _("Unknown type `{}` to be validated.").format(to_validate)
         if to_validate == "bool":
             return input_con in ("true", "false"), _("Input should be either 'true' or 'false'")
+        elif to_validate == "theme":
+            return input_con in ("dark", "light", "default"), _("Input should be 'dark', 'light' or 'default'")
         elif to_validate == "path":
             return re.fullmatch(r"(/[^/ ]*)+/?", input_con) is not None, _("Input should be a valid UNIX path")
         elif to_validate == "mount":

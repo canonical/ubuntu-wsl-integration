@@ -40,8 +40,19 @@ __ubuntu_wsl_conf_handling() {
 [ -f "$CUR_CONF_LOC" ] && __ubuntu_wsl_conf_handling
 unset CUR_CONF_LOC
 
+if [ "$WAYLAND_DISPLAY" = "wayland-0" ]; then
+    if type gsettings > /dev/null 2>&1; then
+        if [ "$UBUNTU_WSL_GUI_FOLLOWWINTHEME" = "true" ]; then
+            TMP_THEME=$(wslsys -t -s)
+            gsettings set org.gnome.desktop.interface gtk-theme "Yaru-$TMP_THEME"
+        elif [ "$UBUNTU_WSL_GUI_THEME" = "default" ]; then
+          gsettings set org.gnome.desktop.interface gtk-theme "Yaru"
+        else
+          gsettings set org.gnome.desktop.interface gtk-theme "Yaru-$UBUNTU_WSL_GUI_THEME"
+        fi
+    fi
 # the... like, the real detection part
-if [ "$UBUNTU_WSL_INTEROP_GUIINTEGRATION" = "true" ] || [ "$UBUNTU_WSL_INTEROP_AUDIOINTEGRATION" = "true" ]; then
+elif [ "$UBUNTU_WSL_INTEROP_GUIINTEGRATION" = "true" ] || [ "$UBUNTU_WSL_INTEROP_AUDIOINTEGRATION" = "true" ]; then
     if type pactl > /dev/null 2>&1 || type xvinfo > /dev/null 2>&1; then
         # detect WSL host
         # WSL2

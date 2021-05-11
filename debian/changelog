@@ -1,3 +1,9 @@
+ubuntu-wsl-integration (0.31.0) impish; urgency=medium
+
+  * Add WSLg support
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Tue, 11 May 2021 17:04:53 +0800
+
 ubuntu-wsl-integration (0.30.0) hirsute; urgency=medium
 
   * TUI re-design

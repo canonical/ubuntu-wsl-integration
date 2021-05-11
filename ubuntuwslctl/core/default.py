@@ -102,8 +102,8 @@ conf_def = {
                 '_friendly_name': 'Follow Windows Theme',
                 'default': 'false',
                 'type': 'bool',
-                'tip': 'This option manages whether the Ubuntu theme follows the windows theme; that is, when Windows '
-                       'uses dark theme, Ubuntu also uses dark theme. Requires Interoperability enabled. '
+                'tip': 'This option manages whether the Ubuntu theme follows the WSindows theme; that is, when Windows '
+                       'uses dark theme, Ubuntu also uses dark theme. Requires WSL interoperability enabled. '
             }
         },
         'Interop': {

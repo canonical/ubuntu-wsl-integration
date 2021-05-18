@@ -3,7 +3,8 @@ Upstream-Name: ubuntu-wsl-integration
 Source: https://github.com/canonical/ubuntu-wsl-integration
 
 Files: *
-Copyright: 2020-2021, Patrick Wu <patrick.wu@canonical.com>
+Copyright: 2020-2021, Canonical Ltd.
+           2020-2021, Patrick Wu <patrick.wu@canonical.com>
 License: GPL-3+
 
 Files: debian/wsl-integration.sh

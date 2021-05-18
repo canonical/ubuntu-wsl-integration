@@ -2,15 +2,18 @@ Source: ubuntu-wsl-integration
 Section: admin
 Priority: optional
 Maintainer: Patrick Wu <patrick.wu@canonical.com>
-Build-Depends: python3-setuptools, python3-all, python3-all-dev, debhelper (>= 10), dh-python
-Standards-Version: 4.3.0.3
+Build-Depends: debhelper (>= 10),
+               dh-python,
+               python3-all,
+               python3-all-dev,
+               python3-setuptools
+Standards-Version: 4.5.1.0
 Vcs-Git: https://github.com/canonical/ubuntu-wsl-integration.git -b master
-Vcs-Browser:  https://github.com/canonical/ubuntu-wsl-integration
+Vcs-Browser: https://github.com/canonical/ubuntu-wsl-integration
 Homepage: https://www.ubuntu.com/wsl
 
 Package: ubuntu-wsl-integration
 Architecture: amd64 arm64
-Depends: ${misc:Depends}, ${python3:Depends}, wslu (>= 3.2.0), python3-urwid
-Recommends: pulseaudio-utils,
-            x11-utils
+Depends: python3-urwid, wslu (>= 3.2.0), ${misc:Depends}, ${python3:Depends}
+Recommends: pulseaudio-utils, x11-utils
 Description: Ubuntu WSL Integration. Allows managing Ubuntu WSL integrations.

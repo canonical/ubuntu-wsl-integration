@@ -61,7 +61,7 @@ class ConfigEditor:
     def type_validation(self, config_section, config_setting, input_con):
         to_validate = self.raw_conf[config_section][config_setting]['type']
 
-        assert to_validate in ("bool", "path", "mount"), _("Unknown type `{}` to be validated.").format(to_validate)
+        assert to_validate in ("bool", "path", "mount", "theme"), _("Unknown type `{}` to be validated.").format(to_validate)
         if to_validate == "bool":
             return input_con in ("true", "false"), _("Input should be either 'true' or 'false'")
         elif to_validate == "theme":

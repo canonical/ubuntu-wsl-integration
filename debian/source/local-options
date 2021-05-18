@@ -1,2 +1,3 @@
 tar-ignore = .git*
 tar-ignore = .idea
+tar-ignore = __pycache__

@@ -14,6 +14,10 @@ Homepage: https://www.ubuntu.com/wsl
 
 Package: ubuntu-wsl-integration
 Architecture: amd64 arm64
-Depends: python3-urwid, wslu (>= 3.2.0), ${misc:Depends}, ${python3:Depends}
-Recommends: pulseaudio-utils, x11-utils
+Depends: python3-urwid,
+         wslu (>= 3.2.0),
+         ${misc:Depends},
+         ${python3:Depends}
+Recommends: pulseaudio-utils,
+            x11-utils
 Description: Ubuntu WSL Integration. Allows managing Ubuntu WSL integrations.

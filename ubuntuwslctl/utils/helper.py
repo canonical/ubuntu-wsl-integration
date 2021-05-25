@@ -1,6 +1,6 @@
 #    ubuntuwslctl.helper - helpers for the cli
-#    Copyright (C) 2020 Canonical Ltd.
-#    Copyright (C) 2020 Patrick Wu
+#    Copyright (C) 2021 Canonical Ltd.
+#    Copyright (C) 2021 Patrick Wu
 #
 #    Authors: Patrick Wu <patrick.wu@canonical.com>
 #

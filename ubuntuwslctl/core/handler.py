@@ -1,6 +1,8 @@
-#     ubuntuwslctl.core.generator
-#     Copyright (C) 2020 Canonical Ltd.
-#                   2020 Patrick Wu <patrick.wu@canonical.com>
+#    ubuntuwslctl.core.handler - core handler for all config
+#    Copyright (C) 2021 Canonical Ltd.
+#    Copyright (C) 2021 Patrick Wu
+#
+#    Authors: Patrick Wu <patrick.wu@canonical.com>
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by

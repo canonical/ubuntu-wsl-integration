@@ -1,4 +1,4 @@
-#    ubuntuwslctl.tircks - tricks for quick addressing WSL issues
+#    ubuntuwslctl.actions - tricks for quick addressing WSL issues
 #    Copyright (C) 2021 Canonical Ltd.
 #    Copyright (C) 2021 Patrick Wu
 #

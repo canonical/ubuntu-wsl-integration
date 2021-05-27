@@ -1,3 +1,16 @@
+ubuntu-wsl-integration (0.31.2) impish; urgency=medium
+
+  * debian/source/format:
+    - set it as a native package
+  * Update Copyright and debian/copyright
+  * debian/control:
+    - use recent debhelper
+    - fix build-Depends/Depends/Recommends
+    - add long description
+  * Move all scripts and configuration as part of upstream source.
+
+ -- Patrick Wu <patrick.wu@canonical.com>  Thu, 27 May 2021 09:50:11 +0200
+
 ubuntu-wsl-integration (0.31.1) impish; urgency=medium
 
   * Build System Tweaks;

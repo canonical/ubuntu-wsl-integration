@@ -1,0 +1,9 @@
+* Review shell scripts:
+  * Replace bash regex by POSIX regex in shell scripts
+* Documentation
+  * End user documentation
+  * Contributor documentation
+  * Add a man page
+* Add a testsuite
+* Use python linter
+* Add man page

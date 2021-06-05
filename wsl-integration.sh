@@ -24,8 +24,25 @@ __ubuntu_wsl_conf_handling() {
     done < $CUR_CONF_LOC
 }
 
+__ubuntu_wsl_sane_variables() {
+    VARIABLE=UBUNTU_WSL_$1
+    if [ ! -v ${VARIABLE} ]; then
+        echo "UBUNTU_WSL_${1} is not set, check /etc/ubuntu-wsl.conf for updates"
+        declare -r -g UBUNTU_WSL_${1}=${2}
+    fi
+}
+
 [ -f "$CUR_CONF_LOC" ] && __ubuntu_wsl_conf_handling
 unset CUR_CONF_LOC
+
+# check UBUNTU_WSL_ variables
+# if not set, set default ones
+__ubuntu_wsl_sane_variables "GUI_FOLLOWWINTHEME" "false"
+__ubuntu_wsl_sane_variables "GUI_THEME" "default"
+__ubuntu_wsl_sane_variables "INTEROP_GUIINTEGRATION" "false"
+__ubuntu_wsl_sane_variables "INTEROP_AUDIOINTEGRATION" "false"
+__ubuntu_wsl_sane_variables "INTEROP_ADVANCEDIPDETECTION" "false"
+__ubuntu_wsl_sane_variables "MOTD_WSLNEWSENABLED" "true"
 
 if [ "$WAYLAND_DISPLAY" = "wayland-0" ]; then
     if type gsettings > /dev/null 2>&1; then
@@ -83,3 +100,5 @@ elif [ "$UBUNTU_WSL_INTEROP_GUIINTEGRATION" = "true" ] || [ "$UBUNTU_WSL_INTEROP
         unset WSL_HOST_PA_TIMEOUT
     fi
 fi
+
+set +eu

@@ -19,30 +19,21 @@ __ubuntu_wsl_conf_handling() {
         then
             var="$(echo $var | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')"
             val="$(echo $val | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"
-            declare -r -g UBUNTU_WSL_${section}_${var}=${val}
+            declare -g UBUNTU_WSL_${section}_${var}=${val}
         fi
     done < $CUR_CONF_LOC
-}
-
-__ubuntu_wsl_sane_variables() {
-    VARIABLE=UBUNTU_WSL_$1
-    if [ ! -v ${VARIABLE} ]; then
-        echo "UBUNTU_WSL_${1} is not set, check /etc/ubuntu-wsl.conf for updates"
-        declare -r -g UBUNTU_WSL_${1}=${2}
-    fi
 }
 
 [ -f "$CUR_CONF_LOC" ] && __ubuntu_wsl_conf_handling
 unset CUR_CONF_LOC
 
-# check UBUNTU_WSL_ variables
-# if not set, set default ones
-__ubuntu_wsl_sane_variables "GUI_FOLLOWWINTHEME" "false"
-__ubuntu_wsl_sane_variables "GUI_THEME" "default"
-__ubuntu_wsl_sane_variables "INTEROP_GUIINTEGRATION" "false"
-__ubuntu_wsl_sane_variables "INTEROP_AUDIOINTEGRATION" "false"
-__ubuntu_wsl_sane_variables "INTEROP_ADVANCEDIPDETECTION" "false"
-__ubuntu_wsl_sane_variables "MOTD_WSLNEWSENABLED" "true"
+WAYLAND_DISPLAY=${WAYLAND_DISPLAY-}
+UBUNTU_WSL_GUI_FOLLOWWINTHEME=${UBUNTU_WSL_GUI_FOLLOWWINTHEME-false}
+UBUNTU_WSL_GUI_THEME=${UBUNTU_WSL_GUI_THEME-default}
+UBUNTU_WSL_INTEROP_ADVANCEDIPDETECTION=${UBUNTU_WSL_INTEROP_ADVANCEDIPDETECTION-false}
+UBUNTU_WSL_INTEROP_AUDIOINTEGRATION=${UBUNTU_WSL_INTEROP_AUDIOINTEGRATION-false}
+UBUNTU_WSL_INTEROP_GUIINTEGRATION=${UBUNTU_WSL_INTEROP_GUIINTEGRATION-false}
+UBUNTU_WSL_MOTD_WSLNEWSENABLED=${UBUNTU_WSL_MOTD_WSLNEWSENABLED-true}
 
 if [ "$WAYLAND_DISPLAY" = "wayland-0" ]; then
     if type gsettings > /dev/null 2>&1; then

@@ -5,7 +5,8 @@
 
 
 import urwid
-from ubuntuwslctl.core.decor import blank, StyledCheckBox, StyledEdit, StyledText, TuiButton, SelectableStyledText, SimpleListBox
+from ubuntuwslctl.core.decor import blank, StyledCheckBox, StyledEdit,\
+    StyledText, TuiButton, SelectableStyledText, SimpleListBox
 from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.helper import str2bool
 
@@ -57,10 +58,12 @@ class Tui:
     def _fun(self, button=None, fun=None):
         """
         Core function for different actions.
-        This function can accept button callback from `button` or function name from `func`
+        This function can accept button callback from `button` or
+         function name from `func`
 
         Args:
-            button: the `urwid.Button` instance returned from a button callback.
+            button: the `urwid.Button` instance returned from a button
+             callback.
             fun: the name of the function
         """
         if button is not None:
@@ -74,7 +77,8 @@ class Tui:
                                                      u"option.\nUse SPACE to toggle the settings. "
                                                      u"\nUse ENTER or your mouse to press a button."), align='left'))
         elif fun == "reload":
-            self._popup_constructor(fun, urwid.Text(u"Configuration Reloaded.", align='left'))
+            self._popup_constructor(fun, urwid.Text(
+                u"Configuration Reloaded.", align='left'))
         elif fun == "save":
             for i in self.content:
                 for j in self.content[i]:
@@ -83,15 +87,18 @@ class Tui:
                     k, l, m = j.get_source()
                     n = j.get_core_value()
                     self.handler.update(k, l, m, n)
-            self._popup_constructor(fun, urwid.Text(u"Saved. Restart Ubuntu to make effect.", align='left'))
+            self._popup_constructor(fun, urwid.Text(
+                u"Saved. Restart Ubuntu to make effect.", align='left'))
         elif fun == "reset":
             def _reset(button):
                 self.handler.reset_all()
                 self._popup_constructor(fun, urwid.Text(u"Reset complete. Restart Ubuntu to take effect.",
                                                         align='left'))
             body = urwid.Text(u"Do you really want to reset?", align='left')
-            ok_btn = urwid.AttrWrap(urwid.Button('Yes', _reset), 'selectable', 'focus')
-            cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
+            ok_btn = urwid.AttrWrap(urwid.Button(
+                'Yes', _reset), 'selectable', 'focus')
+            cc_btn = urwid.AttrWrap(urwid.Button(
+                'No', self._reload_ui), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "export":
@@ -106,8 +113,10 @@ class Tui:
                 urwid.Text(u"file name to export(optional): ", align='left'),
                 urwid.AttrWrap(exp_name, 'editbx', 'editfc')
             ])
-            ok_btn = urwid.AttrWrap(urwid.Button('Yes', _export), 'selectable', 'focus')
-            cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
+            ok_btn = urwid.AttrWrap(urwid.Button(
+                'Yes', _export), 'selectable', 'focus')
+            cc_btn = urwid.AttrWrap(urwid.Button(
+                'No', self._reload_ui), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         elif fun == "import":
@@ -121,15 +130,17 @@ class Tui:
                 else:
                     self.handler.import_file(exp_name.edit_text)
                     b = urwid.Text(u"{} imported. Please restart Ubuntu to take effect.".format(exp_name.edit_text),
-                                align='left')
+                                   align='left')
                     self._popup_constructor(fun, b)
 
             body = urwid.Pile([
                 urwid.Text(u"file name to import: ", align='left'),
                 urwid.AttrWrap(exp_name, 'editbx', 'editfc')
             ])
-            ok_btn = urwid.AttrWrap(urwid.Button('Yes', _import), 'selectable', 'focus')
-            cc_btn = urwid.AttrWrap(urwid.Button('No', self._reload_ui), 'selectable', 'focus')
+            ok_btn = urwid.AttrWrap(urwid.Button(
+                'Yes', _import), 'selectable', 'focus')
+            cc_btn = urwid.AttrWrap(urwid.Button(
+                'No', self._reload_ui), 'selectable', 'focus')
             footer = urwid.GridFlow([ok_btn, cc_btn], 10, 1, 1, 'center')
             self._popup_constructor(fun, body, footer)
         else:  # unhandled input all went here
@@ -144,13 +155,20 @@ class Tui:
         """
         return urwid.GridFlow(
             (
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F1'), u'Save'], self._fun), 'footer'),
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F2'), u'Reset'], self._fun), 'footer'),
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F3'), u'Import'], self._fun), 'footer'),
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F4'), u'Export'], self._fun), 'footer'),
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F5'), u'Reload'], self._fun), 'footer'),
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F6'), u'Help'], self._fun), 'footer'),
-                urwid.AttrWrap(TuiButton([('footerhlt', u'F7'), u'Exit'], self._fun), 'footer')
+                urwid.AttrWrap(
+                    TuiButton([('footerhlt', u'F1'), u'Save'], self._fun), 'footer'),
+                urwid.AttrWrap(
+                    TuiButton([('footerhlt', u'F2'), u'Reset'], self._fun), 'footer'),
+                urwid.AttrWrap(
+                    TuiButton([('footerhlt', u'F3'), u'Import'], self._fun), 'footer'),
+                urwid.AttrWrap(
+                    TuiButton([('footerhlt', u'F4'), u'Export'], self._fun), 'footer'),
+                urwid.AttrWrap(
+                    TuiButton([('footerhlt', u'F5'), u'Reload'], self._fun), 'footer'),
+                urwid.AttrWrap(
+                    TuiButton([('footerhlt', u'F6'), u'Help'], self._fun), 'footer'),
+                urwid.AttrWrap(
+                    TuiButton([('footerhlt', u'F7'), u'Exit'], self._fun), 'footer')
             ),
             10, 0, 0, 'left')
 
@@ -237,7 +255,8 @@ class Tui:
             for j in i_tmp.keys():
                 j_def = i_def[j]
                 self.content[i].append(blank)
-                self.content[i].append(StyledText(j_def['_friendly_name'], 'subtitle'))
+                self.content[i].append(StyledText(
+                    j_def['_friendly_name'], 'subtitle'))
                 self.content[i].append(blank)
                 j_tmp = i_tmp[j]
                 for k in j_tmp.keys():
@@ -245,14 +264,14 @@ class Tui:
                     wg = None
                     if isinstance(j_tmp[k], bool):
                         wg = StyledCheckBox(k_def['_friendly_name'], j_tmp[k],
-                                                              k_def['tip'], left_margin, [i, j, k])
+                                            k_def['tip'], left_margin, [i, j, k])
                     elif isinstance(j_tmp[k], str):
                         if j_tmp[k].lower() in ("yes", "no", "1", "0", "true", "false"):
                             wg = StyledCheckBox(k_def['_friendly_name'], str2bool(j_tmp[k]),
-                                                                  k_def['tip'], left_margin, [i, j, k])
+                                                k_def['tip'], left_margin, [i, j, k])
                         else:
                             wg = StyledEdit(k_def['_friendly_name'], j_tmp[k],
-                                                              k_def['tip'], left_margin, [i, j, k])
+                                            k_def['tip'], left_margin, [i, j, k])
                     self.content[i].append(wg)
                     self.content[i].append(blank)
 
@@ -277,7 +296,8 @@ class Tui:
             def _better_reload(button):
                 self._nav_update(forced_value=k)
                 self.contentbox.set_focus(self.focus_content)
-            footer = urwid.AttrWrap(urwid.Button('Okay', _better_reload), 'selectable', 'focus')
+            footer = urwid.AttrWrap(urwid.Button(
+                'Okay', _better_reload), 'selectable', 'focus')
             footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
             self._popup_constructor(u"Validation Error", urwid.Text(b), footer)
 
@@ -292,9 +312,12 @@ class Tui:
         if forced_value is not None:
             def_nav = forced_value
         self.contentbox = SimpleListBox(self.content[def_nav])
-        content = urwid.Columns([self.navbox,('fixed', 1, self.vline), ('weight', 2, self.contentbox)])
-        urwid.connect_signal(self.contentbox.walker, 'modified', self._content_validation)
-        self._loop.widget = urwid.Frame(urwid.AttrWrap(content, 'body'), header=self.header, footer=self.footer)
+        content = urwid.Columns(
+            [self.navbox, ('fixed', 1, self.vline), ('weight', 2, self.contentbox)])
+        urwid.connect_signal(self.contentbox.walker,
+                             'modified', self._content_validation)
+        self._loop.widget = urwid.Frame(urwid.AttrWrap(
+            content, 'body'), header=self.header, footer=self.footer)
 
     def _body_builder(self):
         """
@@ -306,10 +329,13 @@ class Tui:
         self.navbox = SimpleListBox(self.navigator)
         def_nav = self.navbox.get_focus()[0].get_assigned_value()
         self.contentbox = SimpleListBox(self.content[def_nav])
-        content = urwid.Columns([self.navbox,('fixed', 1, self.vline), ('weight', 2, self.contentbox)])
+        content = urwid.Columns(
+            [self.navbox, ('fixed', 1, self.vline), ('weight', 2, self.contentbox)])
         urwid.connect_signal(self.navbox.walker, 'modified', self._nav_update)
-        urwid.connect_signal(self.contentbox.walker, 'modified', self._content_validation)
-        self._body = urwid.Frame(urwid.AttrWrap(content, 'body'), header=self.header, footer=self.footer)
+        urwid.connect_signal(self.contentbox.walker,
+                             'modified', self._content_validation)
+        self._body = urwid.Frame(urwid.AttrWrap(
+            content, 'body'), header=self.header, footer=self.footer)
 
     def _unhandled_key(self, key):
         """

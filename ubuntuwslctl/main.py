@@ -7,7 +7,8 @@
 import sys
 from argparse import ArgumentParser, RawTextHelpFormatter
 
-from ubuntuwslctl.utils.helper import config_name_extractor, query_yes_no, bcolors
+from ubuntuwslctl.utils.helper import config_name_extractor, query_yes_no, \
+    bcolors
 from ubuntuwslctl.utils.i18n import translation
 from ubuntuwslctl.core.handler import SuperHandler
 
@@ -19,9 +20,11 @@ class Application:
         self.handler = SuperHandler()
         self.parser = ArgumentParser(
             formatter_class=RawTextHelpFormatter,
-            description=_("ubuntuwsl is a tool for help manage your settings for Ubuntu WSL."),
-            epilog=_("Note: \"Super Experimental\" means it is WIP and not working. "
-                     "\"Experimental\" means it is WIP but most of the part is working."))
+            description=_("ubuntuwsl is a tool for help manage your settings"
+                          " for Ubuntu WSL."),
+            epilog=_("Note: \"Super Experimental\" means it is WIP and not"
+                     " working. \"Experimental\" means it is WIP but most "
+                     "of the part is working."))
         self._init_parser()
         self._args = self.parser.parse_args()
 
@@ -30,7 +33,8 @@ class Application:
             self._args.func()
         except KeyError:
             print(bcolors.FAIL + _("KeyError: ") + bcolors.ENDC +
-                  _("Unknown key name `{name}` passed. Aborting.").format(name=self._args.name))
+                  _("Unknown key name `{name}` passed. Aborting.")
+                  .format(name=self._args.name))
             sys.exit(1)
         except AssertionError as e:
             print(bcolors.FAIL + _("ValidationError: ") + bcolors.ENDC +
@@ -38,12 +42,14 @@ class Application:
             sys.exit(1)
         except IOError:
             print(bcolors.FAIL + _("IOError: ") + bcolors.ENDC +
-                  _("There is an error whe trying to read/write the conf file. "
-                    "You need to have root privileges to perform such action. Aborting."))
+                  _("There is an error whe trying to read/write the conf file."
+                    " You need to have root privileges to perform such action."
+                    " Aborting."))
             sys.exit(1)
         except Exception:
             print(bcolors.FAIL + _("ERROR:") + bcolors.ENDC +
-                  _("Something happened during the execution. Following are the details:"))
+                  _("Something happened during the execution. Following are "
+                  "the details:"))
             raise
             sys.exit(1)
 
@@ -55,8 +61,10 @@ class Application:
             "-y", "--yes", action="store_true",
             help=_("When passed, always assume yes."), required=False)
         # self.parser.add_argument(
-        #     "-c", "--config", type=str, choices=["ubuntu", "wsl", "both"], default="both",
-        #     help=_("When passed, handling ubuntu-wsl.conf only."), required=False)
+        #     "-c", "--config", type=str, choices=["ubuntu", "wsl", "both"],
+        #     default="both",
+        #     help=_("When passed, handling ubuntu-wsl.conf only."),
+        #     required=False)
         commands = self.parser.add_subparsers(title=_("commands"))
 
         help_cmd = commands.add_parser(
@@ -116,24 +124,27 @@ class Application:
             help=_("When enabled, only value will be displayed."))
         show_cmd.add_argument(
             "-d", "--default", action="store_true",
-            help=_("Show the default configuration settings instead of current "
-                   "user-defined ones."))
+            help=_("Show the default configuration settings instead of current"
+                   " user-defined ones."))
         show_cmd.set_defaults(func=self.do_show)
 
         ls_cmd = commands.add_parser(
             "list", aliases=["ls"],
             description=_("List all configurations."),
-            help=_("List all configuration settings from ubuntu-wsl.conf and wsl.conf."))
+            help=_("List all configuration settings from ubuntu-wsl.conf and"
+                   " wsl.conf."))
         ls_cmd.add_argument(
             "-d", "--default", action="store_true",
-            help=_("Show the default configuration settings instead of current "
-                   "user-defined ones."))
+            help=_("Show the default configuration settings instead of current"
+                   " user-defined ones."))
         ls_cmd.set_defaults(func=self.do_list)
 
         ui_cmd = commands.add_parser(
             "visual", aliases=["ui", "tui"],
-            description=_("Display a friendly text-based user interface. (Experimental)"),
-            help=_("Display a friendly text-based user interface. (Experimental)"))
+            description=_("Display a friendly text-based user interface."
+                          " (Experimental)"),
+            help=_("Display a friendly text-based user interface."
+                   " (Experimental)"))
         ui_cmd.set_defaults(func=self.do_ui)
 
         export_cmd = commands.add_parser(
@@ -157,7 +168,8 @@ class Application:
         tricks_cmd = commands.add_parser(
             "tricks",
             description=_("Trigger Tricks/workarounds (Super Experimental)"),
-            help=_("Tricks/workarounds on some issues we are unable to include in images. (Super Experimental)"))
+            help=_("Tricks/workarounds on some issues we are unable to include"
+                   " in images. (Super Experimental)"))
         tricks_cmd.add_argument(
             "name", nargs="?", default="",
             help=_("the name of the tricks/workarounds."))
@@ -183,9 +195,11 @@ class Application:
               _("you need to restart Ubuntu distribution to take effect."))
         assume_yes = 'yes' in self._args and self._args.yes
         if 'name' in self._args and self._args.name is not None:
-            config_type, config_section, config_setting = config_name_extractor(self._args.name)
+            config_type, config_section, config_setting = config_name_extractor(
+                self._args.name)
             if query_yes_no(_("You are trying to reset `{name}`."
-                              "Do you still want to proceed?").format(name=self._args.name),
+                              "Do you still want to proceed?")
+                            .format(name=self._args.name),
                             default="no", assume_yes=assume_yes):
                 self.handler.reset(config_type, config_section, config_setting)
         else:
@@ -195,14 +209,18 @@ class Application:
                 self.handler.reset_all()
 
     def do_show(self):
-        config_type, config_section, config_setting = config_name_extractor(self._args.name)
-        self.handler.show(config_type, config_section, config_setting, self._args.short, self._args.default)
+        config_type, config_section, config_setting = config_name_extractor(
+            self._args.name)
+        self.handler.show(config_type, config_section,
+                          config_setting, self._args.short, self._args.default)
 
     def do_update(self):
         print(bcolors.WARNING + _("WARNING: ") + bcolors.ENDC +
               _("you need to restart Ubuntu distribution to take effect."))
-        config_type, config_section, config_setting = config_name_extractor(self._args.name)
-        self.handler.update(config_type, config_section, config_setting, self._args.value)
+        config_type, config_section, config_setting = config_name_extractor(
+            self._args.name)
+        self.handler.update(config_type, config_section, config_setting,
+                            self._args.value)
 
     def do_ui(self):
         from ubuntuwslctl.tui import Tui
@@ -226,9 +244,11 @@ class Application:
     def do_fun():
         # OwO no touchy
         import base64
-        fun = b'44CA44CA44CA4oinX+KIpyAgICAgICAgZnVuPwrjgIDjgIAgKOOAgO+9pc+J772lKSAK44CAIO+8v3zjgIDiioPvvI8o77y/77y' \
-              b'/XyAgCu+8j+OAgOKUlC0o77y/77y/77y/X++8jyAK77+j77+j77+j77+j77+j77+j77' \
-              b'+jCiAgICAgICAgICAgICAgc2xlZXAgaXMgZnVuCuOAgO+8nOKMku+8j+ODvS3vvaRf77y/XwrvvI/vvJxfL++8v++8v++8v++8v' \
+        fun = b'44CA44CA44CA4oinX+KIpyAgICAgICAgZnVuPwrjgIDjgIAgKOOAgO+9pc+' \
+              b'J772lKSAK44CAIO+8v3zjgIDiioPvvI8o77y/77y' \
+              b'/XyAgCu+8j+OAgOKUlC0o77y/77y/77y/X++8jyAK77+j77+j77+j77+j77+' \
+              b'j77+j77+jCiAgICAgICAgICAgICAgc2xlZXAgaXMgZnVuCuOAgO+8nOKMku+' \
+              b'8j+ODvS3vvaRf77y/XwrvvI/vvJxfL++8v++8v++8v++8v' \
               b'++8jwrvv6Pvv6Pvv6Pvv6Pvv6Pvv6Pvv6M='
         print(base64.b64decode(fun).decode("utf-8"))
 

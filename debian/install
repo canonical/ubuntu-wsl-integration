@@ -1,3 +1,4 @@
 51-wsl-motd-news etc/update-motd.d/
 ubuntu-wsl.conf etc/default/ubuntu-wsl/
 wsl-integration.sh usr/share/ubuntu-wsl/
+default.json usr/share/ubuntu-wsl/

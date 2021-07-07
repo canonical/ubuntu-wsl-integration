@@ -5,16 +5,20 @@
 
 import os
 import re
+import json
 from configparser import ConfigParser
 
-from ubuntuwslctl.core.default import conf_def
 from ubuntuwslctl.utils.i18n import translation
 
 _ = translation.gettext
 
-
 class ConfigEditor:
-    def __init__(self, inst_type):
+    def __init__(self, inst_type, is_dry_run=False):
+        self.default_location = "/usr/share/ubuntu-wsl/default.json"
+        if is_dry_run:
+            self.default_location = os.path.dirname(os.path.abspath(__file__)) + "/../../default.json"
+        with open(self.default_location, 'r') as f:
+            conf_def = json.loads(f.read())
         self.inst_type = inst_type
         self.raw_conf = conf_def[inst_type]
         self.user_conf = self.raw_conf['_file_location']
@@ -120,10 +124,10 @@ class ConfigEditor:
 
 
 class UbuntuWSLConfigEditor(ConfigEditor):
-    def __init__(self):
-        ConfigEditor.__init__(self, "ubuntu")
+    def __init__(self, dry_run):
+        ConfigEditor.__init__(self, "ubuntu", dry_run)
 
 
 class WSLConfigEditor(ConfigEditor):
-    def __init__(self):
-        ConfigEditor.__init__(self, "wsl")
+    def __init__(self, dry_run):
+        ConfigEditor.__init__(self, "wsl", dry_run)

@@ -14,9 +14,9 @@ class SuperHandler:
     The Core Handler.
     """
 
-    def __init__(self):
-        self.ubuntu_conf = UbuntuWSLConfigEditor()
-        self.wsl_conf = WSLConfigEditor()
+    def __init__(self, dry_run):
+        self.ubuntu_conf = UbuntuWSLConfigEditor(dry_run)
+        self.wsl_conf = WSLConfigEditor(dry_run)
 
         ubuntu_tmp = (self.ubuntu_conf.get_config())._sections
         wsl_tmp = (self.wsl_conf.get_config())._sections

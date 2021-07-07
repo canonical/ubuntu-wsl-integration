@@ -17,7 +17,6 @@ _ = translation.gettext
 
 class Application:
     def __init__(self):
-        self.handler = SuperHandler()
         self.parser = ArgumentParser(
             formatter_class=RawTextHelpFormatter,
             description=_("ubuntuwsl is a tool for help manage your settings"
@@ -27,6 +26,7 @@ class Application:
                      "of the part is working."))
         self._init_parser()
         self._args = self.parser.parse_args()
+        self.handler = SuperHandler(self._args.dev_mode)
 
     def run(self):
         try:
@@ -60,6 +60,8 @@ class Application:
         self.parser.add_argument(
             "-y", "--yes", action="store_true",
             help=_("When passed, always assume yes."), required=False)
+        self.parser.add_argument(
+            "-D", "--dev-mode", action="store_true", required=False)
         # self.parser.add_argument(
         #     "-c", "--config", type=str, choices=["ubuntu", "wsl", "both"],
         #     default="both",

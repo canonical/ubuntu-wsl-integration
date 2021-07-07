@@ -10,6 +10,14 @@ This contains:
 - A cli for managing the integration.
 - A Text-based UI for easier integration menagement.
 
+## Usage
+
+### As CLI conf menegement tool
+
+### As TUI conf management tool
+
+### As workaround application tool
+
 ## Bugs
 
 Please report bugs to launchpad here: <https://bugs.launchpad.net/ubuntu-wsl-integration>

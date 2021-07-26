@@ -37,7 +37,7 @@
             "_friendly_name": "Network",
             "generatehosts": {
                 "_friendly_name": "Generate /etc/hosts",
-                "_api_name": "gen_resolvconf",
+                "_api_name": "gen_host",
                 "default": "true",
                 "type": "bool",
                 "tip": "Whether generate /etc/hosts at each startup."
